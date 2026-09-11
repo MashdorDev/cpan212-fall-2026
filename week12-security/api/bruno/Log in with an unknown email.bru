@@ -1,0 +1,26 @@
+meta {
+  name: Log in with an unknown email
+  type: http
+  seq: 23
+}
+
+post {
+  url: {{baseUrl}}/api/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "nobody@example.com",
+    "password": "not-the-password"
+  }
+}
+
+assert {
+  res.status: eq 401
+}
+
+docs {
+  Same message as a wrong password, on purpose.
+}

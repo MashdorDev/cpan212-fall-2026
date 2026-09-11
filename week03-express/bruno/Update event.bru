@@ -1,0 +1,22 @@
+meta {
+  name: Update event
+  type: http
+  seq: 11
+}
+
+patch {
+  url: {{baseUrl}}/api/events/{{createdEventId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "capacity": 60,
+    "location": "North Campus, Room B210"
+  }
+}
+
+assert {
+  res.status: eq 200
+}

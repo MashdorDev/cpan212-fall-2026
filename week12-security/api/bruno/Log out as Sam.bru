@@ -1,0 +1,15 @@
+meta {
+  name: Log out as Sam
+  type: http
+  seq: 39
+}
+
+post {
+  url: {{baseUrl}}/api/auth/logout
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

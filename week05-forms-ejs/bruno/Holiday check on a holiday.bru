@@ -1,0 +1,16 @@
+meta {
+  name: Holiday check on a holiday
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/events/51b21140-5d42-4c7e-bbd4-6d831ff17438/holiday-check
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.data.isHoliday: eq true
+}

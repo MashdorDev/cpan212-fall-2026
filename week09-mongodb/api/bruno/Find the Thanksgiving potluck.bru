@@ -1,0 +1,23 @@
+meta {
+  name: Find the Thanksgiving potluck
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/events?q=potluck
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+vars:post-response {
+  holidayEventId: res.body.data[0].id
+}
+
+docs {
+  Saves the potluck id as holidayEventId. It is on Thanksgiving Monday, so the next request finds a holiday.
+}

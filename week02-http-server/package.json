@@ -1,0 +1,14 @@
+{
+  "name": "week02-http-server",
+  "version": "1.0.0",
+  "description": "CPAN 212 Week 2: Campus Events API with node:http and no dependencies",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env src/server.js",
+    "start": "node --env-file-if-exists=.env src/server.js"
+  }
+}

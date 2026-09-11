@@ -1,0 +1,15 @@
+meta {
+  name: List events by title Z to A
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/events?sort=-title
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

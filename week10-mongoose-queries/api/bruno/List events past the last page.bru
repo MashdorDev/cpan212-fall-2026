@@ -1,0 +1,16 @@
+meta {
+  name: List events past the last page
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/events?limit=3&page=9
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.data.length: eq 0
+}

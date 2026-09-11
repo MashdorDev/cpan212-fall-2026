@@ -1,0 +1,18 @@
+{
+  "name": "week07-cors-example",
+  "version": "1.0.0",
+  "description": "CPAN 212 Week 7: calling an Express API from another origin with CORS",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env server.js",
+    "start": "node --env-file-if-exists=.env server.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.6",
+    "express": "^5.2.1"
+  }
+}

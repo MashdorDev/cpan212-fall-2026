@@ -1,0 +1,16 @@
+meta {
+  name: Get the small event with its RSVP count
+  type: http
+  seq: 32
+}
+
+get {
+  url: {{baseUrl}}/api/events/{{smallEventId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.data.rsvpCount: eq 2
+}

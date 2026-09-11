@@ -1,0 +1,22 @@
+meta {
+  name: RSVP a second person
+  type: http
+  seq: 27
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{smallEventId}}/rsvps
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Marcus Chen",
+    "email": "marcus.chen@example.com"
+  }
+}
+
+assert {
+  res.status: eq 201
+}

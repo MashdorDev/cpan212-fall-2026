@@ -1,0 +1,15 @@
+meta {
+  name: Who am I while logged out
+  type: http
+  seq: 16
+}
+
+get {
+  url: {{baseUrl}}/api/auth/me
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 401
+}

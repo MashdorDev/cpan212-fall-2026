@@ -1,0 +1,15 @@
+meta {
+  name: List events with a bad from date
+  type: http
+  seq: 10
+}
+
+get {
+  url: {{baseUrl}}/api/events?from=next-week
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 400
+}

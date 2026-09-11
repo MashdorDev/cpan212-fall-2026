@@ -1,0 +1,22 @@
+meta {
+  name: RSVP to a full event
+  type: http
+  seq: 28
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{smallEventId}}/rsvps
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Diego Alvarez",
+    "email": "diego.alvarez@example.com"
+  }
+}
+
+assert {
+  res.status: eq 409
+}

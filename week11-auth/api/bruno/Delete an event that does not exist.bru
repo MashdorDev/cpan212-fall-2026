@@ -1,0 +1,15 @@
+meta {
+  name: Delete an event that does not exist
+  type: http
+  seq: 45
+}
+
+delete {
+  url: {{baseUrl}}/api/events/000000000000000000000000
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

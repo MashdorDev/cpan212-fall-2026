@@ -1,0 +1,24 @@
+meta {
+  name: Create event with invalid fields
+  type: http
+  seq: 27
+}
+
+post {
+  url: {{baseUrl}}/api/events
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Hi",
+    "category": "parties",
+    "startsAt": "next Friday",
+    "capacity": 0
+  }
+}
+
+assert {
+  res.status: eq 400
+}

@@ -1,0 +1,15 @@
+meta {
+  name: Holiday check for an event that does not exist
+  type: http
+  seq: 18
+}
+
+get {
+  url: {{baseUrl}}/api/events/no-such-id/holiday-check
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

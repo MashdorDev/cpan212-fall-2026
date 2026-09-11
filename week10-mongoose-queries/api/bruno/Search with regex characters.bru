@@ -1,0 +1,19 @@
+meta {
+  name: Search with regex characters
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/events?q=%28c%2B%2B
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  The search text is escaped before it becomes a regular expression, so this finds nothing instead of failing with a 500.
+}

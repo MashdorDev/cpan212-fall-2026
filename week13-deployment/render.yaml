@@ -1,0 +1,39 @@
+# Render Blueprint for the Campus Events API. Field names checked against https://render.com/docs/blueprint-spec
+# on 2026-09-11. See docs/deploy.md for the steps.
+#
+# Render looks for render.yaml at the root of the repository. This file lives in week13-deployment/, so when you
+# create the Blueprint, type week13-deployment/render.yaml in the Blueprint Path field. In your own project,
+# put render.yaml at the repository root and set rootDir to your API folder (usually just "api").
+services:
+  - type: web
+    name: campus-events-api
+    runtime: node
+    # Without plan: free, Render creates a paid instance.
+    plan: free
+    # Closest to Toronto, and to an Atlas cluster in AWS us-east-1 (N. Virginia). Can't be changed later.
+    region: virginia
+    # The folder with package.json. Render runs the commands below inside it.
+    rootDir: week13-deployment/api
+    # npm ci installs exactly what package-lock.json lists, and fails if package.json and the lock file disagree.
+    buildCommand: npm ci
+    startCommand: npm start
+    # Render sends traffic to a new deploy only after this path answers 2xx or 3xx. /api/health answers 503
+    # while MongoDB is disconnected, so a deploy with a wrong MONGODB_URI never replaces a working one.
+    healthCheckPath: /api/health
+    # Deploy every time a commit lands on the branch.
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Render's load balancer is one proxy in front of the app. See src/security.js.
+      - key: TRUST_PROXY
+        value: "1"
+      - key: HOLIDAY_API_BASE_URL
+        value: https://date.nager.at/api/v3
+      # sync: false means "ask for the value in the dashboard when the Blueprint is created, and never store it
+      # in this file". Secrets must never be committed.
+      - key: MONGODB_URI
+        sync: false
+      # Paste the output of npm run generate-secret. (generateValue: true would make Render create one instead.)
+      - key: SESSION_SECRET
+        sync: false

@@ -1,0 +1,93 @@
+export const CATEGORIES = ['academic', 'social', 'sports', 'career', 'arts'];
+
+// Checks the fields a client sent and returns { value, errors }.
+// value holds cleaned fields (trimmed text, startsAt as a UTC ISO string).
+// errors maps each bad field to a message. An empty errors object means the input is valid.
+// With { partial: true } (used by PATCH) only the fields that were sent are checked,
+// and missing optional fields don't get default values.
+export function validateEventInput(body, { partial = false } = {}) {
+  if (typeof body !== 'object' || body === null || Array.isArray(body)) {
+    return { value: {}, errors: { body: 'Send a JSON object' } };
+  }
+
+  const value = {};
+  const errors = {};
+  const shouldCheck = (field) => !partial || body[field] !== undefined;
+
+  if (shouldCheck('title')) {
+    const title = typeof body.title === 'string' ? body.title.trim() : '';
+    if (title.length < 3 || title.length > 100) {
+      errors.title = 'Title must be 3 to 100 characters';
+    } else {
+      value.title = title;
+    }
+  }
+
+  if (body.description === undefined) {
+    if (!partial) value.description = '';
+  } else if (typeof body.description !== 'string' || body.description.length > 2000) {
+    errors.description = 'Description must be text, 2000 characters or fewer';
+  } else {
+    value.description = body.description.trim();
+  }
+
+  if (shouldCheck('category')) {
+    if (!CATEGORIES.includes(body.category)) {
+      errors.category = `Category must be one of: ${CATEGORIES.join(', ')}`;
+    } else {
+      value.category = body.category;
+    }
+  }
+
+  if (shouldCheck('location')) {
+    const location = typeof body.location === 'string' ? body.location.trim() : '';
+    if (location.length === 0 || location.length > 200) {
+      errors.location = 'Location is required, up to 200 characters';
+    } else {
+      value.location = location;
+    }
+  }
+
+  if (shouldCheck('startsAt')) {
+    // Date.parse accepts many loose formats, so also require the YYYY-MM-DDTHH:MM start of ISO 8601.
+    if (
+      typeof body.startsAt !== 'string' ||
+      !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(body.startsAt) ||
+      Number.isNaN(Date.parse(body.startsAt))
+    ) {
+      errors.startsAt = 'Start time must be an ISO 8601 date and time, for example 2026-10-14T18:00:00-04:00';
+    } else {
+      value.startsAt = new Date(body.startsAt).toISOString();
+    }
+  }
+
+  if (shouldCheck('capacity')) {
+    // "12" (a string) is not accepted: JSON clients should send a number.
+    if (!Number.isInteger(body.capacity) || body.capacity < 1 || body.capacity > 1000) {
+      errors.capacity = 'Capacity must be a whole number from 1 to 1000';
+    } else {
+      value.capacity = body.capacity;
+    }
+  }
+
+  if (body.imageUrl === undefined) {
+    if (!partial) value.imageUrl = null;
+  } else if (body.imageUrl === null) {
+    value.imageUrl = null;
+  } else if (
+    typeof body.imageUrl !== 'string' ||
+    body.imageUrl.length > 500 ||
+    // A full http(s) address, or a file saved by the upload form such as /uploads/1f0c...9a.png
+    !/^(https?:\/\/\S+|\/uploads\/[\w-]+\.(jpg|png|webp))$/.test(body.imageUrl)
+  ) {
+    errors.imageUrl = 'Image URL must be an http:// or https:// address, or an uploaded image';
+  } else {
+    value.imageUrl = body.imageUrl;
+  }
+
+  if (partial && Object.keys(value).length === 0 && Object.keys(errors).length === 0) {
+    errors.body = 'Send at least one field to change';
+  }
+
+  return { value, errors };
+}

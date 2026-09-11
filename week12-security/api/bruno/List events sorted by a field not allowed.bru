@@ -1,0 +1,19 @@
+meta {
+  name: List events sorted by a field not allowed
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{baseUrl}}/api/events?sort=description
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 400
+}
+
+docs {
+  Only startsAt, title and createdAt can be sorted on.
+}

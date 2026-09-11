@@ -1,0 +1,26 @@
+meta {
+  name: Log in as Sam
+  type: http
+  seq: 33
+}
+
+post {
+  url: {{baseUrl}}/api/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "sam@example.com",
+    "password": "campus-demo-sam"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Switches the session to Sam, who does not organize the event created by Ava.
+}

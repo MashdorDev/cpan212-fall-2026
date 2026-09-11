@@ -1,0 +1,19 @@
+{
+  "name": "week07-api",
+  "version": "1.0.0",
+  "description": "CPAN 212 Week 7: Campus Events API used by the Next.js app",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "dev": "node --watch --env-file-if-exists=.env src/server.js",
+    "start": "node --env-file-if-exists=.env src/server.js"
+  },
+  "dependencies": {
+    "ejs": "^6.0.1",
+    "express": "^5.2.1",
+    "multer": "^2.3.0"
+  }
+}

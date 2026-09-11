@@ -1,0 +1,19 @@
+meta {
+  name: Get an event that does not exist
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/events/000000000000000000000000
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}
+
+docs {
+  A valid ObjectId that no document has.
+}
