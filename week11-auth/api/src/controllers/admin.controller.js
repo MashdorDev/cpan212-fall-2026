@@ -68,8 +68,8 @@ export async function createEventFromForm(req, res) {
     organizer: req.user._id,
   });
 
-  // validateSync() checks the schema without saving and returns the ValidationError (or undefined).
-  const validationError = event.validateSync();
+  // validate() checks the schema without saving. It rejects with a ValidationError, so turn that into a value (or null).
+  const validationError = await event.validate().then(() => null, (error) => error);
   const errors = validationError ? messagesByField(validationError) : {};
   if (req.uploadError) {
     errors.image = req.uploadError;

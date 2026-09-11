@@ -75,7 +75,7 @@ const eventSchema = new mongoose.Schema(
 
 // Indexes let MongoDB find and sort events without reading every document in the collection.
 // Each one matches a query GET /api/events really runs. The list is always sorted by one field and then
-// by _id (see sortFor() in the controller), and MongoDB can only use an index for a sort when the index has
+// by _id (see parseEventListQuery() in src/utils/event-list-query.js), and MongoDB can only use an index for a sort when the index has
 // the same fields in the same order. That is why _id is the last field of each index.
 // - { startsAt: 1, _id: 1 } for the default list, sorted by start time, and for ?from= (startsAt >= a date).
 //   MongoDB can read an index backwards, so it also covers ?sort=-startsAt.

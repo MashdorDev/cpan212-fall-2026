@@ -122,7 +122,7 @@ You should see `Connected to MongoDB, database "campus_events"` and `inserted 8`
 | `MONGODB_URI is not set` | No `.env` file, or the variable name is misspelled |
 | `bad auth : authentication failed` | Wrong username or password, or `<db_password>` was left in the string |
 | A timeout, `Server selection timed out`, or `Could not connect to any servers` | Your IP address is not on the access list, or the cluster is paused |
-| `querySrv ENOTFOUND` or `querySrv ECONNREFUSED` | A typo in the cluster host name, or your network blocks DNS SRV lookups (some campus and VPN networks do). Try another network. |
+| `querySrv ENOTFOUND` or `querySrv ECONNREFUSED` | A typo in the cluster host name, or your network blocks DNS SRV lookups (some campus and VPN networks do). Check the host name first. Then try another network, or use Atlas's standard `mongodb://` connection string (the one that lists every host) instead of the `mongodb+srv://` one, or run MongoDB locally with Docker for development. |
 | `URI malformed` or `Password contains unescaped characters` | A special character in the password that needs encoding |
 
 ## Looking at your data with Compass
