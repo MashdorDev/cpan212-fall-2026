@@ -90,7 +90,7 @@ Run on 2026-09-11 against MongoDB 8.3 (Docker) with the API and web app started 
 | Headers on `/api/health`, `/` and `/admin/login` | `Content-Security-Policy`, `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `X-Frame-Options`, `Referrer-Policy`, `Cross-Origin-Resource-Policy` present. `X-Powered-By` absent. |
 | `upgrade-insecure-requests` | Absent in development, present with `NODE_ENV=production` |
 | CSP in Chrome (headless) | Static page lists events through `events-page.js`, admin login works, admin CSS applies, the delete confirmation dialog opens, no CSP violations in the console |
-| CORS | `Origin: http://localhost:5173` gets `Access-Control-Allow-Origin` and `-Credentials`. `Origin: https://evil.example` gets no CORS headers. Preflight from the allowed origin lists methods and headers. |
+| CORS | `Origin: http://localhost:5173` gets `Access-Control-Allow-Origin` and `-Credentials`. `Origin: https://evil.example` gets no `Access-Control-Allow-Origin` header, so the browser blocks the response. Preflight from the allowed origin lists methods and headers. |
 | 20 KB JSON body, 20 KB admin form | 413 JSON error, 413 HTML page |
 | Objects and arrays instead of text | Register: 400 "Must be text". Login: 400. Event with an object title and an array category: 400 "title has the wrong type". `?q=a&q=b`: 400 "Send q only once". |
 | Login with a 100-byte password | 401, no bcrypt comparison |

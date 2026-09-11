@@ -25,7 +25,7 @@ Usually not. Browsers treat `http://localhost` as a secure context, so cookies, 
 - HSTS or `upgrade-insecure-requests`
 - mixed content warnings (an https page loading an http image)
 
-A self-signed certificate made with `openssl` works, but every browser shows a full-page warning for it, and browsers ignore HSTS when there is a certificate error. mkcert fixes that: it creates your own local certificate authority, tells your computer to trust it, and signs certificates for `localhost` with it. The browser then shows a normal padlock.
+A self-signed certificate made with `openssl` works, but every browser shows a full-page warning for it, and browsers ignore HSTS when there is a certificate error. mkcert fixes that: it creates your own local certificate authority, tells your computer to trust it, and signs certificates for `localhost` with it. The browser then trusts the certificate and shows no warning.
 
 ## 1. Install mkcert
 
@@ -74,7 +74,7 @@ From the `api` folder:
 mkcert localhost 127.0.0.1 ::1
 ```
 
-mkcert prints the names of the two files it wrote. For these three names they are `localhost+2.pem` (the certificate) and `localhost+2-key.pem` (the private key). Keep both out of Git: add `*.pem` to `.gitignore`.
+mkcert prints the names of the two files it wrote, so use the names it prints. For these three names they are usually `localhost+2.pem` (the certificate) and `localhost+2-key.pem` (the private key). Keep both out of Git: add `*.pem` to `.gitignore`.
 
 ## 4. Try the API over HTTPS
 
@@ -102,7 +102,7 @@ createServer(options, app).listen(4443, () => {
 node --env-file=.env https-test.js
 ```
 
-Open https://localhost:4443/api/health. The browser shows a padlock and no warning. Delete the script (and the `.pem` files if you don't need them) when you're done.
+Open https://localhost:4443/api/health. The browser loads it with no certificate warning. Delete the script (and the `.pem` files if you don't need them) when you're done.
 
 Node itself doesn't use your system's trust store. If a Node program, such as a Next.js Server Component, calls this HTTPS server, tell Node about the mkcert root:
 
