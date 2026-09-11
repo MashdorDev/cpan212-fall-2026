@@ -35,7 +35,7 @@ const allowedOrigins = (process.env.CORS_ORIGINS ?? '')
 
 export const corsMiddleware = cors({
   // An exact list, never origin: true or '*'. With credentials, a reflected or wildcard origin would let any
-  // site make requests that carry a visitor's cookie. Other origins get no CORS headers, so the browser
+  // site make requests that carry a visitor's cookie. Other origins get no Access-Control-Allow-Origin header, so the browser
   // refuses to show them the response.
   origin: allowedOrigins,
   // Allows cookies on cross-origin requests from the listed origins. The browser also needs

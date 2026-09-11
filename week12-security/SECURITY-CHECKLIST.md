@@ -21,7 +21,7 @@ Still missing:
 
 - `web/proxy.js` only checks that a cookie exists. That is fine as a convenience, as long as every API route keeps its own check. Adding a route without `requireAuth` would be a hole that the web app can't see.
 - No roles. Every account can use the admin pages for its own events. A real campus site would have an admin role, checked on the server.
-- No CSRF tokens. `SameSite=Lax` covers every current browser. Very old browsers ignore it.
+- No CSRF tokens. `SameSite=Lax` stops the common cases in current browsers, but OWASP treats it as an extra layer, not complete CSRF protection: a GET request that changes data, or a request from another subdomain of the same site, still carries the cookie. Very old browsers ignore it.
 
 ## A02 Cryptographic Failures
 
