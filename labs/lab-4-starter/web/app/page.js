@@ -1,7 +1,7 @@
 import PlantForm from './plant-form';
 import styles from './page.module.css';
 
-// TODO (you): step 7, the list (requirement 13). This is a server component, so
+// TODO (you): step 7, the list (requirement 12). This is a server component, so
 // it runs on the Next.js server and can call Express directly.
 //   1. Above the component: const API_ORIGIN = process.env.API_ORIGIN ?? 'http://localhost:4000';
 //   2. Import { connection } from 'next/server' and make `await connection();` the
