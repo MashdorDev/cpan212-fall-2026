@@ -18,8 +18,8 @@ const server = app.listen(port, (error) => {
   console.log(`Campus Events API running at http://localhost:${port}`);
 });
 
-// Hosts like Render send SIGTERM before they stop an instance: on every deploy, on a restart, and when a free
-// instance goes to sleep. Ctrl+C in a terminal sends SIGINT. Either way, let the requests in progress finish and
+// Hosts like Render send SIGTERM before they stop an instance, for example when a new deploy replaces it.
+// Ctrl+C in a terminal sends SIGINT. Either way, let the requests in progress finish and
 // close the database connections before exiting, instead of cutting people off in the middle of a request.
 function shutDown(signal) {
   console.log(`${signal} received, closing the server`);
