@@ -23,7 +23,7 @@ export async function register(req, res) {
 
   // Check the schema fields and the password together, so one 400 lists every problem.
   const user = new User({ name, email });
-  const validationError = user.validateSync(['name', 'email']);
+  const validationError = await user.validate(['name', 'email']).then(() => null, (error) => error);
   const errors = validationError ? messagesByField(validationError) : {};
   const problem = passwordProblem(password);
   if (problem) {
