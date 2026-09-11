@@ -1,0 +1,15 @@
+meta {
+  name: Delete the small event and its RSVPs
+  type: http
+  seq: 43
+}
+
+delete {
+  url: {{baseUrl}}/api/events/{{smallEventId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

@@ -1,0 +1,23 @@
+meta {
+  name: Create event with broken JSON
+  type: http
+  seq: 27
+}
+
+post {
+  url: {{baseUrl}}/api/events
+  body: text
+  auth: none
+}
+
+headers {
+  Content-Type: application/json
+}
+
+body:text {
+  { "title": "Missing the closing brace"
+}
+
+assert {
+  res.status: eq 400
+}

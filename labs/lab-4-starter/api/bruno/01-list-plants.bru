@@ -1,0 +1,24 @@
+meta {
+  name: List plants
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/plants?sort=name
+  body: none
+  auth: none
+}
+
+params:query {
+  sort: name
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  An example request. Add one request for every endpoint, plus a validation
+  error, a sort field that isn't allowed and an invalid id (requirement 11).
+}

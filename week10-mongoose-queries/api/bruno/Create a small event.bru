@@ -1,0 +1,33 @@
+meta {
+  name: Create a small event
+  type: http
+  seq: 24
+}
+
+post {
+  url: {{baseUrl}}/api/events
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Portfolio review with an alum",
+    "category": "career",
+    "location": "Online (Microsoft Teams)",
+    "startsAt": "2026-11-19T18:00:00-05:00",
+    "capacity": 2
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+vars:post-response {
+  smallEventId: res.body.data.id
+}
+
+docs {
+  Capacity 2, so the RSVP requests below can fill it.
+}

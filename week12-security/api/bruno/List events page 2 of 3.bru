@@ -1,0 +1,17 @@
+meta {
+  name: List events page 2 of 3
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/events?limit=3&page=2
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.data.length: eq 3
+  res.body.totalPages: eq 3
+}

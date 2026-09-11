@@ -1,0 +1,21 @@
+meta {
+  name: Update an event that does not exist
+  type: http
+  seq: 30
+}
+
+patch {
+  url: {{baseUrl}}/api/events/000000000000000000000000
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "capacity": 60
+  }
+}
+
+assert {
+  res.status: eq 404
+}

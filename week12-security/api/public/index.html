@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Campus Events</title>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 42rem;
+        margin: 2rem auto;
+        padding: 0 1rem;
+        line-height: 1.5;
+      }
+      li {
+        margin-bottom: 1rem;
+      }
+      .meta {
+        color: #555;
+        font-size: 0.9rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Campus Events</h1>
+    <p id="status">Loading events...</p>
+    <ul id="events"></ul>
+
+    <!-- The script is a file, not inline: helmet's Content Security Policy only runs scripts served by this site. -->
+    <script src="/js/events-page.js" defer></script>
+  </body>
+</html>

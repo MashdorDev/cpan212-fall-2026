@@ -1,0 +1,21 @@
+meta {
+  name: Update an event you do not organize
+  type: http
+  seq: 34
+}
+
+patch {
+  url: {{baseUrl}}/api/events/{{createdEventId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "capacity": 5
+  }
+}
+
+assert {
+  res.status: eq 403
+}

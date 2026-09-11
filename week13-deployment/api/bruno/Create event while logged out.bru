@@ -1,0 +1,26 @@
+meta {
+  name: Create event while logged out
+  type: http
+  seq: 17
+}
+
+post {
+  url: {{baseUrl}}/api/events
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Robotics club open house",
+    "description": "See this year's competition robot and find out how to join the build team.",
+    "category": "academic",
+    "location": "North Campus, Room B204",
+    "startsAt": "2026-10-08T18:00:00-04:00",
+    "capacity": 45
+  }
+}
+
+assert {
+  res.status: eq 401
+}

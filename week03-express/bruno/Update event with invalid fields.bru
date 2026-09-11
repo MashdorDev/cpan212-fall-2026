@@ -1,0 +1,21 @@
+meta {
+  name: Update event with invalid fields
+  type: http
+  seq: 12
+}
+
+patch {
+  url: {{baseUrl}}/api/events/{{createdEventId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "capacity": 5000
+  }
+}
+
+assert {
+  res.status: eq 400
+}

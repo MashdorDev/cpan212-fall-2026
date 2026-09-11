@@ -1,0 +1,165 @@
+:root {
+  --ink: #1f2328;
+  --muted: #5b636b;
+  --line: #d9dde1;
+  --paper: #fafaf7;
+  --accent: #b4481f;
+  --error: #b3261e;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  color: var(--ink);
+  background: var(--paper);
+  line-height: 1.5;
+}
+
+a {
+  color: var(--accent);
+}
+
+.site-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.5rem;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 1rem clamp(1rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--line);
+  background: #fff;
+}
+
+.brand {
+  font-weight: 700;
+  font-size: 1.25rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.site-header nav {
+  display: flex;
+  gap: 1rem;
+}
+
+main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 1.5rem clamp(1rem, 4vw, 3rem) 3rem;
+}
+
+.site-footer {
+  padding: 1rem clamp(1rem, 4vw, 3rem);
+  color: var(--muted);
+  font-size: 0.875rem;
+  border-top: 1px solid var(--line);
+}
+
+.empty {
+  color: var(--muted);
+}
+
+.notices {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  gap: 1rem;
+}
+
+.notice {
+  display: grid;
+  grid-template-columns: minmax(8rem, 14rem) 1fr;
+  gap: 1rem;
+  padding: 1rem;
+  background: #fff;
+  border: 1px solid var(--line);
+}
+
+.notice img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+
+.notice h2 {
+  margin: 0;
+}
+
+.species {
+  margin: 0 0 0.5rem;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+.notice dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0 0 1rem;
+}
+
+.notice dt {
+  color: var(--muted);
+}
+
+.notice dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 32rem) {
+  .notice {
+    grid-template-columns: 1fr;
+  }
+}
+
+.notice-form {
+  display: grid;
+  gap: 1rem;
+  max-width: 32rem;
+}
+
+.field label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.field input,
+.field select {
+  width: 100%;
+  padding: 0.5rem;
+  font: inherit;
+  border: 1px solid var(--line);
+  background: #fff;
+}
+
+.field-error,
+.form-summary {
+  color: var(--error);
+  margin: 0.25rem 0 0;
+}
+
+.form-summary {
+  font-weight: 600;
+}
+
+button {
+  justify-self: start;
+  padding: 0.5rem 1.25rem;
+  font: inherit;
+  color: #fff;
+  background: var(--accent);
+  border: 0;
+  cursor: pointer;
+}
+
+.button-quiet {
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--line);
+}

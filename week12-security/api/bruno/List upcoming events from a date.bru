@@ -1,0 +1,15 @@
+meta {
+  name: List upcoming events from a date
+  type: http
+  seq: 9
+}
+
+get {
+  url: {{baseUrl}}/api/events?from=2026-10-20
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

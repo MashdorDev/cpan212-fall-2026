@@ -1,0 +1,15 @@
+meta {
+  name: List RSVPs as the organizer
+  type: http
+  seq: 42
+}
+
+get {
+  url: {{baseUrl}}/api/events/{{smallEventId}}/rsvps
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

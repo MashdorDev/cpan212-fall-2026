@@ -1,0 +1,42 @@
+<%# TODO (you): move everything above <h1> into views/partials/header.ejs and
+    everything below the list into views/partials/footer.ejs. Then include
+    those two partials here instead, passing { title } to the header.
+    (An EJS comment ends at the first percent-greater-than, so this comment
+    can't show the include tags themselves. The lab page has an example.) %>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> | Lost Pets Board</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="/">Lost Pets Board</a>
+    <nav>
+      <a href="/">All notices</a>
+      <a href="/notices/new">Report a lost pet</a>
+    </nav>
+  </header>
+  <main>
+
+<h1>Lost pets</h1>
+
+<% if (notices.length === 0) { %>
+  <p class="empty">No lost pets reported right now. <a href="/notices/new">Report a lost pet</a></p>
+<% } else { %>
+  <%# TODO (you): show each notice as an <li class="notice"> inside <ul class="notices">:
+      the photo (<img> with alt text), then a <div class="notice-body"> with the pet's
+      name in an <h2>, the species in <p class="species">, a <dl> with last seen,
+      date lost and contact email, and a "Remove notice" button in a POST form
+      (give the button class="button-quiet"). Print user text with the escaping
+      output tag (the one with an equals sign), never the one with a minus sign. %>
+<% } %>
+
+  </main>
+  <footer class="site-footer">
+    <p>Notices are kept in memory and disappear when the server restarts.</p>
+  </footer>
+</body>
+</html>

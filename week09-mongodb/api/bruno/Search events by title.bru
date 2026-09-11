@@ -1,0 +1,15 @@
+meta {
+  name: Search events by title
+  type: http
+  seq: 4
+}
+
+get {
+  url: {{baseUrl}}/api/events?q=night
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+}

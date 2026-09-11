@@ -1,0 +1,22 @@
+meta {
+  name: RSVP with invalid fields
+  type: http
+  seq: 29
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{eventId}}/rsvps
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "M",
+    "email": "not-an-email"
+  }
+}
+
+assert {
+  res.status: eq 400
+}

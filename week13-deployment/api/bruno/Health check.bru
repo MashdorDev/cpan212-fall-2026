@@ -1,0 +1,20 @@
+meta {
+  name: Health check
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/health
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 200
+  res.body.database: eq connected
+}
+
+docs {
+  Render calls this path to decide whether the service is healthy. It answers 503 when MongoDB is not connected.
+}

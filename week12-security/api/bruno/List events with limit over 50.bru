@@ -1,0 +1,15 @@
+meta {
+  name: List events with limit over 50
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{baseUrl}}/api/events?limit=500
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 400
+}

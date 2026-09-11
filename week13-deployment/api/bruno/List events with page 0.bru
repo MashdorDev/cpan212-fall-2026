@@ -1,0 +1,15 @@
+meta {
+  name: List events with page 0
+  type: http
+  seq: 6
+}
+
+get {
+  url: {{baseUrl}}/api/events?page=0
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 400
+}

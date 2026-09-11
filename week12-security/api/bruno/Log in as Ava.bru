@@ -1,0 +1,26 @@
+meta {
+  name: Log in as Ava
+  type: http
+  seq: 24
+}
+
+post {
+  url: {{baseUrl}}/api/auth/login
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "email": "ava@example.com",
+    "password": "campus-demo-ava"
+  }
+}
+
+assert {
+  res.status: eq 200
+}
+
+docs {
+  Ava organizes the academic and career events. Bruno keeps the session cookie for the next requests.
+}

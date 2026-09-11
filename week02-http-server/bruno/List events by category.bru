@@ -1,0 +1,19 @@
+meta {
+  name: List events by category
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{baseUrl}}/api/events?category=career
+  body: none
+  auth: none
+}
+
+params:query {
+  category: career
+}
+
+assert {
+  res.status: eq 200
+}

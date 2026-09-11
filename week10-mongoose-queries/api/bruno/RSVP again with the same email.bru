@@ -1,0 +1,26 @@
+meta {
+  name: RSVP again with the same email
+  type: http
+  seq: 26
+}
+
+post {
+  url: {{baseUrl}}/api/events/{{smallEventId}}/rsvps
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Priya S",
+    "email": "Priya.Sharma@EXAMPLE.com"
+  }
+}
+
+assert {
+  res.status: eq 409
+}
+
+docs {
+  Emails are stored in lowercase, so this is the same person. The API finds the existing RSVP and answers 409.
+}

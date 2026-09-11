@@ -1,0 +1,13 @@
+.lead {
+  max-width: 38rem;
+  font-size: 1.125rem;
+  color: var(--muted);
+}
+
+.steps {
+  padding-left: 1.25rem;
+}
+
+.steps li {
+  margin-bottom: 0.5rem;
+}

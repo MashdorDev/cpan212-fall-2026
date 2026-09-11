@@ -1,0 +1,71 @@
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 2rem;
+  border-top: 1px solid #d5d9cc;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 0;
+  border-bottom: 1px solid #d5d9cc;
+}
+
+.species {
+  color: #5b6657;
+  font-style: italic;
+}
+
+.meta {
+  text-align: right;
+  white-space: nowrap;
+  color: #3d4a3a;
+}
+
+.empty {
+  padding: 1rem;
+  background: #eceee5;
+}
+
+.form {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 420px;
+}
+
+.field {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.field input,
+.field select {
+  padding: 0.4rem 0.5rem;
+  border: 1px solid #aab3a3;
+  border-radius: 4px;
+}
+
+.fieldError {
+  color: #a1260d;
+  font-size: 0.9rem;
+}
+
+.button {
+  justify-self: start;
+  padding: 0.5rem 1rem;
+  border: 0;
+  border-radius: 4px;
+  background: #2f6b3a;
+  color: #fff;
+  cursor: pointer;
+}
+
+.button:disabled {
+  opacity: 0.6;
+}
+
+.status {
+  margin: 0;
+}
