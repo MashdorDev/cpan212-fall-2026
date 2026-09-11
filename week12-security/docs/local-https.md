@@ -102,7 +102,7 @@ createServer(options, app).listen(4443, () => {
 node --env-file=.env https-test.js
 ```
 
-Open https://localhost:4443/api/health. The browser loads it with no certificate warning. Delete the script (and the `.pem` files if you don't need them) when you're done.
+Open https://localhost:4443/api/health. The browser should load it with no certificate warning. Delete the script (and the `.pem` files if you don't need them) when you're done.
 
 Node itself doesn't use your system's trust store. If a Node program, such as a Next.js Server Component, calls this HTTPS server, tell Node about the mkcert root:
 

@@ -18,7 +18,7 @@ export const helmetMiddleware = helmet({
       // Event images are uploads on this site or any https:// address (see imageUrl in models/Event.js).
       'img-src': ["'self'", 'data:', 'https:'],
       // Tells the browser to load http:// resources over https://. On http://localhost there is no https,
-      // and Safari then fails to load the admin CSS and JavaScript, so only send it in production.
+      // and Safari can then fail to load the admin CSS and JavaScript, so only send it in production.
       'upgrade-insecure-requests': isProduction ? [] : null,
     },
   },
