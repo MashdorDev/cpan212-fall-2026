@@ -2,7 +2,7 @@
 
 import styles from './page.module.css';
 
-// TODO (you): step 8, make the form save a plant (requirement 14). The inputs
+// TODO (you): step 8, make the form save a plant (requirements 13 and 14). The inputs
 // already have the names the API expects.
 //   1. Import useState from 'react' and useRouter from 'next/navigation'. Keep
 //      state for the field errors (an object), a status message and a saving flag.
