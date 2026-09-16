@@ -50,11 +50,19 @@ export function validateEventInput(body) {
     value.startsAt = new Date(body.startsAt).toISOString();
   }
 
-  // TODO (you): STEP 9 - the capacity rule. Every other field is already checked for you.
-  // Accept only a whole number from 1 to 1000: Number.isInteger first, then the range.
-  // When it fails, set errors.capacity to 'Capacity must be a whole number from 1 to 1000'.
-  // When it passes, copy the number into value.capacity.
-  // "12" (a string) must not be accepted: JSON clients should send a number.
+  // TODO (you): STEP 9 - write the capacity rule here, in the gap between the startsAt
+  // rule above and the imageUrl rule below. This is the only piece missing from this file:
+  // every other field is checked for you, and each rule follows the same if/else shape.
+  // Write one `if` that catches every bad value, and an `else` for the good one:
+  //   if (!Number.isInteger(body.capacity) || body.capacity < 1 || body.capacity > 1000) {
+  // Number.isInteger(x) is true only for a whole number, so it rejects 4.5, and it also
+  // rejects "45" with quotes, because that is a string, not a number. The two comparisons
+  // after it reject anything outside 1 to 1000. The || means "or".
+  // Inside the if, set errors.capacity to the string
+  //   'Capacity must be a whole number from 1 to 1000'
+  // Inside the else, copy the number across with value.capacity = body.capacity.
+  // Only fields you put into `value` are saved, which is why leaving this rule out lets an
+  // event save with no capacity at all.
 
   if (body.imageUrl === undefined || body.imageUrl === null) {
     value.imageUrl = null;
