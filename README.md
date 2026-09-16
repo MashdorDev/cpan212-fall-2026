@@ -35,7 +35,9 @@ API folders include a `bruno/` collection. Open it in [Bruno](https://www.usebru
 | `week02-http-server/` | The Campus Events API with Node's built-in `node:http` module and no dependencies |
 | `week02-http-server-codealong/` | The same project with the server left empty, as numbered steps to type in class |
 | `week03-express/` | The same API in Express 5 with routers, controllers, middleware and full create, read, update, delete |
+| `week03-express-codealong/` | The same project with the Express code left as numbered steps to type in class |
 | `week04-async/` | Step-by-step async examples, and the API calling a third-party holiday API with a timeout and a cache |
+| `week04-async-codealong/` | The same two projects with the holiday check left empty, as numbered steps to type in class |
 | `week05-forms-ejs/` | Server-rendered admin pages with EJS, form validation, image uploads with Multer, post/redirect/get |
 | `week06-nextjs-basics/` | A Next.js app with components, props, state, dynamic routes, loading and error pages (local data) |
 | `week07-nextjs-api/` | The Next.js app connected to the Express API with rewrites, a create form and saved events in Context, plus a CORS example |

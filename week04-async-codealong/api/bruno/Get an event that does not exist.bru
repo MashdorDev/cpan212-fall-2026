@@ -1,0 +1,15 @@
+meta {
+  name: Get an event that does not exist
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{baseUrl}}/api/events/no-such-id
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

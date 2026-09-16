@@ -1,0 +1,10 @@
+{
+  "name": "week04-async-examples",
+  "version": "1.0.0",
+  "description": "CPAN 212 Week 4: async JavaScript examples, run each file with node",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=24"
+  }
+}
