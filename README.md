@@ -33,6 +33,7 @@ API folders include a `bruno/` collection. Open it in [Bruno](https://www.usebru
 |---|---|
 | `week01-node-basics/` | Node basics: ES modules, npm packages, reading and writing files, environment variables |
 | `week02-http-server/` | The Campus Events API with Node's built-in `node:http` module and no dependencies |
+| `week02-http-server-codealong/` | The same project with the server left empty, as numbered steps to type in class |
 | `week03-express/` | The same API in Express 5 with routers, controllers, middleware and full create, read, update, delete |
 | `week04-async/` | Step-by-step async examples, and the API calling a third-party holiday API with a timeout and a cache |
 | `week05-forms-ejs/` | Server-rendered admin pages with EJS, form validation, image uploads with Multer, post/redirect/get |
@@ -44,6 +45,8 @@ API folders include a `bruno/` collection. Open it in [Bruno](https://www.usebru
 | `week11-auth/` | Accounts: hashed passwords, sessions stored in MongoDB, protected routes and pages, organizer-only edits, a JWT example |
 | `week12-security/` | Hardening: helmet and a CSP, rate limits, CORS allowlist, upload checks, a security checklist, local HTTPS notes |
 | `week13-deployment/` | Ready to deploy: health check, graceful shutdown, `render.yaml`, Vercel settings and step-by-step deploy notes |
+
+A folder ending in `-codealong` is the version we type together in class. It is the same project as the week folder next to it, with the code we write in class replaced by numbered `// TODO (you): STEP N` comments and a README listing the steps. It runs from the first minute, and the week folder beside it is the finished answer.
 
 ## Starter code
 

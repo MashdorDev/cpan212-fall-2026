@@ -1,0 +1,15 @@
+meta {
+  name: Wrong method on events
+  type: http
+  seq: 11
+}
+
+delete {
+  url: {{baseUrl}}/api/events
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 405
+}
