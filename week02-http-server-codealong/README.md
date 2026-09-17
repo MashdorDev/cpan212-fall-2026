@@ -52,25 +52,29 @@ If something goes wrong here:
 ## The steps
 
 Do them in this order. They are numbered by the order you write them, not by where they sit in
-the file, so use find (**Ctrl + F**, or **Cmd + F** on a Mac) and search for `STEP 6` to jump to
-the next one.
+the file, so use find (**Ctrl + F**, or **Cmd + F** on a Mac) and search for the marker named
+below to jump to the next one. Every marker is unique, so a search lands on exactly one block.
+Steps that come in parts have one lettered marker per part.
 
-1. The smallest server: answer every request with one line of plain text.
-2. `sendJson` and `sendError`, so every response is JSON with the right `Content-Type` and every
-   error has the same shape.
-3. Split `req.url` into the path and the query string.
-4. The first two routes: `GET /` sends the HTML page, `GET /api/health` sends `{ "status": "ok" }`.
-5. `sendMethodNotAllowed`: a 405 and an `Allow` header when a path you know is asked with a
-   method it does not support.
-6. `GET /api/events`, with the `category` and `q` filters, and a 400 for a category that does not
-   exist.
-7. `GET /api/events/:id`, with a 404 when no event has that id.
-8. `readJsonBody` and `POST /api/events`, in three parts: 400 for broken JSON, 400 for invalid
-   fields, 201 for a saved event.
-9. The capacity rule in `src/validators/event.js`, the one field the validator is missing.
-10. The 404 fallback for a path that matches nothing.
-11. One log line per request, and the `try`/`catch` that keeps the server alive when something
-    throws.
+1. `STEP 1` - the smallest server: answer every request with one line of plain text.
+2. `STEP 2` - `sendJson` and `sendError`, so every response is JSON with the right `Content-Type`
+   and every error has the same shape.
+3. `STEP 3` - split `req.url` into the path and the query string.
+4. `STEP 4` - the first two routes: `GET /` sends the HTML page, `GET /api/health` sends
+   `{ "status": "ok" }`.
+5. `STEP 5a` then `STEP 5b` - `sendMethodNotAllowed`, then the guard line in both routes: a 405
+   and an `Allow` header when a path you know is asked with a method it does not support.
+6. `STEP 6a` then `STEP 6b` - `listEvents`, then the `GET /api/events` route, with the `category`
+   and `q` filters and a 400 for a category that does not exist.
+7. `STEP 7a` then `STEP 7b` - `getEvent`, then the `GET /api/events/:id` route, with a 404 when no
+   event has that id.
+8. `STEP 8a`, `STEP 8b`, `STEP 8c` - `readJsonBody`, `createEvent`, then `POST /api/events` on the
+   route: 400 for broken JSON, 400 for invalid fields, 201 for a saved event.
+9. `STEP 9` - the capacity rule in `src/validators/event.js`, the one field the validator is
+   missing.
+10. `STEP 10` - the 404 fallback for a path that matches nothing.
+11. `STEP 11` - one log line per request, and the `try`/`catch` that keeps the server alive when
+    something throws.
 
 ## Run the check after every step
 

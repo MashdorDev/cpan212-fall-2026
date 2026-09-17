@@ -17,7 +17,8 @@ import { CATEGORIES, validateEventInput } from './validators/event.js';
 //
 // The TODO blocks are not in step order on the screen. Each one sits where its code
 // belongs in the finished file, so use your editor's find (Ctrl + F, or Cmd + F on a Mac)
-// and search for "STEP 6" to jump to your next one.
+// to jump to your next one. Every marker is unique, so a search lands on one block and
+// that is the one to do. Longer steps are split into lettered markers, 5a and 5b.
 //
 // When all eleven steps are done, delete this comment block. The finished file does not
 // have it, so deleting it is what makes your file and ../week02-http-server/src/server.js
@@ -38,16 +39,16 @@ const indexPath = path.join(import.meta.dirname, '..', 'public', 'index.html');
 // Then change the reply at the bottom of handleRequest to call sendError. The lesson page
 // (section 3.2) gives you that line.
 
-// TODO (you): STEP 5 - write function sendMethodNotAllowed(res, allowed) here, in place of
+// TODO (you): STEP 5a - write function sendMethodNotAllowed(res, allowed) here, in place of
 // this comment, just below sendError. `allowed` is an array of method names, for example
 // ['GET', 'POST'].
 //   First line: res.setHeader('Allow', allowed.join(', ')). A 405 answer has to tell the
 //   client which methods the path does accept, and allowed.join(', ') glues the array into
 //   the string "GET, POST".
 //   Second line: call sendError with status 405 and a message that names the methods.
-// Then add the one line guard to the two routes you wrote in step 4 (section 3.5).
+// Then add the one line guard to both routes inside handleRequest (section 3.5).
 
-// TODO (you): STEP 8, part 1 of 3 - write async function readJsonBody(req) here, in place
+// TODO (you): STEP 8a - write async function readJsonBody(req) here, in place
 // of this comment. It reads the body of a POST request and turns it into a JavaScript
 // value. A body does not arrive in one piece, it arrives in chunks, so:
 //   start with an empty array named chunks;
@@ -56,10 +57,10 @@ const indexPath = path.join(import.meta.dirname, '..', 'public', 'index.html');
 //   Buffer.concat(chunks) joins them into one block of raw bytes;
 //   .toString('utf8') turns those bytes into text;
 //   JSON.parse of that text is what you return.
-// Do not catch anything in here. Bad JSON should throw, and createEvent (part 2) is what
-// turns that throw into a 400.
+// Do not catch anything in here. Bad JSON should throw, and createEvent is what turns that
+// throw into a 400.
 
-// TODO (you): STEP 6 - write function listEvents(res, searchParams) here, in place of this
+// TODO (you): STEP 6a - write function listEvents(res, searchParams) here, in place of this
 // comment. It answers GET /api/events and takes two optional filters from the query string.
 //   Read them with searchParams.get('category') and searchParams.get('q'). Either one is
 //   null when the client did not send it.
@@ -68,14 +69,14 @@ const indexPath = path.join(import.meta.dirname, '..', 'public', 'index.html');
 //   Otherwise answer 200 through sendJson with the body { data: findEvents({ category, q }) }.
 //   findEvents is imported at the top of this file and does the filtering and sorting.
 
-// TODO (you): STEP 7 - write function getEvent(res, id) here, in place of this comment,
+// TODO (you): STEP 7a - write function getEvent(res, id) here, in place of this comment,
 // just below listEvents. It answers GET /api/events/<id>.
 //   Look the event up with findEventById(id). It is imported at the top and returns
 //   undefined when no event has that id.
 //   Nothing found: answer 404 through sendError, and return so nothing below runs.
 //   Found: answer 200 through sendJson with the body { data: event }.
 
-// TODO (you): STEP 8, part 2 of 3 - write async function createEvent(req, res) here, in
+// TODO (you): STEP 8b - write async function createEvent(req, res) here, in
 // place of this comment. It answers POST /api/events.
 //   Declare `let body;` on its own line, then a try/catch. Inside try:
 //   body = await readJsonBody(req). Inside catch: answer 400 with the message that the body
@@ -106,17 +107,19 @@ async function handleRequest(req, res) {
   //   `return res.end(html);`. This route sends HTML, not JSON, so it does not use sendJson.
   //   Leave one blank line, then the second route: if (pathname === '/api/health'),
   //   return sendJson(res, 200, { status: 'ok' }).
-  // TODO (you): STEP 5 - go back into those two routes and give each one a first line that
+  // TODO (you): STEP 5b - go back into those two routes and give each one a first line that
   //   answers a wrong method: if req.method is not 'GET', return sendMethodNotAllowed with
   //   ['GET'].
-  // TODO (you): STEP 6 - third route, in place of this comment: if (pathname === '/api/events'),
+  // TODO (you): STEP 6b - third route, in place of this comment: if (pathname === '/api/events'),
   //   GET only for now, answered by `return listEvents(res, searchParams);`.
-  // TODO (you): STEP 7 - fourth route, in place of this comment: one event by its id.
-  //   pathname.split('/') cuts the path at every slash, so "/api/events/abc" becomes
-  //   ['', 'api', 'events', 'abc']. Save that in `const parts`, then check all four things:
-  //   the array has 4 parts, parts[1] is 'api', parts[2] is 'events', and parts[3] is not an
-  //   empty string. GET only, answered by `return getEvent(res, parts[3]);`.
-  // TODO (you): STEP 8, part 3 of 3 - change the /api/events route you wrote in step 6 so
+  // TODO (you): STEP 7b - fourth route, in place of this comment: one event by its id.
+  //   Start with the comment line that explains the split, it is part of the finished file:
+  //   // "/api/events/abc" split on "/" gives ['', 'api', 'events', 'abc'].
+  //   Cut the path into pieces with pathname.split('/'), so "/api/events/abc" becomes
+  //   ['', 'api', 'events', 'abc']. Counting starts at 0, so the id is piece 3.
+  //   Match on: four pieces, piece 1 is 'api', piece 2 is 'events', piece 3 is not empty.
+  //   GET only, answered by `return getEvent(res, parts[3]);`.
+  // TODO (you): STEP 8c - change the /api/events route you already wrote so
   //   that GET goes to listEvents, POST goes to createEvent, and any other method gets a 405
   //   listing ['GET', 'POST'].
 
@@ -125,7 +128,7 @@ async function handleRequest(req, res) {
   //   res.writeHead(200, { 'Content-Type': 'text/plain; charset=utf-8' }) and then
   //   res.end(`You asked for ${req.method} ${req.url}\n`).
   //   Those are backticks, not quotes: inside them, ${ } is filled in with the value.
-  //   Leave the STEP 10 comment where it is, you need it later.
+  //   Leave the TODO block below it where it is, you need it later.
   // TODO (you): STEP 10 - every route above is written by now, so a request that still
   //   reaches the bottom of this function is asking for a path this server does not have,
   //   which is a 404. Replace the reply one last time with a single sendError line
