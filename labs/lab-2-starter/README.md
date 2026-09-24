@@ -24,7 +24,11 @@ The API runs at http://localhost:4000. Set `PORT` in `.env` to use a different p
 
 ## Testing
 
-Open the `bruno/` folder in [Bruno](https://www.usebruno.com), pick the `Local` environment and run the collection.
+```bash
+npm run check
+```
+
+This tries every route and prints which checks pass.
 
 ## AI use
 

@@ -1,5 +1,5 @@
-// The starting tools have fixed ids so your Bruno requests keep working after
-// a restart. Tools created through the API get an id from crypto.randomUUID().
+// The starting tools have fixed ids so you can test them by id, even after a
+// restart. Tools created through the API get an id from crypto.randomUUID().
 export const tools = [
   {
     id: 'cdcec443-777e-4c9a-b558-7e699f60ff7c',
