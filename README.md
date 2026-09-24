@@ -54,6 +54,7 @@ A folder ending in `-codealong` is the version we type together in class. It is 
 
 | Folder | Used for |
 |---|---|
+| `labs/lab-2-starter/` | Lab 2 |
 | `labs/lab-3-starter/` | Lab 3 |
 | `labs/lab-4-starter/` | Lab 4 (and Lab 5 if your Lab 4 isn't working) |
 | `assignments/assignment-1-starter/` | Assignment 1 |
