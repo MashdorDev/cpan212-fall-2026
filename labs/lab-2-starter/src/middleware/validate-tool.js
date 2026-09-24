@@ -21,16 +21,10 @@ export function validateTool(req, res, next) {
     errors.name = 'name must be 2 to 60 characters';
   }
 
-  // TODO (you): STEP 4a. category must be one of CATEGORIES.
-  //   CATEGORIES.includes(body.category) is true for a valid category.
-
-  // TODO (you): STEP 4b. condition must be one of CONDITIONS.
-
-  // TODO (you): STEP 4c. available must be the boolean true or false. The string "true" is invalid.
-  //   typeof body.available === 'boolean' is true only for a real boolean.
-
-  // TODO (you): STEP 4d. maxLoanDays must be a whole number from 1 to 14.
-  //   Number.isInteger(body.maxLoanDays) is false for 2.5 and for "3".
+  // TODO (you): STEP 4. category must be one of CATEGORIES.
+  // TODO (you): STEP 4. condition must be one of CONDITIONS.
+  // TODO (you): STEP 4. available must be true or false.
+  // TODO (you): STEP 4. maxLoanDays must be a whole number from 1 to 14.
 
   if (Object.keys(errors).length > 0) {
     return res.status(400).json({ error: { message: 'Validation failed', details: errors } });
