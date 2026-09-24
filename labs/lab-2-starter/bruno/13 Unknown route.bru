@@ -1,0 +1,15 @@
+meta {
+  name: Unknown route
+  type: http
+  seq: 13
+}
+
+get {
+  url: {{baseUrl}}/api/hammers
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 404
+}

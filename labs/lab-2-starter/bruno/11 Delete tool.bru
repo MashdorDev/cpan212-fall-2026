@@ -1,0 +1,15 @@
+meta {
+  name: Delete tool
+  type: http
+  seq: 11
+}
+
+delete {
+  url: {{baseUrl}}/api/tools/{{createdToolId}}
+  body: none
+  auth: none
+}
+
+assert {
+  res.status: eq 204
+}

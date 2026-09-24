@@ -1,0 +1,29 @@
+meta {
+  name: Create tool
+  type: http
+  seq: 6
+}
+
+post {
+  url: {{baseUrl}}/api/tools
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Pressure washer",
+    "category": "cleaning",
+    "condition": "new",
+    "available": true,
+    "maxLoanDays": 3
+  }
+}
+
+assert {
+  res.status: eq 201
+}
+
+vars:post-response {
+  createdToolId: res.body.data.id
+}

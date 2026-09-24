@@ -1,0 +1,25 @@
+meta {
+  name: Update a tool that does not exist
+  type: http
+  seq: 10
+}
+
+put {
+  url: {{baseUrl}}/api/tools/{{missingId}}
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "name": "Hedge trimmer",
+    "category": "garden",
+    "condition": "worn",
+    "available": false,
+    "maxLoanDays": 5
+  }
+}
+
+assert {
+  res.status: eq 404
+}
