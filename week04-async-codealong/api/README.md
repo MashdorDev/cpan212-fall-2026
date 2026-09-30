@@ -28,7 +28,7 @@ yet, so asking for it gives a `404`: the server is up and waiting for step 1. St
 up, and from then on it answers `501 Not Implemented` and a "not written yet" message.
 
 Open the `bruno/` folder in Bruno and pick the `Local` environment to send a request to every route.
-The three `Holiday check` requests in that collection fail until you have done the steps.
+`Holiday check on a holiday` and `Holiday check on a regular day` fail until you have done the steps.
 
 ## Environment variables
 
