@@ -14,6 +14,16 @@ TODO (you): a table with every variable from `.env.example`, its default, and wh
 
 TODO (you): each endpoint with an example request and a short description of the response.
 
+## Testing
+
+TODO (you): one `curl` command for each of the 10 requests on the assignment page, with the status
+code it should get on a freshly started server. On Windows, run these in Git Bash. An example to copy:
+
+```bash
+# Weather for a city: 200
+curl -i "http://localhost:4000/api/weather?city=Toronto"
+```
+
 ## Data source
 
 TODO (you): credit Open-Meteo with a link to https://open-meteo.com/.
