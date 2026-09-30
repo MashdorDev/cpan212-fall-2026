@@ -1,6 +1,0 @@
-{
-  "version": "1",
-  "name": "Campus Events week 3",
-  "type": "collection",
-  "ignore": ["node_modules", ".git"]
-}

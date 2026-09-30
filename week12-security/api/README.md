@@ -36,4 +36,4 @@ npm run dev
 | `public/js/events-page.js` | The script that used to be inline in `public/index.html` |
 | `scripts/generate-secret.js` | `randomBytes(32).toString('base64')` |
 
-The routes are the same as Week 11. The `bruno/` collection runs the same flow, plus a register request with wrong types. Running it more than once in 15 minutes can hit the login limit (the collection logs in several times): restart the API to reset it.
+The routes are the same as Week 11.

@@ -9,7 +9,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Open http://localhost:4000 for the events page, or send requests from the `bruno/` collection (open the folder in Bruno and pick the `Local` environment).
+Open http://localhost:4000 for the events page. The lesson page has a `curl` command for every route.
 
 ## Files
 

@@ -63,7 +63,6 @@ All the changes are in `api/`:
 | `src/services/auth.service.js` | Login refuses passwords over 72 bytes before running bcrypt |
 | `src/session.js` | Explains why the `Secure` cookie needs `TRUST_PROXY` behind a proxy |
 | `scripts/generate-secret.js` | New. `npm run generate-secret` prints a random 32-byte secret in base64 |
-| `bruno/` | Adds "Register with wrong types" |
 
 ## Things to notice
 

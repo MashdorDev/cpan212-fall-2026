@@ -10,8 +10,6 @@ cp .env.example .env
 npm run dev
 ```
 
-Open the `bruno/` folder in Bruno and pick the `Local` environment.
-
 ## How the holiday check works
 
 `src/services/holidays.service.js` does the third-party work:

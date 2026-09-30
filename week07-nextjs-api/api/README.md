@@ -10,8 +10,6 @@ cp .env.example .env
 npm run dev
 ```
 
-The `bruno/` collection covers every JSON route.
-
 ## Routes used by the Next.js app
 
 | Method | Path | Used by |

@@ -1,6 +1,6 @@
 # Week 8: Debugging a full-stack app
 
-This is the Week 7 Campus Events app (Express API plus Next.js) with **several bugs hidden in it**. We find and fix them together in class, using the browser's devtools (Console and Network tabs), the terminal output of both servers, Bruno, and `npm run build`.
+This is the Week 7 Campus Events app (Express API plus Next.js) with **several bugs hidden in it**. We find and fix them together in class, using the browser's devtools (Console and Network tabs), the terminal output of both servers, `curl`, and `npm run build`.
 
 The code is not marked in any way. If something looks wrong, it may well be.
 
@@ -26,7 +26,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Open http://localhost:3000. The Bruno collection is in `api/bruno/` (pick the `Local` environment, which points at port 4100).
+Open http://localhost:3000. The API runs on http://localhost:4100.
 
 ## Environment variables
 
@@ -40,7 +40,7 @@ Open http://localhost:3000. The Bruno collection is in `api/bruno/` (pick the `L
 
 - Browse the events list, open an event, save a few events and open the saved page.
 - Create an event with valid data, then with invalid data.
-- Run the whole Bruno collection.
+- Send `curl` requests straight to the API on port 4100, to tell an API bug from a web app bug.
 - Think about what happens when this code runs on a Linux computer (a Render server, GitHub Codespaces, WSL) instead of your laptop.
 
 For each problem you find, write down what you saw, where you looked, what the cause was, and how you fixed it.

@@ -12,7 +12,7 @@ const app = express();
 // For a request from an allowed origin, cors() adds Access-Control-Allow-Origin to the response
 // and answers the browser's OPTIONS preflight. For any other origin it adds nothing, and the
 // browser refuses to hand the response to the page. Requests without an Origin header
-// (curl, Bruno, server-to-server fetch) are not affected, because CORS is a browser rule.
+// (curl, server-to-server fetch) are not affected, because CORS is a browser rule.
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 

@@ -17,7 +17,7 @@ curl -i -H "Origin: http://localhost:3000" http://localhost:4000/api/events
 curl -i -H "Origin: http://localhost:5173" http://localhost:4000/api/events
 ```
 
-The first response has `Access-Control-Allow-Origin: http://localhost:3000`. The second has no such header. Both are `200 OK`: the server still ran the route. It is the **browser** that refuses to give the second response to the page's JavaScript, and it prints a "blocked by CORS policy" error in the console. curl, Bruno and server-side code ignore CORS.
+The first response has `Access-Control-Allow-Origin: http://localhost:3000`. The second has no such header. Both are `200 OK`: the server still ran the route. It is the **browser** that refuses to give the second response to the page's JavaScript, and it prints a "blocked by CORS policy" error in the console. curl and server-side code ignore CORS.
 
 A `POST` with `Content-Type: application/json` makes the browser send an `OPTIONS` "preflight" request first. `cors()` answers it too:
 

@@ -27,8 +27,7 @@ This runs before you write a single line. Every Week 3 route works. The holiday 
 yet, so asking for it gives a `404`: the server is up and waiting for step 1. Step 1 wires the route
 up, and from then on it answers `501 Not Implemented` and a "not written yet" message.
 
-Open the `bruno/` folder in Bruno and pick the `Local` environment to send a request to every route.
-The three `Holiday check` requests in that collection fail until you have done the steps.
+Every check in the steps is a `GET`, so you can also paste its URL into your browser instead of using `curl`.
 
 ## Environment variables
 

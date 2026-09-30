@@ -6,7 +6,7 @@ It is the same project as [`../week03-express`](../week03-express), with one dif
 
 The finished version is in [`../week03-express`](../week03-express). Open it when a step has you stuck, and to check your work when you are done. Try the step first.
 
-Everything you should not have to type is already here: the events themselves (`src/data/events.js`), the field checks (`src/validators/event.js`), the web page in `public/`, the Bruno collection, `package.json` with Express already listed, and `src/server.js`, the four lines that start the server.
+Everything you should not have to type is already here: the events themselves (`src/data/events.js`), the field checks (`src/validators/event.js`), the web page in `public/`, `package.json` with Express already listed, and `src/server.js`, the four lines that start the server.
 
 ## Run it
 
@@ -26,7 +26,7 @@ The terminal should print:
 Campus Events API running at http://localhost:4000
 ```
 
-Leave that terminal running for the whole class. It restarts the server every time you save a file, so after each step all you do is send the check from a second terminal or from Bruno.
+Leave that terminal running for the whole class. It restarts the server every time you save a file, so after each step all you do is send the check from a second terminal.
 
 This runs before you write a single line. Every request answers `501 Not Implemented` with a short "not written yet" message:
 
@@ -61,7 +61,6 @@ You write the files marked "you write it". The others are done.
 | `src/data/events.js` | The 8 events and the functions that find, add, change and remove them. Done for you |
 | `src/validators/event.js` | Checks each field of an event and reports what is wrong. Done for you |
 | `public/index.html` | The page that lists the events in a browser. Done for you |
-| `bruno/` | A saved request for every route, to send from Bruno. Done for you |
 
 ## The steps
 
@@ -83,7 +82,7 @@ Do them in this order. Section 8 of the Week 3 lesson page has the code to type,
 
 ## Run the check after every step
 
-Each step on the lesson page ends with a `curl` command or a Bruno request, and the answer you should get back. It also has a short "if it does not work" note with the mistakes people actually make on that step. Run the check before you start the next step.
+Each step on the lesson page ends with a `curl` command and the answer you should get back. It also has a short "if it does not work" note with the mistakes people actually make on that step. Run the check before you start the next step.
 
 This is the point of working in steps. If you type all thirteen and only then press run, one typo means hunting through nine files. One step at a time means a failed check points at the few lines you just wrote.
 

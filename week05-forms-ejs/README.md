@@ -12,7 +12,6 @@ npm run dev
 
 - http://localhost:4000/admin/events lists events and has a Delete button on each row.
 - http://localhost:4000/admin/events/new is the form for adding an event with an optional image.
-- The `bruno/` collection covers the JSON API.
 
 ## What to look at
 

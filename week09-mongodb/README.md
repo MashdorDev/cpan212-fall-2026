@@ -68,7 +68,6 @@ API:
 | `api/scripts/seed.js` | New. `npm run seed` clears the collection and inserts the sample events |
 | `api/examples/native-driver.js` | New. The same insert and find with the official `mongodb` driver, to compare with Mongoose |
 | `api/src/data/events.js`, `api/src/validators/event.js`, `api/src/middleware/validate-event.js` | Removed. The schema replaces the hand-written validator. |
-| `api/bruno/` | Ids are no longer fixed, so "List events" saves the first event's id as `eventId` |
 
 Web:
 
