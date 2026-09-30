@@ -1,0 +1,31 @@
+<%- include('partials/header', { title }) %>
+
+<div class="page-heading">
+  <h1>Events</h1>
+  <a class="button" href="/admin/events/new">Add an event</a>
+</div>
+
+<% if (events.length === 0) { %>
+  <p>No events yet.</p>
+<% } else { %>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Starts (Toronto time)</th>
+          <th>Location</th>
+          <th>Capacity</th>
+          <th><span class="visually-hidden">Actions</span></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%# TODO (you): STEP 5 - one <tr> per event, with a cell for each column above. %>
+      </tbody>
+    </table>
+  </div>
+<% } %>
+
+<%- include('partials/footer') %>
