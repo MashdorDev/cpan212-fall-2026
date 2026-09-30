@@ -48,5 +48,3 @@ Admin pages (HTML): `GET /admin/events`, `GET /admin/events/new`, `POST /admin/e
 | `src/middleware/error-handler.js` | `ValidationError` and `CastError` to 400 |
 | `scripts/seed.js` | `deleteMany()`, `insertMany()` and `mongoose.disconnect()` |
 | `examples/native-driver.js` | `MongoClient`, `insertOne()`, `find().toArray()` |
-
-The `bruno/` collection covers every JSON route. Run "List events" first: it saves an event id for the requests that need one.

@@ -8,8 +8,8 @@ comment that says what to write and where it goes.
 The finished version is in [`../week02-http-server`](../week02-http-server). Open it when a
 step has you stuck, and to check your work at the end. Try the step first.
 
-Everything else is written for you: the seed events, the HTML page, the Bruno collection and
-the rest of the validator. Typing seed data is not what this class is about.
+Everything else is written for you: the seed events, the HTML page and the rest of the
+validator. Typing seed data is not what this class is about.
 
 The lesson page (Week 2, section 3) has the code for every step, the explanation, the check to
 run, and what to do when the check fails. Keep it open beside your editor.
@@ -37,8 +37,7 @@ That happens before you write a single line. Every request answers `501 Not Impl
 short "not written yet" message, which tells you the server is up and waiting for step 1.
 
 Leave `npm run dev` running in that terminal for the whole class. It restarts the server every
-time you save a file, so after each step all you do is send the check from a second terminal or
-from Bruno.
+time you save a file, so after each step all you do is send the check from a second terminal.
 
 If something goes wrong here:
 
@@ -78,7 +77,7 @@ Steps that come in parts have one lettered marker per part.
 
 ## Run the check after every step
 
-Each step on the lesson page ends with a `curl` command or a Bruno request and the exact response
+Each step on the lesson page ends with a `curl` command and the exact response
 you should get back. Run it before you start the next step.
 
 This is the point of the exercise. If you type all eleven steps and only then press run, a single

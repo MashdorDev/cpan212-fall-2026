@@ -90,7 +90,7 @@ Events live in memory, so restarting the server puts the eight seed events back 
 
 ## Try it
 
-Open the `bruno/` folder in [Bruno](https://www.usebruno.com) and pick the `Local` environment. Run the requests in order. "Create event" saves the new id into a variable, and "Update event" and "Delete event" both use it, so those two fail if you skip it.
+Open the `GET` routes in your browser, and send the others with the `curl` commands from the Week 3 lesson page. Create an event first: the update and delete commands need its id.
 
 ## Environment variables
 

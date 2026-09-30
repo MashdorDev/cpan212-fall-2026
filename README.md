@@ -25,7 +25,7 @@ Some weeks have more than one project (for example `api/` and `web/`). Each one 
 
 From Week 9 the API needs a MongoDB connection string in `MONGODB_URI` (a free Atlas cluster or MongoDB on your own computer, see `week09-mongodb/docs/atlas-setup.md`), and from Week 11 a `SESSION_SECRET`. Run `npm run seed` in `api/` to load sample data.
 
-API folders include a `bruno/` collection. Open it in [Bruno](https://www.usebruno.com) and pick the `Local` environment to send a request to every route.
+To try an API, open its `GET` routes in your browser and use `curl` for everything else. Each week's lesson page has the commands. On Windows, run `curl` in Git Bash. In PowerShell, plain `curl` is a different command.
 
 ## Weeks
 

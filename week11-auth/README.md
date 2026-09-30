@@ -40,7 +40,7 @@ Run `npm run seed` again after pulling this week's code. Events now need an orga
 | Ava Martin | `ava@example.com` | `campus-demo-ava` | Fall hackathon kickoff, Career fair prep workshop, Resume review drop-in, Midterm study skills session |
 | Sam Lee | `sam@example.com` | `campus-demo-sam` | Thanksgiving residence potluck, Intramural ball hockey night, Student art show opening, Open mic night |
 
-Log in as one of them in the web app, and as the other in Bruno or a private browser window, to see the 403 rules.
+Log in as one of them in the web app, and as the other in a private browser window, to see the 403 rules.
 
 ## Environment variables
 

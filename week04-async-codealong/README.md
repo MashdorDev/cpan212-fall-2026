@@ -24,7 +24,7 @@ are the ones you write:
 | `api/src/controllers/holidays.controller.js` | Finding the event, its date, and the answer you send back | 2, 3, 5 |
 | `api/src/services/holidays.service.js` | The call to the third-party API, the cache and the error handling | 4, 6, 7 |
 
-Everything else is done for you: the seed events, the web page, the Bruno collection, the
+Everything else is done for you: the seed events, the web page, the
 validator, the middleware and the error handler.
 
 ## Run the examples
@@ -68,7 +68,7 @@ from then on it answers `501 Not Implemented` and a "not written yet" message un
 That is the starting line.
 
 Leave `npm run dev` running in one terminal the whole time. Send the checks from a second terminal,
-or from Bruno.
+or paste the URL into your browser.
 
 ## The steps
 

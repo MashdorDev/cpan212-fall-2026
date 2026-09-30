@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto';
 
-// The seed events use fixed ids so the Bruno requests and your notes keep working
+// The seed events use fixed ids so the curl commands and your notes keep working
 // after a restart. Events created through the API get a new randomUUID().
 // Times are stored in UTC. 21:00Z on Oct 2 is 5:00 PM in Toronto.
 const events = [

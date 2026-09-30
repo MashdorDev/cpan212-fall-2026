@@ -36,4 +36,4 @@ npm run dev
 | `src/routes/events.routes.js` | Which routes are public and which need a login |
 | `examples/jwt-with-jose.js` | `SignJWT`, `jwtVerify`, and the errors for a bad signature, expiry and audience |
 
-The `bruno/` collection runs the whole flow in order: requests while logged out (401), register, log in as Ava, create and update events, log in as Sam (403 on Ava's event), RSVP, log out, and delete as the organizer. Bruno keeps cookies between requests, so the session carries over. Run `npm run seed` before running the collection a second time, or "Register" answers 409.
+To try the login flow with `curl`, keep the session cookie in a file by adding `-c cookies.txt -b cookies.txt` to every request. The Week 11 lesson page has the full sequence.

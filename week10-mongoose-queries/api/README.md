@@ -48,5 +48,3 @@ Admin pages (HTML) are unchanged: `GET /admin/events`, `GET /admin/events/new`, 
 | `src/models/Rsvp.js` | `ref`, `lowercase`, and a unique compound index |
 | `src/controllers/rsvps.controller.js` | 409 for a full event and for duplicate key error 11000, `populate()` |
 | `examples/injection-demo.js` | The `{ "$ne": null }` attack with and without `sanitizeFilter` |
-
-The `bruno/` collection covers every route. Run "List events" first. The RSVP requests create a small event with a capacity of 2, fill it, and delete it at the end.

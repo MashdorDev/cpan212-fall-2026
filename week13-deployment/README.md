@@ -63,7 +63,6 @@ API:
 | `api/src/session.js` | Exports `sessionStore` so the shutdown code can close its connection |
 | `api/src/middleware/request-logger.js` | Adds `req.ip` to each log line, to check `TRUST_PROXY` after deploying |
 | `api/package.json` | `"engines": { "node": "24.x" }` |
-| `api/bruno/` | "Health check" also asserts `database` is `connected` |
 | `render.yaml` | New. The Render Blueprint |
 
 Web:
