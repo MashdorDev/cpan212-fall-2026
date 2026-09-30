@@ -13,6 +13,17 @@ npm run dev
 - http://localhost:4000/admin/events lists events and has a Delete button on each row.
 - http://localhost:4000/admin/events/new is the form for adding an event with an optional image.
 
+## Mini Express
+
+`mini-express/mini-express.js` is a 68-line copy of how Express works inside: a list of middleware and routes that `next()` runs one after another, with error handlers and async errors. `mini-express/server.js` runs on it, and the same file runs on the real Express:
+
+```bash
+node mini-express/server.js          # on the mini Express
+node mini-express/server.js express  # on the real Express
+```
+
+Both answer `/api/health`, a 404, and a 500 for a thrown error and for an error after an `await`, the same way.
+
 ## What to look at
 
 | File | What it shows |
