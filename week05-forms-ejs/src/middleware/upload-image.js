@@ -1,43 +1,56 @@
 import { randomUUID } from 'node:crypto';
 import multer from 'multer';
 import { UPLOADS_DIR } from '../utils/uploads.js';
+import { HttpError } from '../utils/http-error.js';
 
-const MAX_IMAGE_BYTES = 2 * 1024 * 1024;
-
-// Allowed types and the extension each one is saved with. The browser's file name is never used:
-// it can contain "../", be very long, or say .jpg for a file that isn't one.
+// The image types we accept, and the extension each one is saved with.
 const EXTENSIONS = {
   'image/jpeg': '.jpg',
   'image/png': '.png',
   'image/webp': '.webp',
 };
 
-const upload = multer({
-  storage: multer.diskStorage({
-    destination: UPLOADS_DIR,
-    filename: (req, file, cb) => cb(null, `${randomUUID()}${EXTENSIONS[file.mimetype]}`),
-  }),
-  limits: { fileSize: MAX_IMAGE_BYTES, files: 1 },
-  fileFilter: (req, file, cb) => {
-    // file.mimetype is what the browser reports, usually based on the extension. It catches honest
-    // mistakes like a PDF or a .heic photo, not someone who renames a file on purpose.
-    if (EXTENSIONS[file.mimetype]) {
-      return cb(null, true);
-    }
-    // Skip the file but keep reading the other fields, so the form can be shown again with the user's values.
-    req.uploadError = 'Image must be a JPEG, PNG or WebP file';
-    cb(null, false);
-  },
+// Multer asks us for a file name. We never use the name the browser sent:
+// it can contain "../", two people can both send "poster.png", and it can lie about the type.
+function chooseFileName(req, file, cb) {
+  const extension = EXTENSIONS[file.mimetype];
+  const fileName = randomUUID() + extension;
+  cb(null, fileName);
+}
+
+// Multer asks us about every file before saving it.
+function checkFileType(req, file, cb) {
+  if (EXTENSIONS[file.mimetype]) {
+    cb(null, true); // yes, save it
+  } else {
+    cb(new HttpError(400, 'Image must be a JPEG, PNG or WebP file'));
+  }
+}
+
+const storage = multer.diskStorage({
+  destination: UPLOADS_DIR,
+  filename: chooseFileName,
 });
 
-// Runs Multer for the "image" field. Upload problems become a message for the form
-// instead of going to the error handler.
+const TWO_MB = 2 * 1024 * 1024;
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: TWO_MB },
+  fileFilter: checkFileType,
+});
+
 export function uploadImage(req, res, next) {
-  upload.single('image')(req, res, (error) => {
+  // Multer gives back a middleware that reads the "image" field.
+  const readImage = upload.single('image');
+
+  // Multer calls this function when it is done.
+  readImage(req, res, function (error) {
     if (error instanceof multer.MulterError) {
-      req.uploadError = error.code === 'LIMIT_FILE_SIZE' ? 'Image must be 2 MB or smaller' : `Upload failed: ${error.message}`;
-      return next();
+      // The only Multer error we can get here is "file too big".
+      next(new HttpError(400, 'Image must be 2 MB or smaller'));
+    } else {
+      next(error);
     }
-    next(error);
   });
 }

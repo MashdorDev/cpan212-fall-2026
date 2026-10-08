@@ -41,6 +41,7 @@ To try an API, open its `GET` routes in your browser and use `curl` for everythi
 | `week05-forms-ejs/` | Server-rendered admin pages with EJS, form validation, image uploads with Multer, post/redirect/get, plus a mini Express built from scratch |
 | `week05-forms-ejs-codealong/` | The same project with the mini Express and the admin pages left as numbered steps to type in class |
 | `week06-nextjs-basics/` | A Next.js app with components, props, state, dynamic routes, loading and error pages (local data) |
+| `week06-nextjs-basics-codealong/` | The Week 6 app with the components taken out, for the class codealong |
 | `week07-nextjs-api/` | The Next.js app connected to the Express API with rewrites, a create form and saved events in Context, plus a CORS example |
 | `week08-debugging/` | The Week 7 app with bugs to find and fix in class |
 | `week09-mongodb/` | The API on MongoDB with Mongoose: schema validation, a seed script, and the native driver for comparison |

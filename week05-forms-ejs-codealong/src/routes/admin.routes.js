@@ -12,5 +12,5 @@ export const adminRouter = Router();
 
 // TODO (you): STEP 5 - GET /events runs listEventsPage.
 // TODO (you): STEP 6 - GET /events/new runs newEventPage.
-// TODO (you): STEP 7 - POST /events runs createEventFromForm. In step 9, uploadImage goes in front of it.
-// TODO (you): STEP 11 - POST /events/:id/delete runs deleteEventFromForm.
+// TODO (you): STEP 7 - POST /events runs createEventFromForm. In step 9c, uploadImage goes in front of it.
+// TODO (you): STEP 11a - POST /events/:id/delete runs deleteEventFromForm.

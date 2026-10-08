@@ -61,7 +61,7 @@ Admin pages (HTML):
 |---|---|---|
 | GET | `/admin/events` | Events table |
 | GET | `/admin/events/new` | Empty form |
-| POST | `/admin/events` | 303 redirect to `/admin/events`, or the form again with status 400 and error messages |
+| POST | `/admin/events` | 303 redirect to `/admin/events`, the form again with status 400 and error messages, or a 400 page for an image that is too big or the wrong type |
 | POST | `/admin/events/:id/delete` | 303 redirect to `/admin/events`, or a 404 page |
 | GET | `/uploads/<file>` | An uploaded image |
 
