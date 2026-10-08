@@ -18,7 +18,7 @@ export function errorHandler(err, req, res, next) {
   if (!expected) {
     console.error(err);
   }
-  // TODO (you): STEP 12 - under /admin, render the error page instead of sending JSON.
+  // TODO (you): STEP 12 - add an if here: under /admin, render the error page instead of sending JSON.
   res.status(status).json({
     error: {
       message: expected ? err.message : 'Internal server error',

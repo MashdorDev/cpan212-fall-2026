@@ -33,13 +33,8 @@ export async function createEventFromForm(req, res) {
     capacity: Number(body.capacity),
     imageUrl,
   });
-  if (req.uploadError) {
-    errors.image = req.uploadError;
-  }
 
   if (Object.keys(errors).length > 0) {
-    // The event is not being saved, so don't keep its image either.
-    await removeUpload(imageUrl);
     return renderNewEventForm(res, { values: { ...EMPTY_FORM, ...body }, errors, status: 400 });
   }
 

@@ -57,7 +57,7 @@ mounted at `/admin` yet. That is the starting line.
 |---|---|---|
 | `src/app.js` | The view engine, the form body parser, `/uploads`, and mounting the admin router | 5, 7, 9 |
 | `src/routes/admin.routes.js` | The four admin routes | 5, 6, 7, 9, 11 |
-| `src/controllers/admin.controller.js` | The list page, the form page, saving and deleting | 5 to 11 |
+| `src/controllers/admin.controller.js` | The list page, the form page, saving and deleting | 5 to 9, 11 |
 | `src/views/events-index.ejs` | One table row per event | 5 |
 | `src/views/events-new.ejs` | The image field | 9 |
 | `src/middleware/upload-image.js` | Multer: where files go, their names, limits and errors | 9, 10 |
@@ -71,7 +71,7 @@ footer partials, the form's text fields, the CSS and the JSON API.
 7. Read the form, validate it, and show it again with errors.
 8. Save a valid event and redirect with 303 (post/redirect/get).
 9. Upload an image with Multer and show it in the list.
-10. Limit the size and type, and turn upload problems into form messages.
+10. Limit the image size and type.
 11. Delete with a POST form.
 12. HTML error pages for `/admin`.
 
