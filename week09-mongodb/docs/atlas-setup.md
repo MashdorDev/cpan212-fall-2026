@@ -1,6 +1,6 @@
 # MongoDB Atlas setup
 
-Atlas is MongoDB's hosted database. The free cluster is enough for every lab, assignment and the project, and it is the database your deployed API will use in Week 13. These steps were checked against the MongoDB documentation on 2026-09-11. Atlas changes its menus from time to time, so if a label doesn't match, look for the closest one.
+Atlas is MongoDB's hosted database. The free cluster is enough for the project, and it is the database your deployed API will use in Week 13. These steps were checked against the MongoDB documentation on 2026-09-11. Atlas changes its menus from time to time, so if a label doesn't match, look for the closest one.
 
 ## What the free cluster gives you
 
