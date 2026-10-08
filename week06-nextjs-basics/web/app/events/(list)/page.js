@@ -1,5 +1,5 @@
-import CategoryFilter from '@/components/CategoryFilter';
 import { getEvents } from '@/lib/events';
+import CategoryFilter from '@/components/CategoryFilter';
 
 export const metadata = {
   title: 'Events',

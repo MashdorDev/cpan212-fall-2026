@@ -8,9 +8,19 @@ import styles from './SaveButton.module.css';
 export default function SaveButton() {
   const [saved, setSaved] = useState(false);
 
+  // React calls this when the button is clicked. It flips saved between true and false.
+  function handleClick() {
+    setSaved(!saved);
+  }
+
+  let label = 'Save';
+  if (saved) {
+    label = 'Saved';
+  }
+
   return (
-    <button type="button" className={styles.button} aria-pressed={saved} onClick={() => setSaved(!saved)}>
-      {saved ? 'Saved' : 'Save'}
+    <button type="button" className={styles.button} aria-pressed={saved} onClick={handleClick}>
+      {label}
     </button>
   );
 }

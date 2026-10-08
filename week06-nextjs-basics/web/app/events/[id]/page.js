@@ -8,12 +8,18 @@ import styles from './page.module.css';
 // The folder name [id] makes this a dynamic route: /events/abc gives params.id === 'abc'.
 export default async function EventPage({ params }) {
   // In Next.js 16 params is a promise, so await it before reading id.
-  const { id } = await params;
-  const event = await getEventById(id);
+  const routeParams = await params;
+  const event = await getEventById(routeParams.id);
 
   if (!event) {
     // Stops rendering this page and shows app/not-found.js instead.
     notFound();
+  }
+
+  // Not every event has a description. Only show the paragraph when there is one.
+  let description = null;
+  if (event.description) {
+    description = <p className={styles.description}>{event.description}</p>;
   }
 
   return (
@@ -33,7 +39,7 @@ export default async function EventPage({ params }) {
         <dt>Capacity</dt>
         <dd>{event.capacity} people</dd>
       </dl>
-      {event.description && <p className={styles.description}>{event.description}</p>}
+      {description}
       <SaveButton />
     </article>
   );

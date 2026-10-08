@@ -105,5 +105,9 @@ export async function getEvents() {
 }
 
 export async function getEventById(id) {
-  return events.find((event) => event.id === id) ?? null;
+  const found = events.find((event) => event.id === id);
+  if (!found) {
+    return null;
+  }
+  return found;
 }
