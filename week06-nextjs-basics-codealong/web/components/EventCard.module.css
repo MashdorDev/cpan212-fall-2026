@@ -1,0 +1,26 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 1rem;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.category {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  text-transform: capitalize;
+}
+
+.title {
+  margin: 0.25rem 0 0.5rem;
+  font-size: 1.125rem;
+}
+
+.meta {
+  flex-grow: 1;
+  margin: 0 0 1rem;
+  font-size: 0.9375rem;
+}
