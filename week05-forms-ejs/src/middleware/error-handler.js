@@ -20,8 +20,13 @@ export function errorHandler(err, req, res, next) {
   }
   // Admin pages are HTML, so a person gets a page instead of JSON.
   if (req.originalUrl.startsWith('/admin')) {
-    const message = expected ? err.message : 'Internal server error';
-    return res.status(status).render('error', { title: 'Error', status, message });
+    let message = 'Internal server error';
+    if (expected) {
+      message = err.message;
+    }
+    res.status(status);
+    res.render('error', { title: 'Error', status: status, message: message });
+    return;
   }
   res.status(status).json({
     error: {

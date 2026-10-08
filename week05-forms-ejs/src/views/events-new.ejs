@@ -50,15 +50,9 @@
     <% if (errors.capacity) { %><p class="field-error"><%= errors.capacity %></p><% } %>
   </div>
 
-  <%# The file input is the last field on purpose. Multer reads fields in order, so if the image is
-      rejected part way through, every text field above has already been read and can be shown again. %>
   <div class="field">
     <label for="image">Image <span class="hint">(optional, JPEG, PNG or WebP, up to 2 MB)</span></label>
     <input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp" />
-    <% if (errors.image) { %><p class="field-error"><%= errors.image %></p><% } %>
-    <% if (Object.keys(errors).length > 0) { %>
-      <p class="hint">Browsers can't refill a file field, so choose the image again before you resubmit.</p>
-    <% } %>
   </div>
 
   <button type="submit">Save event</button>

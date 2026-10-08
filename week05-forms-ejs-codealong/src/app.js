@@ -18,7 +18,7 @@ app.use(requestLogger);
 app.use(express.json());
 // TODO (you): STEP 7 - read HTML form bodies with express.urlencoded.
 app.use(express.static(path.join(import.meta.dirname, '..', 'public')));
-// TODO (you): STEP 9 - serve the uploads folder at /uploads.
+// TODO (you): STEP 9d - serve the uploads folder at /uploads.
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });

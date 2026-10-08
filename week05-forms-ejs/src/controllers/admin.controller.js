@@ -21,7 +21,12 @@ export function newEventPage(req, res) {
 export async function createEventFromForm(req, res) {
   // req.body is undefined when the request was neither a form nor JSON.
   const body = req.body ?? {};
-  const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
+
+  // No image unless the user picked one. Multer puts the saved file in req.file.
+  let imageUrl = null;
+  if (req.file) {
+    imageUrl = '/uploads/' + req.file.filename;
+  }
 
   // Form fields always arrive as strings. Convert them to the types the validator expects.
   const { value, errors } = validateEventInput({
@@ -31,7 +36,7 @@ export async function createEventFromForm(req, res) {
     location: body.location,
     startsAt: torontoInputToIso(body.startsAt),
     capacity: Number(body.capacity),
-    imageUrl,
+    imageUrl: imageUrl,
   });
 
   if (Object.keys(errors).length > 0) {

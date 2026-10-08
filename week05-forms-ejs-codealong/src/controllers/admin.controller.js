@@ -22,11 +22,11 @@ export function newEventPage(req, res) {
 export async function createEventFromForm(req, res) {
   // TODO (you): STEP 7 - validate the form, and show it again with the errors.
   // TODO (you): STEP 8 - save a valid event and redirect with 303.
-  // TODO (you): STEP 9 - keep the uploaded image.
+  // TODO (you): STEP 9f - keep the uploaded image.
   throw new HttpError(501, 'Saving an event from the form is not written yet');
 }
 
 export async function deleteEventFromForm(req, res) {
-  // TODO (you): STEP 11 - replace this whole function body: delete the event and its image, then redirect with 303.
+  // TODO (you): STEP 11b - replace this whole function: delete the event and its image, then redirect with 303.
   throw new HttpError(501, 'Deleting from the form is not written yet');
 }
