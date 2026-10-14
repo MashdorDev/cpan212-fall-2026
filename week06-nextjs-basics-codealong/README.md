@@ -38,7 +38,8 @@ see.
 From the folder that holds both projects (in Git Bash on Windows, or any macOS or Linux terminal):
 
 ```bash
-diff -r -x node_modules -x .next week06-nextjs-basics-codealong/web week06-nextjs-basics/web
+diff -r --strip-trailing-cr -x node_modules -x .next week06-nextjs-basics-codealong/web week06-nextjs-basics/web
 ```
 
-No output means your code matches, line for line. Differences in blank lines are fine.
+No output means your code matches, line for line. `--strip-trailing-cr` stops Windows line endings
+from making every line look different. Differences in blank lines are fine.

@@ -57,8 +57,8 @@ A folder ending in `-codealong` is the version we type together in class. It is 
 | Folder | Used for |
 |---|---|
 | `labs/lab-2-starter/` | Lab 2 |
-| `labs/lab-3-starter/` | Lab 3 |
-| `labs/lab-4-starter/` | Lab 4 (and Lab 5 if your Lab 4 isn't working) |
 | `assignments/assignment-1-starter/` | Assignment 1 |
+
+Assignment 1 is the last individual work this term. Labs 3, 4 and 5 and Assignment 2 were dropped, and that time goes into the project.
 
 Copy a starter folder somewhere outside this repository before you start, then create your own repository from the copy, as the handout explains.
