@@ -3,9 +3,8 @@
 import { useSavedEvents } from './SavedEventsProvider';
 import styles from './SaveButton.module.css';
 
-// The saved ids now live in SavedEventsProvider, not in the button.
-// They stay the same when you filter, change pages or reload.
 export default function SaveButton({ eventId }) {
+  // The saved ids live in SavedEventsProvider, so they stay the same when you filter, change pages or reload.
   const savedEvents = useSavedEvents();
   const saved = savedEvents.isSaved(eventId);
 

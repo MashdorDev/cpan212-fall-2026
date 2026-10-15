@@ -2,6 +2,8 @@
 
 The Week 6 Next.js app now reads and writes real data through the Express API from Week 5.
 
+This folder is the finished code. In class we work in [`../week07-nextjs-api-codealong`](../week07-nextjs-api-codealong), which has the same app with `TODO` steps to fill in.
+
 | Folder | What it is |
 |---|---|
 | `api/` | The Express API (port 4000). Same code as Week 5, including the EJS admin pages. |
