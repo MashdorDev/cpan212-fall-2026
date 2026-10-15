@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 510" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#222"/></marker>
+  </defs>
+  <rect width="960" height="510" fill="#ffffff"/>
+  <text x="480" y="34" text-anchor="middle" font-size="24" font-weight="700" fill="#222">Step 4: what happens when you press Create event</text>
+
+  <rect x="30" y="70" width="250" height="90" rx="10" fill="#f1f1f1" stroke="#555" stroke-width="2"/>
+  <text x="155" y="108" text-anchor="middle" font-size="20" font-weight="600" fill="#222">handleSubmit(event)</text>
+  <text x="155" y="138" text-anchor="middle" font-size="17" fill="#333" font-family="Consolas, monospace">event.preventDefault()</text>
+
+  <rect x="355" y="70" width="250" height="90" rx="10" fill="#f1f1f1" stroke="#555" stroke-width="2"/>
+  <text x="480" y="108" text-anchor="middle" font-size="20" font-weight="600" fill="#222">4a. Read the form</text>
+  <text x="480" y="138" text-anchor="middle" font-size="17" fill="#333" font-family="Consolas, monospace">FormData → newEvent</text>
+
+  <rect x="680" y="70" width="250" height="90" rx="10" fill="#e3edf9" stroke="#1e5aa8" stroke-width="2"/>
+  <text x="805" y="108" text-anchor="middle" font-size="20" font-weight="600" fill="#1e5aa8">4b. Send it</text>
+  <text x="805" y="138" text-anchor="middle" font-size="17" fill="#1e5aa8" font-family="Consolas, monospace">POST /api/events</text>
+
+  <g stroke="#222" stroke-width="2.5" fill="none" marker-end="url(#a)">
+    <line x1="282" y1="115" x2="351" y2="115"/>
+    <line x1="607" y1="115" x2="676" y2="115"/>
+    <line x1="805" y1="162" x2="805" y2="206"/>
+  </g>
+
+  <polygon points="805,210 905,270 805,330 705,270" fill="#fff8e1" stroke="#b7860b" stroke-width="2"/>
+  <text x="805" y="278" text-anchor="middle" font-size="21" font-weight="600" fill="#6d5000" font-family="Consolas, monospace">res.ok?</text>
+
+  <g stroke="#222" stroke-width="2.5" fill="none" marker-end="url(#a)">
+    <polyline points="705,270 480,270 480,376"/>
+    <line x1="805" y1="332" x2="805" y2="376"/>
+  </g>
+  <text x="590" y="258" text-anchor="middle" font-size="19" fill="#c62828" font-weight="600">no: 400</text>
+  <text x="818" y="360" font-size="19" fill="#2f7d32" font-weight="600">yes: 201</text>
+
+  <rect x="330" y="380" width="300" height="100" rx="10" fill="#fdecea" stroke="#c62828" stroke-width="2"/>
+  <text x="480" y="414" text-anchor="middle" font-size="18" fill="#c62828" font-family="Consolas, monospace">setErrors(details)</text>
+  <text x="480" y="440" text-anchor="middle" font-size="18" fill="#c62828" font-family="Consolas, monospace">setMessage(message)</text>
+  <text x="480" y="466" text-anchor="middle" font-size="17" fill="#333">red text under each field</text>
+
+  <rect x="680" y="380" width="250" height="100" rx="10" fill="#e5f3e6" stroke="#2f7d32" stroke-width="2"/>
+  <text x="805" y="420" text-anchor="middle" font-size="17" fill="#2f7d32" font-family="Consolas, monospace">router.push(</text>
+  <text x="805" y="444" text-anchor="middle" font-size="17" fill="#2f7d32" font-family="Consolas, monospace">'/events/' + id)</text>
+  <text x="805" y="468" text-anchor="middle" font-size="17" fill="#333">opens the new event</text>
+
+  <polyline points="720,162 720,190 155,190 155,376" fill="none" stroke="#555" stroke-width="2.5" stroke-dasharray="8 6" marker-end="url(#a)"/>
+  <text x="168" y="290" font-size="18" fill="#555">fetch fails</text>
+  <rect x="30" y="380" width="250" height="100" rx="10" fill="#f1f1f1" stroke="#555" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="155" y="414" text-anchor="middle" font-size="18" font-weight="600" fill="#222">catch (err)</text>
+  <text x="155" y="440" text-anchor="middle" font-size="17" fill="#333">API not running:</text>
+  <text x="155" y="464" text-anchor="middle" font-size="17" fill="#333">"Could not reach the API"</text>
+</svg>

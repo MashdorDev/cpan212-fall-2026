@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 440" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#222"/></marker>
+  </defs>
+  <rect width="960" height="440" fill="#ffffff"/>
+  <text x="480" y="34" text-anchor="middle" font-size="24" font-weight="700" fill="#222">Step 1: a Server Component loads the events</text>
+
+  <rect x="60" y="60" width="180" height="64" rx="10" fill="#f1f1f1" stroke="#555" stroke-width="2"/>
+  <text x="150" y="99" text-anchor="middle" font-size="22" font-weight="600" fill="#222">Browser</text>
+  <rect x="380" y="60" width="200" height="64" rx="10" fill="#e3edf9" stroke="#1e5aa8" stroke-width="2"/>
+  <text x="480" y="88" text-anchor="middle" font-size="22" font-weight="600" fill="#1e5aa8">Next.js</text>
+  <text x="480" y="112" text-anchor="middle" font-size="17" fill="#1e5aa8">port 3000</text>
+  <rect x="720" y="60" width="180" height="64" rx="10" fill="#e5f3e6" stroke="#2f7d32" stroke-width="2"/>
+  <text x="810" y="88" text-anchor="middle" font-size="22" font-weight="600" fill="#2f7d32">Express API</text>
+  <text x="810" y="112" text-anchor="middle" font-size="17" fill="#2f7d32">port 4000</text>
+
+  <g stroke="#999" stroke-width="2" stroke-dasharray="6 6"><line x1="150" y1="124" x2="150" y2="390"/><line x1="480" y1="124" x2="480" y2="390"/><line x1="810" y1="124" x2="810" y2="390"/></g>
+
+  <g stroke="#222" stroke-width="2.5" fill="none" marker-end="url(#a)">
+    <line x1="152" y1="170" x2="476" y2="170"/>
+    <line x1="482" y1="230" x2="806" y2="230"/>
+    <line x1="808" y1="290" x2="484" y2="290"/>
+    <line x1="478" y1="350" x2="154" y2="350"/>
+  </g>
+  <g font-size="19" fill="#222">
+    <text x="314" y="160" text-anchor="middle"><tspan font-weight="700">1</tspan>  GET /events</text>
+    <text x="644" y="220" text-anchor="middle"><tspan font-weight="700">2</tspan>  fetch(.../api/events)</text>
+    <text x="644" y="280" text-anchor="middle"><tspan font-weight="700">3</tspan>  JSON  { data: [ event, event, ... ] }</text>
+    <text x="314" y="340" text-anchor="middle"><tspan font-weight="700">4</tspan>  finished HTML</text>
+  </g>
+  <text x="480" y="424" text-anchor="middle" font-size="19" fill="#555">getEvents() runs on the Next.js server. The browser never talks to port 4000.</text>
+</svg>
