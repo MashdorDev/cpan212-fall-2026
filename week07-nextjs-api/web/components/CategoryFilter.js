@@ -1,21 +1,27 @@
 'use client';
 
-import { useState } from 'react';
 import EventCard from './EventCard';
-import { CATEGORIES } from '@/lib/categories';
 import styles from './CategoryFilter.module.css';
+import { useState } from 'react';
+import { CATEGORIES } from '@/lib/categories';
 
-// A Client Component: it keeps state and reacts to clicks, so it runs in the browser.
-// The server page loads the events once and passes them in; filtering happens here without a new request.
+// The page loads the events on the server and passes them in as a prop.
 export default function CategoryFilter({ events }) {
   const [category, setCategory] = useState('all');
 
-  const visibleEvents = category === 'all' ? events : events.filter((event) => event.category === category);
+  // Work out which events to show from the events and the chosen category.
+  let visibleEvents = events;
+  if (category !== 'all') {
+    visibleEvents = events.filter((event) => event.category === category);
+  }
+
+  // One button for "all", then one per category.
+  const options = ['all'].concat(CATEGORIES);
 
   return (
     <section>
       <div className={styles.options} role="group" aria-label="Filter by category">
-        {['all', ...CATEGORIES].map((option) => (
+        {options.map((option) => (
           <button
             key={option}
             type="button"
@@ -32,18 +38,14 @@ export default function CategoryFilter({ events }) {
         Showing {visibleEvents.length} of {events.length} events
       </p>
 
-      {visibleEvents.length === 0 ? (
-        <p>No events in this category yet.</p>
-      ) : (
-        <ul className={styles.grid}>
-          {visibleEvents.map((event) => (
-            // key tells React which card is which when the list changes.
-            <li key={event.id}>
-              <EventCard event={event} />
-            </li>
-          ))}
-        </ul>
-      )}
+      <ul className={styles.grid}>
+        {visibleEvents.map((event) => (
+          // key tells React which card is which when the list changes.
+          <li key={event.id}>
+            <EventCard event={event} />
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

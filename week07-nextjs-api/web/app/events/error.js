@@ -10,11 +10,15 @@ export default function EventsError({ error, retry }) {
     console.error(error);
   }, [error]);
 
+  function handleClick() {
+    retry();
+  }
+
   return (
     <section role="alert">
       <h1>Something went wrong</h1>
       <p>The events could not be loaded. Check that the API is running, then try again.</p>
-      <button type="button" onClick={() => retry()}>
+      <button type="button" onClick={handleClick}>
         Try again
       </button>
     </section>
