@@ -1,34 +1,35 @@
-// Server Components call the Express API directly, server to server.
-// Code in the browser uses /api/... instead, which next.config.mjs forwards to the same API.
-const API_ORIGIN = process.env.API_ORIGIN ?? 'http://localhost:4000';
-
-async function fetchFromApi(path) {
-  return fetch(`${API_ORIGIN}${path}`, {
-    // Ask the API on every request, because events change. This also tells Next.js not to
-    // fetch at build time, when the API might not be running.
-    cache: 'no-store',
-    signal: AbortSignal.timeout(5000),
-  });
+// Where the Express API runs. The value comes from web/.env.
+let API_ORIGIN = process.env.API_ORIGIN;
+if (!API_ORIGIN) {
+  API_ORIGIN = 'http://localhost:4000';
 }
 
+// Loads every event from the API. Only Server Components call this, so it runs on the Next.js server.
 export async function getEvents() {
-  const res = await fetchFromApi('/api/events');
+  // cache: 'no-store' asks the API again on every visit, because events change.
+  const res = await fetch(API_ORIGIN + '/api/events', { cache: 'no-store' });
+
+  // fetch does not throw for a 404 or a 500. Check res.ok to know if it worked.
   if (!res.ok) {
-    throw new Error(`The API answered ${res.status} when loading events`);
+    throw new Error('The API answered ' + res.status + ' when loading events');
   }
+
   const body = await res.json();
   return body.data;
 }
 
-// Returns null when the API says the event doesn't exist, so the page can call notFound().
+// Loads one event. Returns null when the API says it does not exist, so the page can show the 404 page.
 export async function getEventById(id) {
-  const res = await fetchFromApi(`/api/events/${encodeURIComponent(id)}`);
+  const res = await fetch(API_ORIGIN + '/api/events/' + id, { cache: 'no-store' });
+
   if (res.status === 404) {
     return null;
   }
+
   if (!res.ok) {
-    throw new Error(`The API answered ${res.status} when loading event ${id}`);
+    throw new Error('The API answered ' + res.status + ' when loading event ' + id);
   }
+
   const body = await res.json();
   return body.data;
 }

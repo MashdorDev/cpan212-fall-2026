@@ -3,14 +3,24 @@
 import { useSavedEvents } from './SavedEventsProvider';
 import styles from './SaveButton.module.css';
 
-// The saved state now lives in SavedEventsProvider, so it survives filtering, page changes and reloads.
 export default function SaveButton({ eventId }) {
-  const { isSaved, toggleSaved } = useSavedEvents();
-  const saved = isSaved(eventId);
+  // The saved ids live in SavedEventsProvider, so they stay the same when you filter, change pages or reload.
+  const savedEvents = useSavedEvents();
+  const saved = savedEvents.isSaved(eventId);
+
+  // React calls this when the button is clicked.
+  function handleClick() {
+    savedEvents.toggleSaved(eventId);
+  }
+
+  let label = 'Save';
+  if (saved) {
+    label = 'Saved';
+  }
 
   return (
-    <button type="button" className={styles.button} aria-pressed={saved} onClick={() => toggleSaved(eventId)}>
-      {saved ? 'Saved' : 'Save'}
+    <button type="button" className={styles.button} aria-pressed={saved} onClick={handleClick}>
+      {label}
     </button>
   );
 }

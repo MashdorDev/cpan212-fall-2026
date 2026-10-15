@@ -12,7 +12,7 @@ npm run dev
 
 | File | Change |
 |---|---|
-| `lib/events.js` | `getEvents()` and `getEventById()` call the API with `fetch`, check `res.ok`, and time out after 5 seconds. The pages that call them did not change. |
+| `lib/events.js` | `getEvents()` and `getEventById()` call the API with `fetch` and check `res.ok`. The pages that call them did not change. |
 | `next.config.mjs` | Rewrites `/api/:path*` to `${API_ORIGIN}/api/:path*` |
 | `app/events/new/page.js` | New. A Client Component form that POSTs JSON to `/api/events`, shows the API's validation messages next to each field, and goes to the new event's page on success. |
 | `components/SavedEventsProvider.js` | New. React Context that holds saved event ids in state and stores them in `localStorage`. |

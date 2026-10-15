@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 500" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#222"/></marker>
+    <marker id="r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#c62828"/></marker>
+  </defs>
+  <rect width="960" height="500" fill="#ffffff"/>
+  <text x="480" y="34" text-anchor="middle" font-size="24" font-weight="700" fill="#222">Step 3: the rewrite passes /api/... on to the API</text>
+
+  <rect x="60" y="60" width="180" height="64" rx="10" fill="#f1f1f1" stroke="#555" stroke-width="2"/>
+  <text x="150" y="99" text-anchor="middle" font-size="22" font-weight="600" fill="#222">Browser</text>
+  <rect x="380" y="60" width="200" height="64" rx="10" fill="#e3edf9" stroke="#1e5aa8" stroke-width="2"/>
+  <text x="480" y="88" text-anchor="middle" font-size="22" font-weight="600" fill="#1e5aa8">Next.js</text>
+  <text x="480" y="112" text-anchor="middle" font-size="17" fill="#1e5aa8">port 3000</text>
+  <rect x="720" y="60" width="180" height="64" rx="10" fill="#e5f3e6" stroke="#2f7d32" stroke-width="2"/>
+  <text x="810" y="88" text-anchor="middle" font-size="22" font-weight="600" fill="#2f7d32">Express API</text>
+  <text x="810" y="112" text-anchor="middle" font-size="17" fill="#2f7d32">port 4000</text>
+
+  <g stroke="#999" stroke-width="2" stroke-dasharray="6 6"><line x1="150" y1="124" x2="150" y2="450"/><line x1="480" y1="124" x2="480" y2="450"/><line x1="810" y1="124" x2="810" y2="450"/></g>
+
+  <line x1="152" y1="180" x2="806" y2="180" stroke="#c62828" stroke-width="2.5" stroke-dasharray="10 6" marker-end="url(#r)"/>
+  <g stroke="#c62828" stroke-width="4"><line x1="632" y1="167" x2="658" y2="193"/><line x1="658" y1="167" x2="632" y2="193"/></g>
+  <rect x="160" y="144" width="640" height="28" fill="#ffffff"/>
+  <text x="480" y="164" text-anchor="middle" font-size="19" fill="#c62828">fetch('http://localhost:4000/api/events')  blocked: different port (CORS)</text>
+
+  <g stroke="#222" stroke-width="2.5" fill="none" marker-end="url(#a)">
+    <line x1="152" y1="250" x2="476" y2="250"/>
+    <line x1="482" y1="310" x2="806" y2="310"/>
+    <line x1="808" y1="370" x2="484" y2="370"/>
+    <line x1="478" y1="430" x2="154" y2="430"/>
+  </g>
+  <g font-size="19" fill="#222">
+    <text x="314" y="240" text-anchor="middle"><tspan font-weight="700">1</tspan>  fetch('/api/events')</text>
+    <text x="644" y="300" text-anchor="middle"><tspan font-weight="700">2</tspan>  to localhost:4000/api/events</text>
+    <text x="644" y="360" text-anchor="middle"><tspan font-weight="700">3</tspan>  JSON</text>
+    <text x="314" y="420" text-anchor="middle"><tspan font-weight="700">4</tspan>  the same JSON</text>
+  </g>
+  <text x="480" y="486" text-anchor="middle" font-size="19" fill="#555">To the browser it's all port 3000, so there's nothing to block.</text>
+</svg>
