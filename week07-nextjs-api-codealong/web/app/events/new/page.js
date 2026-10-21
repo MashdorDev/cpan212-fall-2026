@@ -20,9 +20,55 @@ export default function NewEventPage() {
     setErrors({});
     setMessage('');
 
-    // TODO (you): STEP 4a - replace this line with: read the form and build newEvent.
+    // TODO STEP 4a: read the form.
+    // Why: we need the values as one object to send to the API. The date field is local time,
+    // and the API wants UTC, so toISOString() converts it.
+    // Delete these TODO lines and type:
+    //
+    //   const form = new FormData(event.currentTarget);
+    //
+    //   let startsAt = '';
+    //   if (form.get('startsAt')) {
+    //     startsAt = new Date(form.get('startsAt')).toISOString();
+    //   }
+    //
+    //   const newEvent = {
+    //     title: form.get('title'),
+    //     description: form.get('description'),
+    //     category: form.get('category'),
+    //     location: form.get('location'),
+    //     startsAt: startsAt,
+    //     capacity: Number(form.get('capacity')),
+    //   };
 
-    // TODO (you): STEP 4b - replace this line with: send newEvent to the API, then go to the new event or show the errors.
+    // TODO STEP 4b: send it to the API.
+    // Why: a 201 means it was saved, so go to the new event's page. A 400 means the API rejected it,
+    // so show its messages next to the fields. /api/events goes through the rewrite from step 3.
+    // Delete these TODO lines and type:
+    //
+    //   try {
+    //     const res = await fetch('/api/events', {
+    //       method: 'POST',
+    //       headers: { 'Content-Type': 'application/json' },
+    //       body: JSON.stringify(newEvent),
+    //     });
+    //     const body = await res.json();
+    //
+    //     if (!res.ok) {
+    //       if (body.error.details) {
+    //         setErrors(body.error.details);
+    //       }
+    //       setMessage(body.error.message);
+    //       return;
+    //     }
+    //
+    //     router.push('/events/' + body.data.id);
+    //   } catch (err) {
+    //     setMessage('Could not reach the events API. Check that it is running.');
+    //   }
+    //
+    // Check: open http://localhost:3000/events/new and press Create event with the form empty.
+    // You see red messages under the fields. Fill it in and press it again: you land on the new event.
   }
 
   return (
