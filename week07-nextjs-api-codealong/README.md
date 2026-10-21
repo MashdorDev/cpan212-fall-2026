@@ -1,13 +1,10 @@
 # Week 7 codealong: Next.js with the Express API
 
-**Open this folder in class.** It has the Week 7 app with the parts we write together taken out
-and replaced by `// TODO (you): STEP N` comments. Everything else is done: the Express API in
-`api/`, the pages, the CSS, the saved-events Context and the `/saved` page.
+Tonight the Next.js app stops using fake data and talks to the real Express API. Open this folder in class. Everything is already built except 5 small steps, marked `TODO STEP` in the code. Each TODO tells you what to type, why, and what you should see after.
 
-The finished version is in [`../week07-nextjs-api`](../week07-nextjs-api). Open it when a step has
-you stuck, and to check your work at the end. Try the step first.
+Stuck on a step? Open the same file in [`../week07-nextjs-api`](../week07-nextjs-api). That's the finished version.
 
-## Set up once (two terminals)
+## Start (two terminals)
 
 Terminal 1, the API:
 
@@ -27,29 +24,14 @@ cp .env.example .env
 npm run dev
 ```
 
-Open http://localhost:3000/events. It says **Showing 0 of 0 events**. That's the starting line:
-the app does not talk to the API yet.
+Open http://localhost:3000/events. It says **Showing 0 of 0 events**. That's normal: the app doesn't talk to the API yet.
 
-## Steps
+## The steps
 
-| Step | What you build | File |
-|---|---|---|
-| 1 | Load the events from the API | `web/lib/events.js` |
-| 2 | Load one event, and a 404 for unknown ids | `web/lib/events.js` |
-| 3 | The rewrite: `/api/...` on port 3000 goes to the API on port 4000 | `web/next.config.mjs` |
-| 4 | The create form sends the new event to the API | `web/app/events/new/page.js` |
-| 5 | Save buttons share one list through Context | `web/components/SaveButton.js` |
+- [ ] **Step 1**, `web/lib/events.js`: load the events from the API. You should see "Showing 8 of 8 events".
+- [ ] **Step 2**, `web/lib/events.js`: load one event. Clicking an event opens its page, and an unknown id shows the 404 page.
+- [ ] **Step 3**, `web/next.config.mjs`: the rewrite, so `/api/...` on port 3000 goes to the API on port 4000. Restart `npm run dev`, then http://localhost:3000/api/events shows JSON.
+- [ ] **Step 4**, `web/app/events/new/page.js`: the create form sends the new event to the API. Empty form: red messages. Filled form: you land on the new event.
+- [ ] **Step 5**, `web/components/SaveButton.js`: Save buttons share one list. Saved events show up on http://localhost:3000/saved and stay after a reload.
 
-The lesson page has the code for every step, the check to run after it and the answer you should
-see.
-
-## Check your work at the end
-
-From the folder that holds both projects (in Git Bash on Windows, or any macOS or Linux terminal):
-
-```bash
-diff -r --strip-trailing-cr -x node_modules -x .next -x .env week07-nextjs-api-codealong/web week07-nextjs-api/web
-```
-
-No output means your code matches, line for line. `--strip-trailing-cr` stops Windows line
-endings from making every line look different. Differences in blank lines are fine.
+Do them in order. Step 4 needs step 3.
