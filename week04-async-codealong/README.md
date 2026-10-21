@@ -123,10 +123,10 @@ Errors always look like `{ "error": { "message": "...", "details": ... } }`.
 
 Delete the comment block at the top of `api/src/services/holidays.service.js`, the one explaining how
 the codealong works (the one starting "This is the codealong file"). The finished file does not have
-it. Then compare your three files with the finished ones from the `repo` folder:
+it. Then compare your three files with the finished ones in `week04-async`:
 
 ```bash
-diff -r week04-async-codealong/api/src week04-async/api/src
+diff -r --strip-trailing-cr week04-async-codealong/api/src week04-async/api/src
 ```
 
 No output means your code and mine are the same, line for line. If `diff` prints something, it shows
