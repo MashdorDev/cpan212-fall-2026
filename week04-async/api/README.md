@@ -16,7 +16,7 @@ npm run dev
 
 1. Look in an in-memory `Map` for that year's holidays. If they are there and less than 12 hours old, use them and log `Holiday cache hit`.
 2. Otherwise call `https://date.nager.at/api/v3/PublicHolidays/{year}/CA` with `AbortSignal.timeout(5000)`, check `res.ok`, and store the result with an expiry time.
-3. If the call times out, can't connect, or gets a non-2xx answer, throw an `HttpError` with status 502 (Bad Gateway). The error handler sends it as JSON.
+3. If the call times out, throw an `HttpError` with status 504 (Gateway Timeout). If it can't connect or gets a non-2xx answer, throw one with status 502 (Bad Gateway). The error handler sends it as JSON.
 
 `src/controllers/holidays.controller.js` finds the event, works out its date in Toronto time, and compares it with the holiday list. Try it twice in a row: the first call takes a few hundred milliseconds, the second takes about 1 ms and the terminal shows the cache hit.
 
@@ -45,7 +45,7 @@ Example response:
 | POST | `/api/events` | 201 `{ "data": event }` | 400 |
 | PATCH | `/api/events/:id` | 200 `{ "data": event }` | 400, 404 |
 | DELETE | `/api/events/:id` | 204, empty body | 404 |
-| GET | `/api/events/:id/holiday-check` | 200 `{ "data": { ... } }` | 404, 502 holiday service failed |
+| GET | `/api/events/:id/holiday-check` | 200 `{ "data": { ... } }` | 404, 502 holiday service failed, 504 holiday service too slow |
 
 ## Environment variables
 
