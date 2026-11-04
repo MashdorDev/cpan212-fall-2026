@@ -28,7 +28,7 @@ export function getEvent(req, res) {
 
 export function createEvent(req, res) {
   const event = insertEvent(req.body);
-  res.json({ data: event });
+  res.location(`/api/events/${event.id}`).status(201).json({ data: event });
 }
 
 export function updateEvent(req, res) {

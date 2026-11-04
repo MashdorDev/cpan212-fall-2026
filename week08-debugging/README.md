@@ -1,8 +1,10 @@
 # Week 8: Debugging a full-stack app
 
-This is the Week 7 Campus Events app (Express API plus Next.js) with **several bugs hidden in it**. We find and fix them together in class, using the browser's devtools (Console and Network tabs), the terminal output of both servers, `curl`, and `npm run build`.
+This is the Week 7 Campus Events app (Express API plus Next.js) with **5 bugs hidden in it**. We find and fix them together in class with the tools you already have: the two terminals, the browser's Network tab, `console.log` and `curl`.
 
-The code is not marked in any way. If something looks wrong, it may well be.
+The bugs are not marked. The lesson page walks through them one at a time.
+
+The fixed code is the same as [`../week07-nextjs-api`](../week07-nextjs-api) (only the port is different). Open the same file there if you get stuck.
 
 ## Run it (two terminals)
 
@@ -26,7 +28,7 @@ cp .env.example .env
 npm run dev
 ```
 
-Open http://localhost:3000. The API runs on http://localhost:4100.
+Open http://localhost:3000/events. The list works. Most other things don't, and that's the point.
 
 ## Environment variables
 
@@ -38,9 +40,9 @@ Open http://localhost:3000. The API runs on http://localhost:4100.
 
 ## Things to try
 
-- Browse the events list, open an event, save a few events and open the saved page.
-- Create an event with valid data, then with invalid data.
+- Open an event from the list.
+- Save a few events and open the Saved page.
+- Create an event with valid data, then with the form empty.
 - Send `curl` requests straight to the API on port 4100, to tell an API bug from a web app bug.
-- Think about what happens when this code runs on a Linux computer (a Render server, GitHub Codespaces, WSL) instead of your laptop.
 
-For each problem you find, write down what you saw, where you looked, what the cause was, and how you fixed it.
+For each bug, write down what you saw, where you looked, what the cause was, and how you fixed it.
