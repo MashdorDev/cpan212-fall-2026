@@ -7,12 +7,17 @@ import styles from './page.module.css';
 
 // The folder name [id] makes this a dynamic route: /events/abc gives params.id === 'abc'.
 export default async function EventPage({ params }) {
-  const { id } = params;
-  const event = await getEventById(id);
+  const event = await getEventById(params.id);
 
   if (!event) {
     // Stops rendering this page and shows app/not-found.js instead.
     notFound();
+  }
+
+  // Not every event has a description. Only show the paragraph when there is one.
+  let description = null;
+  if (event.description) {
+    description = <p className={styles.description}>{event.description}</p>;
   }
 
   return (
@@ -32,7 +37,7 @@ export default async function EventPage({ params }) {
         <dt>Capacity</dt>
         <dd>{event.capacity} people</dd>
       </dl>
-      {event.description && <p className={styles.description}>{event.description}</p>}
+      {description}
       <SaveButton eventId={event.id} />
     </article>
   );

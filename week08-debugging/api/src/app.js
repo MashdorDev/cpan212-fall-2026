@@ -15,6 +15,7 @@ app.set('views', path.join(import.meta.dirname, 'views'));
 // Everything in app.locals is available inside every template.
 app.locals.formatEventDate = formatEventDate;
 
+// Order matters: Express runs middleware and routes top to bottom.
 app.use(requestLogger);
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(import.meta.dirname, '..', 'public')));
