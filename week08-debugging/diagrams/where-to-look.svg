@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#222"/></marker>
+  </defs>
+  <rect width="960" height="560" fill="#ffffff"/>
+  <text x="480" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#222">Where is the bug? 3 places, and where to look in each</text>
+
+  <!-- the three places -->
+  <rect x="40" y="62" width="240" height="70" rx="10" fill="#f1f1f1" stroke="#555" stroke-width="2"/>
+  <text x="160" y="92" text-anchor="middle" font-size="22" font-weight="600" fill="#222">Browser</text>
+  <text x="160" y="118" text-anchor="middle" font-size="16" fill="#444">Client Components, forms</text>
+
+  <rect x="360" y="62" width="240" height="70" rx="10" fill="#e3edf9" stroke="#1e5aa8" stroke-width="2"/>
+  <text x="480" y="92" text-anchor="middle" font-size="22" font-weight="600" fill="#1e5aa8">Next.js, port 3000</text>
+  <text x="480" y="118" text-anchor="middle" font-size="16" fill="#1e5aa8">Server Components, rewrite</text>
+
+  <rect x="680" y="62" width="240" height="70" rx="10" fill="#e5f3e6" stroke="#2f7d32" stroke-width="2"/>
+  <text x="800" y="92" text-anchor="middle" font-size="22" font-weight="600" fill="#2f7d32">Express API, port 4100</text>
+  <text x="800" y="118" text-anchor="middle" font-size="16" fill="#2f7d32">routes, middleware</text>
+
+  <line x1="282" y1="97" x2="356" y2="97" stroke="#222" stroke-width="2.5" marker-end="url(#a)"/>
+  <line x1="602" y1="97" x2="676" y2="97" stroke="#222" stroke-width="2.5" marker-end="url(#a)"/>
+
+  <!-- look here -->
+  <text x="40" y="172" font-size="17" font-weight="700" fill="#222">LOOK HERE</text>
+  <rect x="40" y="184" width="240" height="150" rx="10" fill="#ffffff" stroke="#555" stroke-width="2"/>
+  <text x="160" y="214" text-anchor="middle" font-size="19" font-weight="700" fill="#222">Network tab (F12)</text>
+  <text x="56" y="246" font-size="16" fill="#333">Click the request:</text>
+  <text x="56" y="272" font-size="16" fill="#333">its status (200, 400, 500)</text>
+  <text x="56" y="298" font-size="16" fill="#333">and its Response</text>
+  <text x="56" y="322" font-size="14" fill="#666">Also: the Console tab</text>
+
+  <rect x="360" y="184" width="240" height="150" rx="10" fill="#ffffff" stroke="#1e5aa8" stroke-width="2"/>
+  <text x="480" y="214" text-anchor="middle" font-size="19" font-weight="700" fill="#1e5aa8">Next.js terminal</text>
+  <text x="376" y="246" font-size="16" fill="#333">The terminal running</text>
+  <text x="376" y="272" font-size="16" fill="#333">npm run dev in web/</text>
+  <text x="376" y="298" font-size="16" fill="#333">prints its errors</text>
+  <text x="376" y="322" font-size="14" fill="#666">Read the first line of an error</text>
+
+  <rect x="680" y="184" width="240" height="150" rx="10" fill="#ffffff" stroke="#2f7d32" stroke-width="2"/>
+  <text x="800" y="214" text-anchor="middle" font-size="19" font-weight="700" fill="#2f7d32">API terminal</text>
+  <text x="696" y="246" font-size="16" fill="#333">One line per request:</text>
+  <text x="696" y="272" font-size="15" fill="#333" font-family="Consolas, Menlo, monospace">GET /api/events/x 404</text>
+  <text x="696" y="298" font-size="16" fill="#333">Did the request arrive?</text>
+  <text x="696" y="322" font-size="14" fill="#666">With what URL and status?</text>
+
+  <!-- the curl split -->
+  <rect x="40" y="370" width="880" height="160" rx="12" fill="#fff8e1" stroke="#b26a00" stroke-width="2"/>
+  <text x="480" y="402" text-anchor="middle" font-size="20" font-weight="700" fill="#7a4800">Not sure which side? Ask the API directly:</text>
+  <text x="480" y="438" text-anchor="middle" font-size="18" fill="#222" font-family="Consolas, Menlo, monospace">curl http://localhost:4100/api/events</text>
+  <line x1="480" y1="452" x2="480" y2="516" stroke="#b26a00" stroke-width="2" stroke-dasharray="5 5"/>
+  <text x="250" y="478" text-anchor="middle" font-size="18" font-weight="700" fill="#2f7d32">Right answer</text>
+  <text x="250" y="506" text-anchor="middle" font-size="17" fill="#222">The API is fine. The bug is in Next.js or the browser.</text>
+  <text x="710" y="478" text-anchor="middle" font-size="18" font-weight="700" fill="#c62828">Wrong answer</text>
+  <text x="710" y="506" text-anchor="middle" font-size="17" fill="#222">The bug is in the API. Look at api/.</text>
+</svg>
