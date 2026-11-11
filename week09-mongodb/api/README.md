@@ -1,50 +1,36 @@
 # Week 9: Campus Events API with MongoDB
 
-The Week 7 API with the events stored in MongoDB through Mongoose. See the week README (`../README.md`) for setup and the full list of changes.
+The Week 7 API, with the events stored in MongoDB through Mongoose instead of an array. The routes and the JSON shapes are the same, so the Next.js app in `../web` didn't change.
 
 ## Run it
 
 ```bash
 npm install
 cp .env.example .env
-# set MONGODB_URI in .env
+# edit .env and set MONGODB_URI
 npm run seed
 npm run dev
 ```
 
-## Scripts
+`npm run seed` empties the events collection and inserts the eight sample events. Run it any time you want to start over.
 
-| Command | What it does |
-|---|---|
-| `npm run dev` | Starts the API and restarts it when you save a file |
-| `npm start` | Starts the API once |
-| `npm run seed` | Deletes every event and inserts the eight sample events |
-| `node --env-file=.env examples/native-driver.js` | Inserts and finds events with the `mongodb` driver instead of Mongoose |
+## Try it with curl
 
-## Routes
+Run `curl http://localhost:4000/api/events` and copy one `"id"` into the commands below in place of `ID`.
 
-JSON API:
+```bash
+curl -X PATCH http://localhost:4000/api/events/ID -H "Content-Type: application/json" -d '{"location":"Room 2"}'
+curl -X PATCH http://localhost:4000/api/events/ID -H "Content-Type: application/json" -d '{"capacity":-5}'
+curl -X DELETE -i http://localhost:4000/api/events/ID
+curl -i http://localhost:4000/api/events/abc
+```
 
-| Method | Path | Success | Errors |
-|---|---|---|---|
-| GET | `/api/health` | 200 `{ "status": "ok" }` | |
-| GET | `/api/events?category=&q=` | 200 `{ "data": [...] }` | 400 bad category, `q` sent twice |
-| GET | `/api/events/:id` | 200 `{ "data": event }` | 404 |
-| POST | `/api/events` | 201 `{ "data": event }` and a `Location` header | 400 |
-| PATCH | `/api/events/:id` | 200 `{ "data": event }` | 400, 404 |
-| DELETE | `/api/events/:id` | 204 | 404 |
-| GET | `/api/events/:id/holiday-check` | 200 | 404, 502 holiday service failed, 504 holiday service timed out |
+You should see the new location, then a 400 with `"capacity":"Capacity must be from 1 to 1000"`, then `204 No Content`, then a 404.
 
-Admin pages (HTML): `GET /admin/events`, `GET /admin/events/new`, `POST /admin/events`, `POST /admin/events/:id/delete`, and uploaded images at `GET /uploads/<file>`.
+## Environment variables
 
-## Files to look at
-
-| File | What it shows |
-|---|---|
-| `src/db.js` | Connecting before the server starts, failing fast, `sanitizeFilter` |
-| `src/models/Event.js` | Schema rules and messages, `timestamps`, the `toJSON` transform |
-| `src/controllers/events.controller.js` | CRUD with the model, picking allowed fields, escaping search text |
-| `src/utils/find-by-id.js` | `mongoose.isValidObjectId()` and a 404 for missing documents |
-| `src/middleware/error-handler.js` | `ValidationError` and `CastError` to 400 |
-| `scripts/seed.js` | `deleteMany()`, `insertMany()` and `mongoose.disconnect()` |
-| `examples/native-driver.js` | `MongoClient`, `insertOne()`, `find().toArray()` |
+| Name | Example | Purpose |
+|---|---|---|
+| `PORT` | `4000` | Port the server listens on |
+| `MONGODB_URI` | `mongodb://127.0.0.1:27017/campus_events` | **Required.** Where the database is. The API and `npm run seed` stop with a message if it is missing. |
+| `HOLIDAY_API_BASE_URL` | `https://date.nager.at/api/v3` | Base URL of the holiday API |

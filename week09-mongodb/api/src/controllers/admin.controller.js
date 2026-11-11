@@ -1,8 +1,7 @@
 import { CATEGORIES, Event } from '../models/Event.js';
 import { torontoInputToIso } from '../utils/dates.js';
-import { findByIdOr404 } from '../utils/find-by-id.js';
+import { findEventOr404 } from '../utils/find-event.js';
 import { removeUpload } from '../utils/uploads.js';
-import { messagesByField } from '../utils/validation.js';
 
 const EMPTY_FORM = { title: '', description: '', category: '', location: '', startsAt: '', capacity: '' };
 
@@ -12,7 +11,7 @@ function renderNewEventForm(res, { values = EMPTY_FORM, errors = {}, status = 20
 
 export async function listEventsPage(req, res) {
   const events = await Event.find().sort({ startsAt: 1 });
-  res.render('events-index', { title: 'Events', events });
+  res.render('events-index', { title: 'Events', events: events });
 }
 
 export function newEventPage(req, res) {
@@ -24,8 +23,7 @@ export async function createEventFromForm(req, res) {
   const body = req.body ?? {};
   const imageUrl = req.file ? `/uploads/${req.file.filename}` : null;
 
-  // Form fields always arrive as strings. Mongoose converts "40" to a number and the Toronto time
-  // to a Date. An empty field becomes null, which the "required" rules then report.
+  // Form fields always arrive as strings. Mongoose turns "40" into the number 40.
   const event = new Event({
     title: body.title,
     description: body.description,
@@ -33,12 +31,18 @@ export async function createEventFromForm(req, res) {
     location: body.location,
     startsAt: torontoInputToIso(body.startsAt),
     capacity: body.capacity,
-    imageUrl,
+    imageUrl: imageUrl,
   });
 
-  // validate() checks the schema without saving. It rejects with a ValidationError, so turn that into a value (or null).
-  const validationError = await event.validate().then(() => null, (error) => error);
-  const errors = validationError ? messagesByField(validationError) : {};
+  // validate() checks the schema rules without saving, so we can show the form again with messages.
+  const errors = {};
+  try {
+    await event.validate();
+  } catch (err) {
+    for (const field in err.errors) {
+      errors[field] = err.errors[field].message;
+    }
+  }
   if (req.uploadError) {
     errors.image = req.uploadError;
   }
@@ -56,7 +60,7 @@ export async function createEventFromForm(req, res) {
 }
 
 export async function deleteEventFromForm(req, res) {
-  const event = await findByIdOr404(Event, req.params.id);
+  const event = await findEventOr404(req.params.id);
   await event.deleteOne();
   await removeUpload(event.imageUrl);
   res.redirect(303, '/admin/events');

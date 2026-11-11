@@ -2,51 +2,56 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 
+// The name the saved ids are stored under in localStorage.
 const STORAGE_KEY = 'campus-events:saved-ids';
 
+// A Context is a box of values that any component inside the provider can read.
 const SavedEventsContext = createContext(null);
 
-// Holds the saved event ids for the whole app. Any component inside the provider can read them
-// with useSavedEvents(), so a Save button and the /saved page always agree.
+// Holds the saved event ids for the whole app, so every Save button and the /saved page agree.
 export function SavedEventsProvider({ children }) {
   const [savedIds, setSavedIds] = useState([]);
 
-  // localStorage only exists in the browser. The server renders with an empty list,
-  // then this effect loads the stored ids once the page is running in the browser.
+  // localStorage only exists in the browser, so read it in an effect.
+  // The empty [] means: run once, after the page shows up in the browser.
   useEffect(() => {
-    try {
-      const stored = JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]');
-      if (Array.isArray(stored)) {
-        // The lint rule warns that setState in an effect causes a second render. Here that is the point:
-        // the first render has to match the server's HTML, and the second one shows the stored ids.
-        // eslint-disable-next-line react-hooks/set-state-in-effect
-        setSavedIds(stored);
-      }
-    } catch {
-      // The stored value was not valid JSON (edited by hand, or an old format). Start fresh.
-      localStorage.removeItem(STORAGE_KEY);
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      // The lint rule warns about setting state in an effect. Here we want the second render.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setSavedIds(JSON.parse(stored));
     }
   }, []);
 
-  function toggleSaved(eventId) {
-    const next = savedIds.includes(eventId) ? savedIds.filter((id) => id !== eventId) : [...savedIds, eventId];
-    setSavedIds(next);
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+  function isSaved(eventId) {
+    return savedIds.includes(eventId);
   }
 
+  function toggleSaved(eventId) {
+    let nextIds;
+    if (savedIds.includes(eventId)) {
+      // Already saved: take it out.
+      nextIds = savedIds.filter((id) => id !== eventId);
+    } else {
+      // Not saved yet: add it to the end.
+      nextIds = savedIds.concat(eventId);
+    }
+
+    setSavedIds(nextIds);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(nextIds));
+  }
+
+  // Everything the components inside can use.
   const value = {
-    savedIds,
-    isSaved: (eventId) => savedIds.includes(eventId),
-    toggleSaved,
+    savedIds: savedIds,
+    isSaved: isSaved,
+    toggleSaved: toggleSaved,
   };
 
   return <SavedEventsContext value={value}>{children}</SavedEventsContext>;
 }
 
+// Any component inside the provider calls this to get savedIds, isSaved and toggleSaved.
 export function useSavedEvents() {
-  const context = useContext(SavedEventsContext);
-  if (!context) {
-    throw new Error('useSavedEvents must be used inside <SavedEventsProvider>');
-  }
-  return context;
+  return useContext(SavedEventsContext);
 }

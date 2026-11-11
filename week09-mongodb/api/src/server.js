@@ -3,8 +3,7 @@ import { connectDb } from './db.js';
 
 const port = process.env.PORT ?? 4000;
 
-// Connect first. If the database is unreachable, connectDb() stops the process with a message,
-// so the API never starts accepting requests it can't answer.
+// Connect to the database before taking requests.
 await connectDb();
 
 app.listen(port, (error) => {
