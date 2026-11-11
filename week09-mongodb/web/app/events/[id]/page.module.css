@@ -28,14 +28,6 @@
   margin: 0;
 }
 
-.image {
-  display: block;
-  width: 100%;
-  max-width: 40rem;
-  margin: 0 0 1.5rem;
-  border-radius: 6px;
-}
-
 .description {
   max-width: 40rem;
 }

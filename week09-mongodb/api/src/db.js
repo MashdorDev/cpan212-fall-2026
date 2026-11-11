@@ -1,10 +1,10 @@
 import mongoose from 'mongoose';
 
-// A filter built from user input can contain query operators, for example { "$ne": null } sent in a
-// JSON body. With sanitizeFilter on, Mongoose treats those as plain values instead of operators.
+// Someone could send {"$ne": null} instead of a plain value, to match every document.
+// With sanitizeFilter on, Mongoose treats that as a plain value, not a query operator.
 mongoose.set('sanitizeFilter', true);
 
-// server.js and scripts/seed.js both call this before doing anything else.
+// Connects to the database in MONGODB_URI. server.js and scripts/seed.js call this first.
 export async function connectDb() {
   const uri = process.env.MONGODB_URI;
   if (!uri) {
@@ -13,13 +13,12 @@ export async function connectDb() {
   }
 
   try {
-    // By default Mongoose keeps trying for 30 seconds. 10 seconds is enough to tell that
-    // the database is down, the password is wrong or Atlas is blocking your IP address.
-    await mongoose.connect(uri, { serverSelectionTimeoutMS: 10_000 });
+    // Give up after 10 seconds instead of the default 30.
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 10000 });
   } catch (error) {
-    console.error(`Could not connect to MongoDB: ${error.message}`);
-    console.error('Check MONGODB_URI in .env, that the database is running, and (on Atlas) Network Access.');
+    console.error('Could not connect to MongoDB: ' + error.message);
     process.exit(1);
   }
-  console.log(`Connected to MongoDB, database "${mongoose.connection.name}"`);
+
+  console.log('Connected to MongoDB, database "' + mongoose.connection.name + '"');
 }

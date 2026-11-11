@@ -2,10 +2,10 @@ import mongoose from 'mongoose';
 import { connectDb } from '../src/db.js';
 import { Event } from '../src/models/Event.js';
 
-// The same eight events the API has used since Week 2, minus the fixed ids: MongoDB gives every
-// document a new ObjectId, so the ids change each time you run this script.
+// The same eight events the API has used since Week 2. MongoDB gives each one a new _id,
+// so the ids change every time you run this script.
 // Times are stored in UTC. 21:00Z on Oct 2 is 5:00 PM in Toronto.
-const seedEvents = [
+const sampleEvents = [
   {
     title: 'Fall hackathon kickoff',
     description:
@@ -86,11 +86,11 @@ const seedEvents = [
 
 await connectDb();
 
-// Start from a clean collection, so running the script twice doesn't give you 16 events.
-const { deletedCount } = await Event.deleteMany({});
-// insertMany() runs the schema validation too, so a typo in the data above fails loudly.
-const events = await Event.insertMany(seedEvents);
-console.log(`Removed ${deletedCount} events, inserted ${events.length}`);
+// Start from an empty collection, so running the script twice doesn't give you 16 events.
+const deleted = await Event.deleteMany({});
+// insertMany() checks the schema rules too, so a typo in the data above fails loudly.
+const inserted = await Event.insertMany(sampleEvents);
+console.log('Removed ' + deleted.deletedCount + ' events, inserted ' + inserted.length);
 
-// Without this the script never ends, because the open connection keeps Node running.
+// Close the connection, or the script never ends.
 await mongoose.disconnect();
