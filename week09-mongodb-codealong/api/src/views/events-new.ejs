@@ -1,0 +1,67 @@
+<%- include('partials/header', { title }) %>
+
+<h1>New event</h1>
+
+<% if (Object.keys(errors).length > 0) { %>
+  <p class="error-summary" role="alert">The event was not saved. Fix the fields marked below.</p>
+<% } %>
+
+<%# novalidate turns off the browser's own checks so you can see the server-side validation work.
+    Remove it and the browser stops most bad input before it is sent, but the server must still check. %>
+<form class="event-form" method="post" action="/admin/events" enctype="multipart/form-data" novalidate>
+  <div class="field">
+    <label for="title">Title</label>
+    <input id="title" name="title" value="<%= values.title %>" required minlength="3" maxlength="100" />
+    <% if (errors.title) { %><p class="field-error"><%= errors.title %></p><% } %>
+  </div>
+
+  <div class="field">
+    <label for="description">Description <span class="hint">(optional)</span></label>
+    <textarea id="description" name="description" rows="4" maxlength="2000"><%= values.description %></textarea>
+    <% if (errors.description) { %><p class="field-error"><%= errors.description %></p><% } %>
+  </div>
+
+  <div class="field">
+    <label for="category">Category</label>
+    <select id="category" name="category" required>
+      <option value="">Choose a category</option>
+      <% for (const category of categories) { %>
+        <option value="<%= category %>" <%= values.category === category ? 'selected' : '' %>><%= category %></option>
+      <% } %>
+    </select>
+    <% if (errors.category) { %><p class="field-error"><%= errors.category %></p><% } %>
+  </div>
+
+  <div class="field">
+    <label for="location">Location</label>
+    <input id="location" name="location" value="<%= values.location %>" required maxlength="200" />
+    <% if (errors.location) { %><p class="field-error"><%= errors.location %></p><% } %>
+  </div>
+
+  <div class="field">
+    <label for="startsAt">Starts <span class="hint">(Toronto time)</span></label>
+    <input id="startsAt" name="startsAt" type="datetime-local" value="<%= values.startsAt %>" required />
+    <% if (errors.startsAt) { %><p class="field-error">Pick a date and a start time.</p><% } %>
+  </div>
+
+  <div class="field">
+    <label for="capacity">Capacity</label>
+    <input id="capacity" name="capacity" type="number" min="1" max="1000" step="1" value="<%= values.capacity %>" required />
+    <% if (errors.capacity) { %><p class="field-error"><%= errors.capacity %></p><% } %>
+  </div>
+
+  <%# The file input is the last field on purpose. Multer reads fields in order, so if the image is
+      rejected part way through, every text field above has already been read and can be shown again. %>
+  <div class="field">
+    <label for="image">Image <span class="hint">(optional, JPEG, PNG or WebP, up to 2 MB)</span></label>
+    <input id="image" name="image" type="file" accept="image/jpeg,image/png,image/webp" />
+    <% if (errors.image) { %><p class="field-error"><%= errors.image %></p><% } %>
+    <% if (Object.keys(errors).length > 0) { %>
+      <p class="hint">Browsers can't refill a file field, so choose the image again before you resubmit.</p>
+    <% } %>
+  </div>
+
+  <button type="submit">Save event</button>
+</form>
+
+<%- include('partials/footer') %>
