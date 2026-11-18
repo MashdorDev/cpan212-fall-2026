@@ -4,7 +4,7 @@ import { checkHoliday } from '../controllers/holidays.controller.js';
 import { createRsvp, listRsvps } from '../controllers/rsvps.controller.js';
 
 // Paths here are relative to where the router is mounted (/api/events in app.js).
-// There is no validation middleware any more: the Event schema checks the fields.
+// No validation middleware: the Event schema checks the fields now.
 export const eventsRouter = Router();
 
 eventsRouter.get('/', listEvents);

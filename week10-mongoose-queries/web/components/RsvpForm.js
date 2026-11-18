@@ -4,72 +4,96 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './RsvpForm.module.css';
 
-// Posts { name, email } to /api/events/:id/rsvps through the rewrite and shows what the API answered:
-// 201 created, 400 with a message per field, 409 when the email is already registered or the event is full.
+// A Client Component: the form runs in the browser and sends { name, email } to the API.
+// It shows what the API answered: 201 you're in, 400 a message per field, 409 already registered or full.
 export default function RsvpForm({ eventId }) {
   const router = useRouter();
-  const [result, setResult] = useState(null);
+
+  // One message per field the API did not accept, for example { email: 'Email is required' }.
   const [errors, setErrors] = useState({});
-  const [submitting, setSubmitting] = useState(false);
+  // The message above the form, and whether it is good news.
+  const [message, setMessage] = useState('');
+  const [success, setSuccess] = useState(false);
+  // true while the request is on its way, so a double-click doesn't send the RSVP twice.
+  const [sending, setSending] = useState(false);
 
   async function handleSubmit(event) {
+    // Stop the browser from reloading the page. We send the data ourselves.
     event.preventDefault();
-    // Keep a reference to the form: after an await, React has already cleared event.currentTarget.
+    setSending(true);
+    setErrors({});
+    setMessage('');
+
+    // Keep the form element: we empty it after a successful RSVP.
     const formElement = event.currentTarget;
     const form = new FormData(formElement);
-    setSubmitting(true);
-    setErrors({});
-    setResult(null);
+
+    const rsvp = {
+      name: form.get('name'),
+      email: form.get('email'),
+    };
 
     try {
-      const res = await fetch(`/api/events/${eventId}/rsvps`, {
+      const res = await fetch('/api/events/' + eventId + '/rsvps', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: form.get('name'), email: form.get('email') }),
+        body: JSON.stringify(rsvp),
       });
       const body = await res.json();
 
-      if (res.ok) {
-        setResult({ ok: true, status: res.status, message: `You're on the list, ${body.data.name}.` });
-        formElement.reset();
-        // Runs the Server Component page again, so the "spots taken" count includes this RSVP.
-        router.refresh();
+      // 400, 404 or 409. Show the API's messages and stay on the form.
+      if (!res.ok) {
+        if (body.error.details) {
+          setErrors(body.error.details);
+        }
+        setSuccess(false);
+        setMessage(body.error.message + ' (HTTP ' + res.status + ')');
         return;
       }
-      setErrors(body.error?.details ?? {});
-      setResult({ ok: false, status: res.status, message: body.error?.message ?? 'Something went wrong' });
-    } catch {
-      setResult({ ok: false, status: null, message: 'Could not reach the events API. Check that it is running.' });
-    } finally {
-      setSubmitting(false);
+
+      // 201: saved.
+      setSuccess(true);
+      setMessage("You're on the list, " + body.data.name + '. (HTTP ' + res.status + ')');
+      formElement.reset();
+      // Runs the page again on the server, so "spots taken" counts this RSVP.
+      router.refresh();
+    } catch (err) {
+      // The API is not running, or it answered with something that is not JSON.
+      setSuccess(false);
+      setMessage('Could not reach the events API. Check that it is running.');
     }
+    setSending(false);
+  }
+
+  let messageClass = styles.failure;
+  if (success) {
+    messageClass = styles.success;
   }
 
   return (
     <section className={styles.rsvp}>
       <h2>RSVP</h2>
 
-      {result && (
-        <p className={result.ok ? styles.success : styles.failure} role={result.ok ? 'status' : 'alert'}>
-          {result.message}
-          {/* The status code is shown for class, so you can match what you see to the API's response. */}
-          {result.status && <span className={styles.code}> (HTTP {result.status})</span>}
+      {message && (
+        <p className={messageClass} role="status">
+          {message}
         </p>
       )}
 
+      {/* noValidate turns off the browser's own checks, so you can see the API's validation errors. */}
       <form className={styles.form} onSubmit={handleSubmit} noValidate>
         <div className={styles.field}>
           <label htmlFor="rsvp-name">Name</label>
-          <input id="rsvp-name" name="name" autoComplete="name" required maxLength={100} />
+          <input id="rsvp-name" name="name" autoComplete="name" />
           {errors.name && <p className={styles.error}>{errors.name}</p>}
         </div>
         <div className={styles.field}>
           <label htmlFor="rsvp-email">Email</label>
-          <input id="rsvp-email" name="email" type="email" autoComplete="email" required maxLength={254} />
+          <input id="rsvp-email" name="email" type="email" autoComplete="email" />
           {errors.email && <p className={styles.error}>{errors.email}</p>}
         </div>
-        <button className={styles.submit} type="submit" disabled={submitting}>
-          {submitting ? 'Sending...' : 'RSVP'}
+        <button className={styles.submit} type="submit" disabled={sending}>
+          RSVP
         </button>
       </form>
     </section>

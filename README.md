@@ -45,7 +45,8 @@ To try an API, open its `GET` routes in your browser and use `curl` for everythi
 | `week07-nextjs-api/` | The Next.js app connected to the Express API with rewrites, a create form and saved events in Context, plus a CORS example |
 | `week08-debugging/` | The Week 7 app with bugs to find and fix in class |
 | `week09-mongodb/` | The API on MongoDB with Mongoose: schema validation, a seed script, and the native driver for comparison |
-| `week10-mongoose-queries/` | Filters, search, sorting and pagination, indexes, RSVPs with `populate`, and a NoSQL injection demo |
+| `week10-mongoose-queries/` | Pages, sorting and a date filter, indexes, RSVPs with `populate`, and a NoSQL injection demo |
+| `week10-mongoose-queries-codealong/` | The same project with the queries, indexes and RSVPs left as small numbered steps to type in class |
 | `week11-auth/` | Accounts: hashed passwords, sessions stored in MongoDB, protected routes and pages, organizer-only edits, a JWT example |
 | `week12-security/` | Hardening: helmet and a CSP, rate limits, CORS allowlist, upload checks, a security checklist, local HTTPS notes |
 | `week13-deployment/` | Ready to deploy: health check, graceful shutdown, `render.yaml`, Vercel settings and step-by-step deploy notes |

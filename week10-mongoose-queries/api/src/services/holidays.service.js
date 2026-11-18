@@ -32,13 +32,13 @@ export async function getCanadianHolidays(year) {
   try {
     holidays = await fetchCanadianHolidays(year);
   } catch (error) {
+    // A timeout shows up here as error.name 'TimeoutError', a network failure as 'TypeError'.
     console.error(`Holiday lookup for ${year} failed: ${error.name}: ${error.message}`);
-    // AbortSignal.timeout rejects with error.name 'TimeoutError': Nager.Date took longer than 5 seconds.
-    // That is 504 Gateway Timeout. Anything else (no connection, a non-OK status, a body that isn't JSON)
-    // means there was no usable answer at all: 502 Bad Gateway.
     if (error.name === 'TimeoutError') {
+      // 504: we did reach for the upstream service, it just took too long to answer.
       throw new HttpError(504, 'The holiday service took too long to answer, try again later');
     }
+    // 502: the upstream service failed (no connection, error status or unreadable answer).
     throw new HttpError(502, 'The holiday service is not responding, try again later');
   }
 

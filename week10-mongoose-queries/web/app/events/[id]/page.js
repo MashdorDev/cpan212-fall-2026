@@ -9,12 +9,27 @@ import styles from './page.module.css';
 // The folder name [id] makes this a dynamic route: /events/abc gives params.id === 'abc'.
 export default async function EventPage({ params }) {
   // In Next.js 16 params is a promise, so await it before reading id.
-  const { id } = await params;
-  const event = await getEventById(id);
+  const routeParams = await params;
+  const event = await getEventById(routeParams.id);
 
   if (!event) {
     // Stops rendering this page and shows app/not-found.js instead.
     notFound();
+  }
+
+  // Not every event has a description. Only show the paragraph when there is one.
+  let description = null;
+  if (event.description) {
+    description = <p className={styles.description}>{event.description}</p>;
+  }
+
+  // The API counts the RSVPs (rsvpCount). Before it does, show the capacity only.
+  let spots = event.capacity + ' people';
+  if (event.rsvpCount !== undefined) {
+    spots = event.rsvpCount + ' of ' + event.capacity + ' taken';
+    if (event.rsvpCount >= event.capacity) {
+      spots = spots + ' (full)';
+    }
   }
 
   return (
@@ -32,16 +47,9 @@ export default async function EventPage({ params }) {
         <dt>Where</dt>
         <dd>{event.location}</dd>
         <dt>Spots</dt>
-        <dd>
-          {event.rsvpCount} of {event.capacity} taken{event.rsvpCount >= event.capacity && ' (full)'}
-        </dd>
+        <dd>{spots}</dd>
       </dl>
-      {event.imageUrl && (
-        // A plain <img> for the same reason as in EventCard: the image can come from any https address.
-        // eslint-disable-next-line @next/next/no-img-element
-        <img className={styles.image} src={event.imageUrl} alt="" />
-      )}
-      {event.description && <p className={styles.description}>{event.description}</p>}
+      {description}
       <SaveButton eventId={event.id} />
       <RsvpForm eventId={event.id} />
     </article>

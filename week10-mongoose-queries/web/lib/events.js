@@ -1,46 +1,52 @@
-// Server Components call the Express API directly, server to server.
-// Code in the browser uses /api/... instead, which next.config.mjs forwards to the same API.
-const API_ORIGIN = process.env.API_ORIGIN ?? 'http://localhost:4000';
-
-async function fetchFromApi(path) {
-  return fetch(`${API_ORIGIN}${path}`, {
-    // Ask the API on every request, because events change. This also tells Next.js not to
-    // fetch at build time, when the API might not be running.
-    cache: 'no-store',
-    signal: AbortSignal.timeout(5000),
-  });
+// Where the Express API runs. The value comes from web/.env.
+let API_ORIGIN = process.env.API_ORIGIN;
+if (!API_ORIGIN) {
+  API_ORIGIN = 'http://localhost:4000';
 }
 
-// Returns the API's whole list response: { data, page, limit, total, totalPages }.
-// Empty options are left out, so getEvents({ category: '' }) asks for every category.
-export async function getEvents({ category, sort, page, limit } = {}) {
+// Loads one page of events. options is { category, sort, page, limit }.
+// Returns the whole answer from the API: { data, page, limit, total, totalPages }.
+// Only Server Components call this, so it runs on the Next.js server.
+export async function getEvents(options) {
+  // URLSearchParams builds the part after the ?, like category=arts&page=2.
+  // Empty options are left out, so category '' means every category.
   const params = new URLSearchParams();
-  for (const [name, value] of Object.entries({ category, sort, page, limit })) {
-    if (value) {
-      params.set(name, value);
-    }
+  if (options.category) {
+    params.set('category', options.category);
   }
-  const res = await fetchFromApi(`/api/events?${params}`);
+  if (options.sort) {
+    params.set('sort', options.sort);
+  }
+  if (options.page) {
+    params.set('page', options.page);
+  }
+  if (options.limit) {
+    params.set('limit', options.limit);
+  }
+
+  // cache: 'no-store' asks the API again on every visit, because events change.
+  const res = await fetch(API_ORIGIN + '/api/events?' + params.toString(), { cache: 'no-store' });
+
+  // fetch does not throw for a 404 or a 500. Check res.ok to know if it worked.
   if (!res.ok) {
-    // Read the body before giving up, for the same reason as in getEventById below.
-    await res.text();
-    throw new Error(`The API answered ${res.status} when loading events`);
+    throw new Error('The API answered ' + res.status + ' when loading events');
   }
+
   return res.json();
 }
 
-// Returns null when the API says the event doesn't exist, so the page can call notFound().
+// Loads one event. Returns null when the API says it does not exist, so the page can show the 404 page.
 export async function getEventById(id) {
-  const res = await fetchFromApi(`/api/events/${encodeURIComponent(id)}`);
-  if (!res.ok) {
-    // Read the error body even though it isn't used. fetch keeps the connection busy until the body has been read,
-    // so unread error responses slowly use up connections.
-    await res.text();
-    if (res.status === 404) {
-      return null;
-    }
-    throw new Error(`The API answered ${res.status} when loading event ${id}`);
+  const res = await fetch(API_ORIGIN + '/api/events/' + id, { cache: 'no-store' });
+
+  if (res.status === 404) {
+    return null;
   }
+
+  if (!res.ok) {
+    throw new Error('The API answered ' + res.status + ' when loading event ' + id);
+  }
+
   const body = await res.json();
   return body.data;
 }

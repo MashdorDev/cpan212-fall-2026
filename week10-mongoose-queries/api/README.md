@@ -1,26 +1,44 @@
-# Week 10: Campus Events API with queries, RSVPs and indexes
+# Week 10: Campus Events API with pages, RSVPs and indexes
 
-The Week 9 API plus pagination, sorting, a date filter, indexes and RSVPs. See the week README (`../README.md`) for the query parameters and the full list of changes.
+The Week 9 API plus pages, sorting, a date filter, indexes and RSVPs. The week README (`../README.md`) lists every query parameter.
 
 ## Run it
 
 ```bash
 npm install
 cp .env.example .env
-# set MONGODB_URI in .env
+# edit .env and set MONGODB_URI
 npm run seed
 npm run dev
 ```
 
-## Scripts
+`npm run seed` creates the indexes, empties the events and RSVPs, and inserts eight events and five RSVPs.
 
-| Command | What it does |
-|---|---|
-| `npm run dev` | Starts the API and restarts it when you save a file |
-| `npm start` | Starts the API once |
-| `npm run seed` | Syncs indexes, deletes all events and RSVPs, inserts eight events and five RSVPs |
-| `node --env-file=.env examples/native-driver.js` | Insert and find with the `mongodb` driver (from Week 9) |
-| `node --env-file=.env examples/injection-demo.js` | Why `sanitizeFilter` is on |
+## Try it
+
+Open these in the browser:
+
+- http://localhost:4000/api/events?limit=3&page=2 (3 events, `"totalPages": 3`)
+- http://localhost:4000/api/events?sort=-title (Z to A)
+- http://localhost:4000/api/events?from=2026-11-01 (2 events)
+- http://localhost:4000/api/events?sort=password (400)
+
+Copy one `"id"` from http://localhost:4000/api/events and use it in place of `ID`:
+
+```bash
+curl -i -X POST http://localhost:4000/api/events/ID/rsvps -H "Content-Type: application/json" -d '{"name":"Sam Lee","email":"sam@example.com"}'
+curl -i -X POST http://localhost:4000/api/events/ID/rsvps -H "Content-Type: application/json" -d '{"name":"Sam Lee","email":"SAM@example.com"}'
+curl -i -X POST http://localhost:4000/api/events/ID/rsvps -H "Content-Type: application/json" -d '{"name":"S","email":"nope"}'
+curl http://localhost:4000/api/events/ID/rsvps
+```
+
+You should see 201, then 409 (the email is saved in lowercase, so it's the same person), then 400 with a message for `name` and `email`, then the list with each `event` filled in.
+
+To see "This event is full", make the event small first:
+
+```bash
+curl -X PATCH http://localhost:4000/api/events/ID -H "Content-Type: application/json" -d '{"capacity":1}'
+```
 
 ## Routes
 
@@ -32,19 +50,14 @@ npm run dev
 | POST | `/api/events` | 201 `{ "data": event }` and a `Location` header | 400 |
 | PATCH | `/api/events/:id` | 200 `{ "data": event }` | 400, 404 |
 | DELETE | `/api/events/:id` | 204, also deletes the event's RSVPs | 404 |
-| GET | `/api/events/:id/holiday-check` | 200 | 404, 502 holiday service failed, 504 holiday service timed out |
+| GET | `/api/events/:id/holiday-check` | 200 | 404, 502, 504 |
 | POST | `/api/events/:id/rsvps` | 201 `{ "data": rsvp }` | 400, 404, 409 |
-| GET | `/api/events/:id/rsvps` | 200 `{ "data": [rsvp, ...] }` with `event` populated | 404 |
+| GET | `/api/events/:id/rsvps` | 200 `{ "data": [rsvp, ...] }` | 404 |
 
-Admin pages (HTML) are unchanged: `GET /admin/events`, `GET /admin/events/new`, `POST /admin/events`, `POST /admin/events/:id/delete`.
+## Environment variables
 
-## Files to look at
-
-| File | What it shows |
-|---|---|
-| `src/utils/event-list-query.js` | Checking query parameters, the sort allowlist, `mongoose.trusted()` |
-| `src/controllers/events.controller.js` | `skip()`, `limit()`, `countDocuments()` and `Promise.all` |
-| `src/models/Event.js` | `schema.index()` and why each index exists |
-| `src/models/Rsvp.js` | `ref`, `lowercase`, and a unique compound index |
-| `src/controllers/rsvps.controller.js` | 409 for a full event and for duplicate key error 11000, `populate()` |
-| `examples/injection-demo.js` | The `{ "$ne": null }` attack with and without `sanitizeFilter` |
+| Name | Example | Purpose |
+|---|---|---|
+| `PORT` | `4000` | Port the server listens on |
+| `MONGODB_URI` | `mongodb://127.0.0.1:27017/campus_events` | **Required.** Where the database is. |
+| `HOLIDAY_API_BASE_URL` | `https://date.nager.at/api/v3` | Base URL of the holiday API |
