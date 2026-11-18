@@ -41,12 +41,9 @@ export async function listEvents(req, res) {
   // ?from=2026-11-01 keeps only the events that start on or after that date.
   const from = req.query.from;
   if (from !== undefined) {
-    // The text must start like 2026-11-01. new Date() then tells us if it is a real date.
-    if (typeof from !== 'string' || !/^\d{4}-\d{2}-\d{2}/.test(from)) {
-      throw new HttpError(400, 'Invalid query', { from: 'Must be a date like 2026-11-01' });
-    }
+    // new Date('nope') is an Invalid Date, and getTime() gives NaN for it.
     const fromDate = new Date(from);
-    if (isNaN(fromDate.getTime())) {
+    if (typeof from !== 'string' || isNaN(fromDate.getTime())) {
       throw new HttpError(400, 'Invalid query', { from: 'Must be a date like 2026-11-01' });
     }
 

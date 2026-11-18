@@ -111,8 +111,11 @@ console.log('Removed ' + deleted.deletedCount + ' events, inserted ' + inserted.
 // Give each RSVP the id of its event, found by title.
 const rsvps = [];
 for (const sample of sampleRsvps) {
-  const event = inserted.find((e) => e.title === sample.eventTitle);
-  rsvps.push({ event: event._id, name: sample.name, email: sample.email });
+  for (const event of inserted) {
+    if (event.title === sample.eventTitle) {
+      rsvps.push({ event: event._id, name: sample.name, email: sample.email });
+    }
+  }
 }
 const insertedRsvps = await Rsvp.insertMany(rsvps);
 console.log('Inserted ' + insertedRsvps.length + ' RSVPs');
