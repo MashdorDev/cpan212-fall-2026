@@ -10,9 +10,15 @@ export default function Pagination({ category, sort, page, totalPages }) {
     return null;
   }
 
+  // From a typed-in ?page=9 of 2, Previous goes to the last real page.
+  let previousPage = page - 1;
+  if (previousPage > totalPages) {
+    previousPage = totalPages;
+  }
+
   let previous = <span className={styles.disabled}>Previous</span>;
   if (page > 1) {
-    previous = <Link href={eventsHref(category, sort, page - 1)}>Previous</Link>;
+    previous = <Link href={eventsHref(category, sort, previousPage)}>Previous</Link>;
   }
 
   let next = <span className={styles.disabled}>Next</span>;

@@ -3,7 +3,7 @@ import EventCard from '@/components/EventCard';
 import EventFilters from '@/components/EventFilters';
 import Pagination from '@/components/Pagination';
 import { getEvents } from '@/lib/events';
-import { PAGE_SIZE, readListOptions } from '@/lib/list-options';
+import { PAGE_SIZE, eventsHref, readListOptions } from '@/lib/list-options';
 import styles from './page.module.css';
 
 export const metadata = {
@@ -39,7 +39,12 @@ export default async function EventsPage({ searchParams }) {
         Showing {events.length} of {result.total} events
       </p>
 
-      {events.length === 0 && <p>No events on this page. Try another category, or go back to the first page.</p>}
+      {events.length === 0 && (
+        <p>
+          No events on this page. Try another category, or go back to the{' '}
+          <Link href={eventsHref(options.category, options.sort, 1)}>first page</Link>.
+        </p>
+      )}
 
       <ul className={styles.grid}>
         {events.map((event) => (

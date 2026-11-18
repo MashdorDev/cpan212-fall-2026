@@ -14,10 +14,13 @@ export default function RsvpForm({ eventId }) {
   // The message above the form, and whether it is good news.
   const [message, setMessage] = useState('');
   const [success, setSuccess] = useState(false);
+  // true while the request is on its way, so a double-click doesn't send the RSVP twice.
+  const [sending, setSending] = useState(false);
 
   async function handleSubmit(event) {
     // Stop the browser from reloading the page. We send the data ourselves.
     event.preventDefault();
+    setSending(true);
     setErrors({});
     setMessage('');
 
@@ -59,6 +62,7 @@ export default function RsvpForm({ eventId }) {
       setSuccess(false);
       setMessage('Could not reach the events API. Check that it is running.');
     }
+    setSending(false);
   }
 
   let messageClass = styles.failure;
@@ -88,7 +92,7 @@ export default function RsvpForm({ eventId }) {
           <input id="rsvp-email" name="email" type="email" autoComplete="email" />
           {errors.email && <p className={styles.error}>{errors.email}</p>}
         </div>
-        <button className={styles.submit} type="submit">
+        <button className={styles.submit} type="submit" disabled={sending}>
           RSVP
         </button>
       </form>

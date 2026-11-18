@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { CATEGORIES, Event } from '../models/Event.js';
 import { Rsvp } from '../models/Rsvp.js';
+import { torontoInputToIso } from '../utils/dates.js';
 import { findEventOr404 } from '../utils/find-event.js';
 import { HttpError } from '../utils/http-error.js';
 import { removeUpload } from '../utils/uploads.js';
@@ -41,8 +42,9 @@ export async function listEvents(req, res) {
   // ?from=2026-11-01 keeps only the events that start on or after that date.
   const from = req.query.from;
   if (from !== undefined) {
-    // new Date('nope') is an Invalid Date, and getTime() gives NaN for it.
-    const fromDate = new Date(from);
+    // new Date('2026-11-01') would be midnight in London (UTC), the evening before in Toronto.
+    // torontoInputToIso() (from Week 5) makes it midnight in Toronto. A bad date gives NaN in getTime().
+    const fromDate = new Date(torontoInputToIso(from + 'T00:00'));
     if (typeof from !== 'string' || isNaN(fromDate.getTime())) {
       throw new HttpError(400, 'Invalid query', { from: 'Must be a date like 2026-11-01' });
     }

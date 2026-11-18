@@ -39,6 +39,7 @@ export async function createRsvp(req, res) {
   // It says "already has an RSVP" (HTTP 409). Upper case doesn't matter: the schema saved it in lowercase.
 
   // TODO STEP 6c: 409 when the event is full
+  // Not a guarantee: two people asking for the last spot at the same moment can both pass this check.
   // Type under this comment:
   //
   //   const taken = await Rsvp.countDocuments({ event: event._id });

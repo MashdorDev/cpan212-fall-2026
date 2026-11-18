@@ -59,7 +59,7 @@ Open http://localhost:3000/events.
 | `sort` | `startsAt` | `startsAt`, `title` or `createdAt`. A `-` in front reverses it: `-startsAt` is latest first. |
 | `category` | all | One of `academic`, `social`, `sports`, `career`, `arts` |
 | `q` | none | Search in titles, upper or lower case |
-| `from` | none | Only events that start on or after this date, like `2026-11-01` |
+| `from` | none | Only events that start on or after midnight (Toronto time) of this date, like `2026-11-01` |
 
 A wrong parameter answers 400 and says which one, for example `GET /api/events?sort=password`:
 
@@ -101,6 +101,7 @@ Anyone can call `GET /api/events/:id/rsvps` this week, so anyone can read every 
 - **See an index at work.** In Compass, open `events`, then the Explain Plan tab, and run the filter `{ category: 'arts' }` with the sort `{ startsAt: 1, _id: 1 }`. It says `IXSCAN` (used an index). Drop the index in the Indexes tab and run it again: `COLLSCAN` (read every event). Run `npm run seed` to get the index back.
 - **`mongoose.trusted()`.** `sanitizeFilter` turns every `$` operator into plain text, to stop attacks. The `?from=` filter needs `$gte`, so it marks that one object as ours.
 - **The database stops duplicates.** The controller checks for an existing RSVP first so the usual case gets a clear 409. The unique index is the real guarantee: two requests at the same moment can both pass the check, and the second save fails with error code 11000, which also becomes a 409.
+- **"Full" is a simple check.** Two people asking for the last spot at the same moment can both get it. Unlike the email, nothing in the database stops that.
 - **`populate()` runs a second query.** In `GET /api/events/:id/rsvps`, each RSVP's `event` is an object with `id`, `title` and `startsAt` instead of an id.
 
 ## The injection demo

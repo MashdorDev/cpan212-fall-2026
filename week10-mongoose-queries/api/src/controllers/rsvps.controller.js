@@ -29,6 +29,9 @@ export async function createRsvp(req, res) {
     throw new HttpError(409, 'This email already has an RSVP for this event', { email: 'Already registered' });
   }
 
+  // Not a guarantee: two people asking for the last spot at the same moment can both pass this check,
+  // and the event ends up one over. The database would need to enforce it, like the unique index does
+  // for emails. For a campus event, the simple check is a fair trade.
   const taken = await Rsvp.countDocuments({ event: event._id });
   if (taken >= event.capacity) {
     throw new HttpError(409, 'This event is full');

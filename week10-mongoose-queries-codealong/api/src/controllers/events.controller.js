@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { CATEGORIES, Event } from '../models/Event.js';
 import { Rsvp } from '../models/Rsvp.js';
+import { torontoInputToIso } from '../utils/dates.js';
 import { findEventOr404 } from '../utils/find-event.js';
 import { HttpError } from '../utils/http-error.js';
 import { removeUpload } from '../utils/uploads.js';
@@ -42,10 +43,11 @@ export async function listEvents(req, res) {
   const from = req.query.from;
   if (from !== undefined) {
     // TODO STEP 1a: turn ?from= into a date, or answer 400
-    // new Date('nope') is an Invalid Date, and getTime() gives NaN for it.
+    // new Date('2026-11-01') would be midnight in London (UTC), the evening before in Toronto.
+    // torontoInputToIso() (from Week 5) makes it midnight in Toronto. A bad date gives NaN in getTime().
     // Type under this comment:
     //
-    //   const fromDate = new Date(from);
+    //   const fromDate = new Date(torontoInputToIso(from + 'T00:00'));
     //   if (typeof from !== 'string' || isNaN(fromDate.getTime())) {
     //     throw new HttpError(400, 'Invalid query', { from: 'Must be a date like 2026-11-01' });
     //   }
@@ -252,8 +254,9 @@ export async function deleteEvent(req, res) {
   //
   //   await Rsvp.deleteMany({ event: event._id });
   //
-  // Check: use the DELETE curl command in api/README.md on Fall hackathon kickoff.
-  // In Compass, refresh rsvps: its 3 RSVPs are gone (5 became 2).
+  // Check: open http://localhost:4000/api/events/ID/rsvps for Fall hackathon kickoff and count them.
+  // Use the DELETE curl command in api/README.md on it. In Compass, refresh rsvps: that many are gone,
+  // and only the other events' RSVPs are left. Run npm run seed to start over.
 
   await removeUpload(event.imageUrl);
   res.status(204).end();
