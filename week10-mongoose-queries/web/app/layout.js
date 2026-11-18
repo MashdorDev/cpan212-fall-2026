@@ -11,8 +11,8 @@ export const metadata = {
   description: 'What is happening on campus this term',
 };
 
-// The layout is a Server Component, and it can still render a Client Component (the provider)
-// around the pages. Every page and component inside can then call useSavedEvents().
+// The root layout wraps every page. SavedEventsProvider goes around everything,
+// so every page and component inside can call useSavedEvents().
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

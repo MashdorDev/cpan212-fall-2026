@@ -3,10 +3,10 @@ import { connectDb } from '../src/db.js';
 import { Event } from '../src/models/Event.js';
 import { Rsvp } from '../src/models/Rsvp.js';
 
-// The same eight events the API has used since Week 2, minus the fixed ids: MongoDB gives every
-// document a new ObjectId, so the ids change each time you run this script.
+// The same eight events the API has used since Week 2. MongoDB gives each one a new _id,
+// so the ids change every time you run this script.
 // Times are stored in UTC. 21:00Z on Oct 2 is 5:00 PM in Toronto.
-const seedEvents = [
+const sampleEvents = [
   {
     title: 'Fall hackathon kickoff',
     description:
@@ -85,34 +85,37 @@ const seedEvents = [
   },
 ];
 
-// Made-up attendees (example.com addresses never receive mail). Each one is [event title, name, email].
-const seedRsvps = [
-  ['Fall hackathon kickoff', 'Priya Sharma', 'priya.sharma@example.com'],
-  ['Fall hackathon kickoff', 'Marcus Chen', 'marcus.chen@example.com'],
-  ['Fall hackathon kickoff', 'Amara Okafor', 'amara.okafor@example.com'],
-  ['Resume review drop-in', 'Priya Sharma', 'priya.sharma@example.com'],
-  ['Open mic night', 'Diego Alvarez', 'diego.alvarez@example.com'],
+// Made-up people (example.com addresses never get mail). Each RSVP names its event by title,
+// because the event ids only exist after the events are inserted.
+const sampleRsvps = [
+  { eventTitle: 'Fall hackathon kickoff', name: 'Priya Sharma', email: 'priya.sharma@example.com' },
+  { eventTitle: 'Fall hackathon kickoff', name: 'Marcus Chen', email: 'marcus.chen@example.com' },
+  { eventTitle: 'Fall hackathon kickoff', name: 'Amara Okafor', email: 'amara.okafor@example.com' },
+  { eventTitle: 'Resume review drop-in', name: 'Priya Sharma', email: 'priya.sharma@example.com' },
+  { eventTitle: 'Open mic night', name: 'Diego Alvarez', email: 'diego.alvarez@example.com' },
 ];
 
 await connectDb();
 
-// syncIndexes() makes the collections' indexes match the schemas, including the unique index on RSVPs.
-// The API also builds indexes when it starts, but running the seed first shouldn't depend on that.
-await Promise.all([Event.syncIndexes(), Rsvp.syncIndexes()]);
+// syncIndexes() makes the indexes in the database match the ones in the schemas.
+await Event.syncIndexes();
+await Rsvp.syncIndexes();
 
-// Start from clean collections, so running the script twice doesn't give you 16 events.
+// Start from empty collections, so running the script twice doesn't give you 16 events.
 await Rsvp.deleteMany({});
-const { deletedCount } = await Event.deleteMany({});
-// insertMany() runs the schema validation too, so a typo in the data above fails loudly.
-const events = await Event.insertMany(seedEvents);
-console.log(`Removed ${deletedCount} events, inserted ${events.length}`);
+const deleted = await Event.deleteMany({});
+// insertMany() checks the schema rules too, so a typo in the data above fails loudly.
+const inserted = await Event.insertMany(sampleEvents);
+console.log('Removed ' + deleted.deletedCount + ' events, inserted ' + inserted.length);
 
-// The RSVPs need the new ObjectIds, so look each event up by title.
-const idsByTitle = new Map(events.map((event) => [event.title, event._id]));
-const rsvps = await Rsvp.insertMany(
-  seedRsvps.map(([title, name, email]) => ({ event: idsByTitle.get(title), name, email })),
-);
-console.log(`Inserted ${rsvps.length} RSVPs`);
+// Give each RSVP the id of its event, found by title.
+const rsvps = [];
+for (const sample of sampleRsvps) {
+  const event = inserted.find((e) => e.title === sample.eventTitle);
+  rsvps.push({ event: event._id, name: sample.name, email: sample.email });
+}
+const insertedRsvps = await Rsvp.insertMany(rsvps);
+console.log('Inserted ' + insertedRsvps.length + ' RSVPs');
 
-// Without this the script never ends, because the open connection keeps Node running.
+// Close the connection, or the script never ends.
 await mongoose.disconnect();

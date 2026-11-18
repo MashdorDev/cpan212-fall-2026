@@ -3,20 +3,28 @@ import EventCard from '@/components/EventCard';
 import EventFilters from '@/components/EventFilters';
 import Pagination from '@/components/Pagination';
 import { getEvents } from '@/lib/events';
-import { PAGE_SIZE, eventsHref, readListOptions } from '@/lib/list-options';
+import { PAGE_SIZE, readListOptions } from '@/lib/list-options';
 import styles from './page.module.css';
 
 export const metadata = {
   title: 'Events',
 };
 
-// The category, sort order and page all live in the URL (/events?category=arts&page=2).
-// Every filter and page link is a normal link, so the server renders the new list, and the URL can be
-// bookmarked, shared or opened in a new tab. No client-side state is needed.
+// A Server Component. The category, sort and page are in the URL (/events?category=arts&page=2),
+// so every filter and page link is a normal link and Back and Forward work.
 export default async function EventsPage({ searchParams }) {
   // In Next.js 16 searchParams is a promise, like params.
-  const options = readListOptions(await searchParams);
-  const { data: events, page, total, totalPages } = await getEvents({ ...options, limit: PAGE_SIZE });
+  const query = await searchParams;
+  const options = readListOptions(query);
+
+  // Ask the API for one page only.
+  const result = await getEvents({
+    category: options.category,
+    sort: options.sort,
+    page: options.page,
+    limit: PAGE_SIZE,
+  });
+  const events = result.data;
 
   return (
     <>
@@ -27,24 +35,22 @@ export default async function EventsPage({ searchParams }) {
 
       <EventFilters category={options.category} sort={options.sort} />
 
-      <p className={styles.count}>{total === 1 ? '1 event' : `${total} events`}</p>
+      <p className={styles.count}>
+        Showing {events.length} of {result.total} events
+      </p>
 
-      {events.length === 0 ? (
-        <p>
-          No events here. Try another category, or go back to the{' '}
-          <Link href={eventsHref({ category: options.category, sort: options.sort })}>first page</Link>.
-        </p>
-      ) : (
-        <ul className={styles.grid}>
-          {events.map((event) => (
-            <li key={event.id}>
-              <EventCard event={event} />
-            </li>
-          ))}
-        </ul>
-      )}
+      {events.length === 0 && <p>No events on this page. Try another category, or go back to the first page.</p>}
 
-      <Pagination category={options.category} sort={options.sort} page={page} totalPages={totalPages} />
+      <ul className={styles.grid}>
+        {events.map((event) => (
+          // key tells React which card is which when the list changes.
+          <li key={event.id}>
+            <EventCard event={event} />
+          </li>
+        ))}
+      </ul>
+
+      <Pagination category={options.category} sort={options.sort} page={result.page} totalPages={result.totalPages} />
     </>
   );
 }

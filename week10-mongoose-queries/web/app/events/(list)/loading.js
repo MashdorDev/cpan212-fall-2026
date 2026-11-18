@@ -1,4 +1,4 @@
-// Shown right away while page.js in this folder waits for the API.
+// Shown right away while page.js in this folder is still loading its data.
 // It lives in the (list) group so it only wraps the list page. A folder name in parentheses
 // groups files without adding to the URL, so this page is still /events.
 // If it also wrapped /events/[id], Next.js would start sending that page before it knew whether

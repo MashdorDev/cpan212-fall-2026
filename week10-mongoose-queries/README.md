@@ -1,13 +1,18 @@
-# Week 10: Mongoose queries, relationships and indexes
+# Week 10: Mongoose queries, RSVPs and indexes
 
-The Week 9 app with the list endpoint grown into something that works for more than eight events: pagination, sorting, a date filter and indexes. Events also get RSVPs, a second model that references the first, and the web app gets page links, sort links and an RSVP form.
+The Week 9 app, grown so it still works with hundreds of events. The list comes one page at a time and can be sorted and filtered by date, the database gets indexes, and events get RSVPs: a second model that points at the first.
+
+This is the **finished** version. In class, open [`../week10-mongoose-queries-codealong`](../week10-mongoose-queries-codealong) instead.
 
 | Folder | What it is |
 |---|---|
-| `api/` | The Express API (port 4000) with pagination, sorting, `?from=`, indexes and RSVP routes |
-| `web/` | The Next.js app (port 3000) with filters and pages driven by the URL, and an RSVP form on each event |
+| `api/` | The Express API (port 4000) with pages, sorting, `?from=`, indexes and RSVP routes |
+| `web/` | The Next.js app (port 3000) with category and sort links, Previous and Next links, and an RSVP form on each event |
+| `diagrams/` | How `?page=` and `?limit=` become `skip()` and `limit()` |
 
 ## Run both (two terminals)
+
+You need the same `MONGODB_URI` as in Week 9 (see [`../week09-mongodb/docs/atlas-setup.md`](../week09-mongodb/docs/atlas-setup.md)).
 
 Terminal 1, the API:
 
@@ -15,12 +20,12 @@ Terminal 1, the API:
 cd api
 npm install
 cp .env.example .env
-# set MONGODB_URI in .env
+# edit .env and set MONGODB_URI
 npm run seed
 npm run dev
 ```
 
-The seed now inserts the eight events and five RSVPs, and makes sure the indexes exist. Run it again after pulling this week's code, so the unique RSVP index is there before you test duplicates.
+The seed now inserts eight events and five RSVPs, and creates the indexes.
 
 Terminal 2, the Next.js app:
 
@@ -31,24 +36,15 @@ cp .env.example .env
 npm run dev
 ```
 
-## Environment variables
-
-Same as Week 9:
-
-| Folder | Name | Example | Purpose |
-|---|---|---|---|
-| `api` | `PORT` | `4000` | Port the API listens on |
-| `api` | `MONGODB_URI` | `mongodb://127.0.0.1:27017/campus_events` | **Required.** Where the database is. |
-| `api` | `HOLIDAY_API_BASE_URL` | `https://date.nager.at/api/v3` | Base URL of the holiday API |
-| `web` | `API_ORIGIN` | `http://localhost:4000` | Where the API runs |
+Open http://localhost:3000/events.
 
 ## The list endpoint
 
-`GET /api/events` now answers with one page and the numbers needed to show page links:
+`GET /api/events?page=2&limit=3` answers with one page, and the numbers the web app needs for its page links:
 
 ```json
 {
-  "data": [ { "id": "...", "title": "Career fair prep workshop", "...": "..." } ],
+  "data": [{ "id": "...", "title": "Resume review drop-in" }],
   "page": 2,
   "limit": 3,
   "total": 8,
@@ -58,67 +54,56 @@ Same as Week 9:
 
 | Parameter | Default | Rules |
 |---|---|---|
-| `page` | `1` | Whole number, 1 or more. A page past the end returns `data: []`, not an error. |
-| `limit` | `10` | Whole number from 1 to 50 |
-| `sort` | `startsAt` | `startsAt`, `title` or `createdAt`. Put `-` in front to reverse, for example `-startsAt`. Anything else is a 400. |
+| `page` | `1` | A whole number, 1 or more. A page past the end gives `data: []`, not an error. |
+| `limit` | `10` | A whole number from 1 to 50 |
+| `sort` | `startsAt` | `startsAt`, `title` or `createdAt`. A `-` in front reverses it: `-startsAt` is latest first. |
 | `category` | all | One of `academic`, `social`, `sports`, `career`, `arts` |
-| `q` | none | Case-insensitive search in titles |
-| `from` | none | Only events starting at or after this date, for example `2026-11-01` or `2026-11-01T18:00:00-04:00` |
+| `q` | none | Search in titles, upper or lower case |
+| `from` | none | Only events that start on or after this date, like `2026-11-01` |
 
-Every wrong parameter is listed in one 400 response, for example `GET /api/events?limit=500&sort=password`:
+A wrong parameter answers 400 and says which one, for example `GET /api/events?sort=password`:
 
 ```json
-{ "error": { "message": "Invalid query", "details": { "sort": "Must be one of: startsAt, title, createdAt. ...", "limit": "Must be a whole number from 1 to 50" } } }
+{ "error": { "message": "Invalid query", "details": { "sort": "Must be one of: startsAt, title, createdAt. Put - in front to reverse, like -startsAt" } } }
 ```
 
 ## RSVPs
 
 | Method | Path | Success | Errors |
 |---|---|---|---|
-| POST | `/api/events/:id/rsvps` | 201 `{ "data": rsvp }` | 400 bad name or email, 404 no such event, 409 email already registered, 409 event full |
-| GET | `/api/events/:id/rsvps` | 200 `{ "data": [rsvp, ...] }` with each `event` populated as `{ id, title, startsAt }` | 404 |
-| GET | `/api/events/:id` | 200, the event now includes `rsvpCount` | 404 |
+| POST | `/api/events/:id/rsvps` | 201 `{ "data": rsvp }` | 400 bad name or email, 404 no such event, 409 already registered, 409 event full |
+| GET | `/api/events/:id/rsvps` | 200 `{ "data": [rsvp, ...] }`, each `event` filled in with its title and start time | 404 |
+| GET | `/api/events/:id` | 200, the event now has `rsvpCount` | 404 |
 
-`GET /api/events/:id/rsvps` is open to anyone this week, so anyone can read every attendee's email address. That is a real privacy problem (OWASP calls it Broken Access Control). Week 11 adds logins and lets only the event's organizer see the list.
+Anyone can call `GET /api/events/:id/rsvps` this week, so anyone can read every attendee's email address. Week 11 adds logins and fixes that.
 
 ## What changed since Week 9
 
-API:
-
 | File | Change |
 |---|---|
-| `api/src/utils/event-list-query.js` | New. Reads and checks `category`, `q`, `from`, `sort`, `page` and `limit`, with an allowlist of sort fields and `mongoose.trusted()` for the date filter |
-| `api/src/controllers/events.controller.js` | `listEvents` runs `find().sort().skip().limit()` and `countDocuments()` together with `Promise.all`. `getEvent` adds `rsvpCount`. Deleting an event deletes its RSVPs. |
-| `api/src/models/Event.js` | Three indexes, with a comment explaining each one and why the title index is not a text index |
-| `api/src/models/Rsvp.js` | New. `event` references `Event`, email is stored lowercase, and a unique compound index on `{ event, email }` |
-| `api/src/models/to-json.js` | New. The `toJSON` options shared by both models |
-| `api/src/controllers/rsvps.controller.js` | New. Create (validate, check for an existing RSVP, check capacity, save, turn duplicate key error 11000 into 409) and list with `populate` |
-| `api/scripts/seed.js` | Syncs indexes, and inserts RSVPs using the new event ids |
-| `api/examples/injection-demo.js` | New. The same query with `sanitizeFilter` off and on |
-
-Web:
-
-| File | Change |
-|---|---|
-| `web/app/events/(list)/page.js` | Awaits `searchParams`, reads the category, sort and page from the URL, and asks the API for one page |
-| `web/lib/list-options.js` | New. The sort choices, the page size, reading search params safely, and building `/events?...` links |
-| `web/components/EventFilters.js`, `Pagination.js` | New. Server Components made of links. `CategoryFilter.js` (client-side filtering) is gone. |
-| `web/components/RsvpForm.js` | New. A Client Component that posts an RSVP and shows the 201, 400 or 409 answer, then calls `router.refresh()` so the count updates |
-| `web/app/events/[id]/page.js` | Shows spots taken out of capacity, and the RSVP form |
-| `web/app/saved/page.js` | Loads each saved event by id with `Promise.all`, because the list endpoint only returns one page now |
-| `web/components/SavedEventsProvider.js` | Adds `loaded`, so the Saved page waits for localStorage before deciding nothing is saved |
+| `api/src/controllers/events.controller.js` | `listEvents` reads `page`, `limit`, `sort` and `from`, and runs `find().sort().skip().limit()` and `countDocuments()`. `getEvent` adds `rsvpCount`. `deleteEvent` deletes the event's RSVPs. |
+| `api/src/models/Event.js` | Three indexes, one for each kind of list query |
+| `api/src/models/Rsvp.js` | New. `event` points at an Event with `ref`, the email is saved in lowercase, and a unique index allows one RSVP per email per event |
+| `api/src/controllers/rsvps.controller.js` | New. Create an RSVP (400, 404, 409) and list them with `populate()` |
+| `api/src/routes/events.routes.js` | The two RSVP routes |
+| `api/scripts/seed.js` | Creates the indexes and inserts five RSVPs |
+| `api/examples/injection-demo.js` | New. Why `sanitizeFilter` is on |
+| `web/app/events/(list)/page.js` | Reads the category, sort and page from the URL and asks the API for one page |
+| `web/lib/list-options.js` | New. The page size, the sort choices, reading the URL and building `/events?...` links |
+| `web/components/EventFilters.js`, `Pagination.js` | New. Links instead of buttons. `CategoryFilter.js` is gone. |
+| `web/components/RsvpForm.js` | New. Posts an RSVP and shows the 201, 400 or 409 answer |
+| `web/app/events/[id]/page.js` | Shows spots taken and the RSVP form |
+| `web/app/saved/page.js` | Loads each saved event by its id, because the list only sends one page now |
 
 ## Things to notice
 
-- **Sort allowlist.** `?sort=` is checked against three field names before it reaches `.sort()`. Without the list, a client could sort on any field, including ones with no index.
-- **The `_id` tie-breaker.** The API sorts by the chosen field and then by `_id`. Two events at the same time would otherwise come back in any order, and one could appear on two pages. Because the sort includes `_id`, the indexes end in `_id` too: MongoDB only uses an index for a sort when the fields match.
-- **Seeing an index at work.** In mongosh, compare `db.events.find({ category: 'arts' }).sort({ startsAt: 1, _id: 1 }).explain('executionStats')` before and after the indexes exist: `COLLSCAN` reads every document, `IXSCAN` reads only the matching index entries.
-- **`sanitizeFilter` and your own operators.** The date filter needs `$gte`, and `sanitizeFilter` would neutralize it like an attacker's `$ne`. `mongoose.trusted()` marks that one object as built by the code.
-- **Duplicates are stopped by the database.** The controller checks with `Rsvp.exists()` first, so the usual duplicate gets a clear 409 before the capacity check. The unique index is the real guarantee: if two requests for the same email arrive at the same moment and both pass `exists()`, the second insert fails with error code 11000, which also becomes a 409. The capacity check has no such guarantee: see the comment in `rsvps.controller.js`.
-- **`populate`** runs a second query. Look at `GET /api/events/:id/rsvps`: each RSVP's `event` is an object with `id`, `title` and `startsAt` instead of an id string.
-- **URL state in Next.js.** The list page has no `useState`. The category, sort and page are in the URL, so Back and Forward work and a filtered page can be shared.
+- **`_id` breaks ties in the sort.** Two events at the same time could come back in either order, and one could show up on two pages. That's also why every index ends in `_id`.
+- **See an index at work.** In Compass, open `events`, then the Explain Plan tab, and run the filter `{ category: 'arts' }` with the sort `{ startsAt: 1, _id: 1 }`. It says `IXSCAN` (used an index). Drop the index in the Indexes tab and run it again: `COLLSCAN` (read every event). Run `npm run seed` to get the index back.
+- **`mongoose.trusted()`.** `sanitizeFilter` turns every `$` operator into plain text, to stop attacks. The `?from=` filter needs `$gte`, so it marks that one object as ours.
+- **The database stops duplicates.** The controller checks for an existing RSVP first so the usual case gets a clear 409. The unique index is the real guarantee: two requests at the same moment can both pass the check, and the second save fails with error code 11000, which also becomes a 409.
+- **`populate()` runs a second query.** In `GET /api/events/:id/rsvps`, each RSVP's `event` is an object with `id`, `title` and `startsAt` instead of an id.
 
-## Examples
+## The injection demo
 
 ```bash
 cd api
@@ -126,4 +111,4 @@ npm run seed
 node --env-file=.env examples/injection-demo.js
 ```
 
-Sends `{ "email": { "$ne": null } }` as a filter. With `sanitizeFilter` off, the query returns every RSVP and every email. With it on, Mongoose rejects the query with a CastError.
+It sends `{ "email": { "$ne": null } }` as a filter. With `sanitizeFilter` off you get every RSVP and every email. With it on, Mongoose stops the query.
