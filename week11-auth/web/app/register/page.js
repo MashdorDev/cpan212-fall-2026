@@ -1,4 +1,4 @@
-import AuthForm from '@/components/AuthForm';
+import RegisterForm from '@/components/RegisterForm';
 import { safeNextPath } from '@/lib/next-path';
 
 export const metadata = {
@@ -6,12 +6,13 @@ export const metadata = {
 };
 
 export default async function RegisterPage({ searchParams }) {
-  const { next } = await searchParams;
+  const query = await searchParams;
+  const next = safeNextPath(query.next);
 
   return (
     <>
       <h1>Create an account</h1>
-      <AuthForm mode="register" next={safeNextPath(next)} />
+      <RegisterForm next={next} />
     </>
   );
 }

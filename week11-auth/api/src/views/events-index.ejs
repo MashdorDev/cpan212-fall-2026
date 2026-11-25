@@ -35,7 +35,8 @@
             <td><%= event.location %></td>
             <td><%= event.capacity %></td>
             <td>
-              <% if (event.organizer.equals(user._id)) { %>
+              <%# Events saved before Week 11 have no organizer. Run npm run seed to give them one. %>
+              <% if (event.organizer && event.organizer.equals(user._id)) { %>
                 <form method="post" action="/admin/events/<%= event.id %>/delete" data-confirm="Delete &quot;<%= event.title %>&quot;?">
                   <button class="danger" type="submit">Delete</button>
                 </form>

@@ -1,28 +1,32 @@
-import { assertOrganizer } from '../middleware/require-auth.js';
-import { Event } from '../models/Event.js';
+import { checkOrganizer } from '../middleware/require-auth.js';
 import { Rsvp } from '../models/Rsvp.js';
-import { findByIdOr404 } from '../utils/find-by-id.js';
+import { findEventOr404 } from '../utils/find-event.js';
 import { HttpError } from '../utils/http-error.js';
 
-// MongoDB's error code for a write that breaks a unique index.
+// MongoDB's error code when a save breaks a unique index.
 const DUPLICATE_KEY = 11000;
 
 export async function createRsvp(req, res) {
-  const event = await findByIdOr404(Event, req.params.id);
+  const event = await findEventOr404(req.params.id);
 
-  // Nothing comes from the body any more: the event id is in the URL, and the name and email belong
-  // to the logged-in user, so nobody can RSVP in someone else's name.
-  const rsvp = new Rsvp({ event: event._id, name: req.user.name, email: req.user.email });
+  // The event id comes from the URL. The name and email come from the logged-in user,
+  // so nobody can RSVP in someone else's name. The request needs no body at all.
+  const rsvp = new Rsvp({
+    event: event._id,
+    name: req.user.name,
+    email: req.user.email,
+  });
 
-  // Before the capacity check, so someone who already has a spot hears that, not "full".
-  if (await Rsvp.exists({ event: event._id, email: rsvp.email })) {
+  // 409 Conflict: the request is fine, but it clashes with what is already saved.
+  const alreadyRegistered = await Rsvp.exists({ event: event._id, email: rsvp.email });
+  if (alreadyRegistered) {
     throw new HttpError(409, 'You already have an RSVP for this event');
   }
 
+  // Not a guarantee: two people asking for the last spot at the same moment can both pass this check,
+  // and the event ends up one over. The database would need to enforce it, like the unique index does
+  // for emails. For a campus event, the simple check is a fair trade.
   const taken = await Rsvp.countDocuments({ event: event._id });
-  // Two requests for the last spot can both pass this check before either one saves, and the event ends up
-  // one over capacity. Closing that gap needs an atomic update (for example a spotsLeft counter changed with
-  // $inc in the same query that checks it). For a campus event list, the simple check is a fair trade.
   if (taken >= event.capacity) {
     throw new HttpError(409, 'This event is full');
   }
@@ -30,8 +34,8 @@ export async function createRsvp(req, res) {
   try {
     await rsvp.save();
   } catch (error) {
-    // exists() above handles the usual case. This catches two requests from the same user that both
-    // passed exists() at the same moment: the unique index lets only one of them in.
+    // Two requests with the same email at the same moment can both pass the check above.
+    // The unique index lets only one in. The other one fails with code 11000.
     if (error.code === DUPLICATE_KEY) {
       throw new HttpError(409, 'You already have an RSVP for this event');
     }
@@ -41,15 +45,12 @@ export async function createRsvp(req, res) {
   res.status(201).json({ data: rsvp });
 }
 
-// The list includes every attendee's email address, so only the event's organizer can see it.
+// The list has every attendee's email address, so only the event's organizer can see it.
 export async function listRsvps(req, res) {
-  const event = await findByIdOr404(Event, req.params.id);
-  assertOrganizer(event, req.user);
+  const event = await findEventOr404(req.params.id);
+  checkOrganizer(event, req.user);
 
-  // populate() runs a second query and replaces each RSVP's event id with the event's title and startsAt.
-  // Every RSVP here belongs to the same event, so this repeats the same event in every row. It is here to
-  // show what populate() returns. A "my RSVPs" page, with many different events, is where it earns its place.
+  // populate() runs a second query. It swaps each RSVP's event id for that event's title and startsAt.
   const rsvps = await Rsvp.find({ event: event._id }).sort({ createdAt: 1 }).populate('event', 'title startsAt');
-
   res.json({ data: rsvps });
 }

@@ -13,6 +13,10 @@ export function torontoInputToIso(value) {
     return value;
   }
   const withSeconds = value.length === 16 ? `${value}:00` : value;
+  // A date that can't exist, like month 13, would make formatToParts() throw. Leave it for the validator too.
+  if (Number.isNaN(new Date(`${withSeconds}Z`).getTime())) {
+    return value;
+  }
   const offset = new Intl.DateTimeFormat('en-US', { timeZone: TIME_ZONE, timeZoneName: 'longOffset' })
     .formatToParts(new Date(`${withSeconds}Z`))
     .find((part) => part.type === 'timeZoneName')

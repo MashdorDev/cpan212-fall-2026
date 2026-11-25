@@ -5,8 +5,7 @@ import { createRsvp, listRsvps } from '../controllers/rsvps.controller.js';
 import { requireAuth } from '../middleware/require-auth.js';
 
 // Paths here are relative to where the router is mounted (/api/events in app.js).
-// Reading is public. Anything that changes data needs a logged-in user (requireAuth), and the controllers
-// check that the user is the event's organizer where it matters.
+// Reading is public. Anything that changes data, or shows attendees' emails, needs a logged-in user.
 export const eventsRouter = Router();
 
 eventsRouter.get('/', listEvents);

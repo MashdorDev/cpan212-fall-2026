@@ -12,16 +12,16 @@ npm run dev
 
 | File | Change |
 |---|---|
-| `components/AuthProvider.js` | New. Asks `GET /api/auth/me` once when the app loads and shares the user through Context: `undefined` while loading, `null` when logged out |
-| `components/UserMenu.js` | New. Shows Log in and Register, or the user's name and Log out |
-| `app/layout.js` | Wraps the app in `AuthProvider` and adds `UserMenu` to the header |
-| `components/AuthForm.js` | New. The login and register form. Posts to `/api/auth/login` or `/api/auth/register` through the rewrite, shows field errors, then loads the `next` page |
-| `app/login/page.js`, `app/register/page.js` | New. Server Components that read `?next=` and render the form |
-| `lib/next-path.js` | New. `safeNextPath()` rejects anything that isn't a path on this site, such as `//evil.example` |
-| `proxy.js` | New. Next.js 16's name for middleware. Redirects `/events/new` to the login page when the `campus.sid` cookie is missing |
-| `app/events/new/page.js` | Shows "Your session has ended" with a login link when the API answers 401 |
-| `components/RsvpForm.js` | One button for logged-in users (the API uses their name and email), a login link otherwise |
-| `components/Form.module.css` | Shared form styles (moved from `app/events/new/page.module.css`) |
+| `components/AuthProvider.js` | New. Asks `GET /api/auth/me` once when the app loads and shares the user: `undefined` while asking, `null` when nobody is logged in |
+| `components/UserMenu.js` | New. Log in and Register, or your name and Log out |
+| `app/layout.js` | Wraps the app in `AuthProvider` and puts `UserMenu` in the header |
+| `components/LoginForm.js`, `components/RegisterForm.js` | New. Post to `/api/auth/login` or `/api/auth/register` through the rewrite, show the API's messages, then load the `next` page |
+| `app/login/page.js`, `app/register/page.js` | New. Server Components that read `?next=` and show the form |
+| `lib/next-path.js` | New. `safeNextPath()` turns anything that isn't a path on this site, such as `//evil.example`, into `/events` |
+| `proxy.js` | New. Next.js 16's name for middleware. Sends `/events/new` to the login page when the `campus.sid` cookie is missing |
+| `app/events/new/page.js` | A "Log in again" link when the API answers 401 |
+| `components/RsvpForm.js` | One button for logged-in users (the API uses their name and email), a login link for everyone else |
+| `components/Form.module.css` | The form styles, moved from `app/events/new/page.module.css` and shared with the login and register forms |
 
 ## Pages
 

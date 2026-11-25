@@ -1,0 +1,10 @@
+.pagination {
+  display: flex;
+  gap: 1.5rem;
+  align-items: baseline;
+  margin-top: 1.5rem;
+}
+
+.disabled {
+  color: var(--muted);
+}

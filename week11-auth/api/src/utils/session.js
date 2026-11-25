@@ -1,33 +1,41 @@
-// express-session still uses callbacks. These wrap the three calls the app needs in promises,
-// so controllers can await them and a failure reaches the error handler.
+// express-session uses callbacks, from before async and await existed.
+// These two functions wrap them in promises, so the controllers can write await.
 
-// Replaces the session with a new one that has a new id. Call it on login and register: an attacker who
-// planted a session id in someone's browser before they logged in ("session fixation") is left with a dead id.
-export function regenerateSession(req) {
-  return new Promise((resolve, reject) => {
-    req.session.regenerate((error) => (error ? reject(error) : resolve()));
+// Logs the user in.
+export function startUserSession(req, user) {
+  return new Promise(function (resolve, reject) {
+    // A new session with a new id. If someone planted a session id in this browser before
+    // the login, that old id is now useless.
+    req.session.regenerate(function (error) {
+      if (error) {
+        reject(error);
+        return;
+      }
+
+      // Only the user's id goes in the session. requireAuth loads the rest from the database.
+      req.session.userId = user.id;
+
+      // Save now, so the session is in the database before the response reaches the browser.
+      req.session.save(function (saveError) {
+        if (saveError) {
+          reject(saveError);
+          return;
+        }
+        resolve();
+      });
+    });
   });
 }
 
-// Writes the session to the store now. Without it, the response can reach the browser before the store
-// has the session, and the very next request (for example GET /api/auth/me) looks logged out.
-export function saveSession(req) {
-  return new Promise((resolve, reject) => {
-    req.session.save((error) => (error ? reject(error) : resolve()));
+// Logs the user out: deletes the session from the database.
+export function endUserSession(req) {
+  return new Promise(function (resolve, reject) {
+    req.session.destroy(function (error) {
+      if (error) {
+        reject(error);
+        return;
+      }
+      resolve();
+    });
   });
-}
-
-// Deletes the session from the store. The cookie in the browser is cleared separately.
-export function destroySession(req) {
-  return new Promise((resolve, reject) => {
-    req.session.destroy((error) => (error ? reject(error) : resolve()));
-  });
-}
-
-// Logs the user in: a new session id, then only the user's id goes into the session.
-// Everything else about the user is loaded from the database on each request (see requireAuth).
-export async function startUserSession(req, user) {
-  await regenerateSession(req);
-  req.session.userId = user.id;
-  await saveSession(req);
 }
