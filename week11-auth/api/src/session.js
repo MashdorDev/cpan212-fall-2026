@@ -22,6 +22,16 @@ if (!mongoUrl) {
 // so restarting the API doesn't log everyone out.
 const store = MongoStore.create({ mongoUrl: mongoUrl, collectionName: 'sessions' });
 
+const cookieSettings = {
+  // JavaScript in the page can't read this cookie, so a script injected into the page can't steal it.
+  httpOnly: true,
+  // The browser doesn't send the cookie when another site posts a form to this API.
+  sameSite: 'lax',
+  // Only over HTTPS. Your computer uses plain http://localhost, so this is on only when deployed.
+  secure: process.env.NODE_ENV === 'production',
+  maxAge: SEVEN_DAYS,
+};
+
 export const sessionMiddleware = session({
   name: SESSION_COOKIE_NAME,
   // Signs the cookie. A cookie someone changed by hand no longer matches, and is ignored.
@@ -31,13 +41,5 @@ export const sessionMiddleware = session({
   resave: false,
   // Don't make a session (or send a cookie) until someone logs in.
   saveUninitialized: false,
-  cookie: {
-    // JavaScript in the page can't read this cookie, so a script injected into the page can't steal it.
-    httpOnly: true,
-    // The browser doesn't send the cookie when another site posts a form to this API.
-    sameSite: 'lax',
-    // Only over HTTPS. Your computer uses plain http://localhost, so this is on only when deployed.
-    secure: process.env.NODE_ENV === 'production',
-    maxAge: SEVEN_DAYS,
-  },
+  cookie: cookieSettings,
 });

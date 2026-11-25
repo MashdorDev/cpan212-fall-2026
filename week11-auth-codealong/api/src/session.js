@@ -24,8 +24,21 @@ if (!mongoUrl) {
 //
 //   const store = MongoStore.create({ mongoUrl: mongoUrl, collectionName: 'sessions' });
 
-// TODO STEP 2b: the session middleware and its cookie
-// The browser only gets a random session id in a cookie. The data (who is logged in) stays in MongoDB.
+// TODO STEP 2b: the cookie's settings
+// The browser only gets a random session id in this cookie. Each setting closes one way to steal it.
+// Type under this comment:
+//
+//   const cookieSettings = {
+//     // JavaScript in the page can't read this cookie, so a script injected into the page can't steal it.
+//     httpOnly: true,
+//     // The browser doesn't send the cookie when another site posts a form to this API.
+//     sameSite: 'lax',
+//     // Only over HTTPS. Your computer uses plain http://localhost, so this is on only when deployed.
+//     secure: process.env.NODE_ENV === 'production',
+//     maxAge: SEVEN_DAYS,
+//   };
+
+// TODO STEP 2c: the session middleware
 // Replace the 3 lines of sessionMiddleware below with:
 //
 //   export const sessionMiddleware = session({
@@ -37,18 +50,10 @@ if (!mongoUrl) {
 //     resave: false,
 //     // Don't make a session (or send a cookie) until someone logs in.
 //     saveUninitialized: false,
-//     cookie: {
-//       // JavaScript in the page can't read this cookie, so a script injected into the page can't steal it.
-//       httpOnly: true,
-//       // The browser doesn't send the cookie when another site posts a form to this API.
-//       sameSite: 'lax',
-//       // Only over HTTPS. Your computer uses plain http://localhost, so this is on only when deployed.
-//       secure: process.env.NODE_ENV === 'production',
-//       maxAge: SEVEN_DAYS,
-//     },
+//     cookie: cookieSettings,
 //   });
 //
-// Check: nothing yet. Step 2c turns it on.
+// Check: nothing yet. Step 2d turns it on.
 export const sessionMiddleware = function (req, res, next) {
   next();
 };

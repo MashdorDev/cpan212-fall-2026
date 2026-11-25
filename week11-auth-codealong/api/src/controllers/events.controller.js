@@ -142,13 +142,13 @@ export async function createEvent(req, res) {
     capacity: req.body.capacity,
     // TODO STEP 6b: you are the organizer
     // Try it first: log in, open http://localhost:3000/events/new and create an event.
-    // It says "Validation failed": the schema needs an organizer (step 1d) and nobody sends one.
+    // It says "Validation failed": the schema needs an organizer (step 1e) and nobody sends one.
     // The organizer comes from the session, never from the body, so nobody can create an event in
     // someone else's name. Type under this comment:
     //
     //   organizer: req.user._id,
     //
-    // Check: create the event again. It opens, and its JSON has your id as "organizer".
+    // Check: create the event again. It opens.
   });
 
   res.location('/api/events/' + event.id);

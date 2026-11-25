@@ -4,15 +4,21 @@ import { HttpError } from '../utils/http-error.js';
 // Put this in front of a route that needs a logged-in user.
 // No session: 401. Otherwise the user goes in req.user for the controller.
 export async function requireAuth(req, res, next) {
-  // TODO STEP 4a: who is asking?
+  // TODO STEP 4a: is there a session with a user in it?
   // express-session found the session from the cookie and put it in req.session.
-  // The session only holds the id. If the account was deleted since, treat it as logged out.
-  // Replace the throw line below with:
+  // Type under this comment:
   //
   //   const userId = req.session.userId;
   //   if (!userId) {
   //     throw new HttpError(401, 'Log in to do this');
   //   }
+  //
+  // Check: nothing yet. Step 4c is the first route that uses requireAuth.
+
+  // TODO STEP 4b: load the user
+  // The session only holds the id. If the account was deleted since, treat it as logged out.
+  // req.user is how the controller finds out who is asking. Replace the throw line below with:
+  //
   //   const user = await User.findById(userId);
   //   if (!user) {
   //     throw new HttpError(401, 'Log in to do this');
@@ -20,8 +26,8 @@ export async function requireAuth(req, res, next) {
   //   req.user = user;
   //   next();
   //
-  // Check: nothing yet. Step 4b is the first route that uses it.
-  throw new HttpError(401, 'Log in to do this (TODO STEP 4a)');
+  // Check: nothing yet. Step 4c uses req.user.
+  throw new HttpError(401, 'Log in to do this (TODO STEP 4b)');
 }
 
 // The same check for the EJS admin pages. They are HTML, so a visitor who isn't logged in
