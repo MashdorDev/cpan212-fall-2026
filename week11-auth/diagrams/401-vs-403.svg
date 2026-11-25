@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 470" width="960" height="470" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#222"/></marker>
+  </defs>
+  <rect width="960" height="470" fill="#ffffff"/>
+  <text x="480" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#222">PATCH /api/events/:id</text>
+  <text x="480" y="64" text-anchor="middle" font-size="17" fill="#444">Two different questions, asked in order.</text>
+
+  <rect x="30" y="170" width="150" height="70" rx="8" fill="#eeeeee" stroke="#999999" stroke-width="2"/>
+  <text x="105" y="200" text-anchor="middle" font-size="15" font-weight="700" fill="#333">Request</text>
+  <text x="105" y="222" text-anchor="middle" font-size="13" fill="#555">with or without a cookie</text>
+  <line x1="180" y1="205" x2="242" y2="205" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+
+  <rect x="250" y="150" width="210" height="110" rx="8" fill="#e8f0fb" stroke="#2b5fa8" stroke-width="2"/>
+  <text x="355" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#1d4277">requireAuth</text>
+  <text x="355" y="206" text-anchor="middle" font-size="14" fill="#1d4277">Who are you?</text>
+  <text x="355" y="232" text-anchor="middle" font-size="13" fill="#1d4277">a session with a userId</text>
+  <line x1="460" y1="205" x2="532" y2="205" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="496" y="195" text-anchor="middle" font-size="13" fill="#2f7d32">yes</text>
+
+  <rect x="540" y="150" width="210" height="110" rx="8" fill="#e8f0fb" stroke="#2b5fa8" stroke-width="2"/>
+  <text x="645" y="180" text-anchor="middle" font-size="15" font-weight="700" fill="#1d4277">checkOrganizer</text>
+  <text x="645" y="206" text-anchor="middle" font-size="14" fill="#1d4277">Is this yours?</text>
+  <text x="645" y="232" text-anchor="middle" font-size="13" fill="#1d4277">event.organizer = your id</text>
+  <line x1="750" y1="205" x2="812" y2="205" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="781" y="195" text-anchor="middle" font-size="13" fill="#2f7d32">yes</text>
+
+  <rect x="820" y="170" width="120" height="70" rx="8" fill="#e5f3e6" stroke="#2f7d32" stroke-width="2"/>
+  <text x="880" y="200" text-anchor="middle" font-size="16" font-weight="700" fill="#1f5c22">200</text>
+  <text x="880" y="222" text-anchor="middle" font-size="13" fill="#1f5c22">changed</text>
+
+  <line x1="355" y1="260" x2="355" y2="322" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="368" y="296" font-size="13" fill="#b3261e">no</text>
+  <rect x="250" y="330" width="210" height="90" rx="8" fill="#fbe9e7" stroke="#b3261e" stroke-width="2"/>
+  <text x="355" y="360" text-anchor="middle" font-size="18" font-weight="700" fill="#8c1d18">401</text>
+  <text x="355" y="384" text-anchor="middle" font-size="14" fill="#8c1d18">"Log in to do this"</text>
+  <text x="355" y="406" text-anchor="middle" font-size="13" fill="#8c1d18">We don't know who you are</text>
+
+  <line x1="645" y1="260" x2="645" y2="322" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="658" y="296" font-size="13" fill="#b3261e">no</text>
+  <rect x="540" y="330" width="210" height="90" rx="8" fill="#fbe9e7" stroke="#b3261e" stroke-width="2"/>
+  <text x="645" y="360" text-anchor="middle" font-size="18" font-weight="700" fill="#8c1d18">403</text>
+  <text x="645" y="384" text-anchor="middle" font-size="14" fill="#8c1d18">"Only the organizer..."</text>
+  <text x="645" y="406" text-anchor="middle" font-size="13" fill="#8c1d18">We know you. It isn't yours.</text>
+</svg>

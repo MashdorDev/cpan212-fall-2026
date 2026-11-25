@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 560" width="960" height="560" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#222"/></marker>
+  </defs>
+  <rect width="960" height="560" fill="#ffffff"/>
+  <text x="480" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#222">Logging in with a session</text>
+  <text x="480" y="64" text-anchor="middle" font-size="17" fill="#444">The browser only holds a random id. Who you are stays in MongoDB.</text>
+
+  <!-- column headers -->
+  <rect x="40" y="90" width="200" height="44" rx="8" fill="#e8f0fb" stroke="#2b5fa8" stroke-width="2"/>
+  <text x="140" y="118" text-anchor="middle" font-size="17" font-weight="700" fill="#1d4277">Browser</text>
+  <rect x="380" y="90" width="200" height="44" rx="8" fill="#e5f3e6" stroke="#2f7d32" stroke-width="2"/>
+  <text x="480" y="118" text-anchor="middle" font-size="17" font-weight="700" fill="#1f5c22">Express API</text>
+  <rect x="720" y="90" width="200" height="44" rx="8" fill="#fff4e0" stroke="#b26a00" stroke-width="2"/>
+  <text x="820" y="118" text-anchor="middle" font-size="17" font-weight="700" fill="#7a4800">MongoDB</text>
+  <line x1="140" y1="134" x2="140" y2="530" stroke="#bbbbbb" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="480" y1="134" x2="480" y2="530" stroke="#bbbbbb" stroke-width="2" stroke-dasharray="6 6"/>
+  <line x1="820" y1="134" x2="820" y2="530" stroke="#bbbbbb" stroke-width="2" stroke-dasharray="6 6"/>
+
+  <!-- 1 login -->
+  <text x="20" y="172" font-size="16" font-weight="700" fill="#222">1</text>
+  <line x1="145" y1="178" x2="472" y2="178" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="308" y="168" text-anchor="middle" font-size="14" fill="#222">POST /api/auth/login</text>
+  <text x="308" y="198" text-anchor="middle" font-size="13" fill="#555">{ email, password }</text>
+  <line x1="485" y1="218" x2="812" y2="218" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="650" y="208" text-anchor="middle" font-size="14" fill="#222">find the user, bcrypt.compare()</text>
+
+  <!-- 2 session saved -->
+  <text x="20" y="262" font-size="16" font-weight="700" fill="#222">2</text>
+  <line x1="485" y1="268" x2="812" y2="268" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="650" y="258" text-anchor="middle" font-size="14" fill="#222">save a session</text>
+  <rect x="700" y="282" width="240" height="56" rx="6" fill="#fff4e0" stroke="#b26a00" stroke-width="1.5"/>
+  <text x="820" y="305" text-anchor="middle" font-size="13" font-family="Consolas, monospace" fill="#7a4800">sessions: _id "k3Xq9..."</text>
+  <text x="820" y="325" text-anchor="middle" font-size="13" font-family="Consolas, monospace" fill="#7a4800">userId "6b07...642a"</text>
+  <line x1="472" y1="350" x2="148" y2="350" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="308" y="340" text-anchor="middle" font-size="14" fill="#222">200, Set-Cookie: campus.sid=k3Xq9...</text>
+  <text x="308" y="370" text-anchor="middle" font-size="13" fill="#555">httpOnly: page scripts can't read it</text>
+
+  <!-- 3 later request -->
+  <text x="20" y="420" font-size="16" font-weight="700" fill="#222">3</text>
+  <line x1="145" y1="426" x2="472" y2="426" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="308" y="416" text-anchor="middle" font-size="14" fill="#222">GET /api/auth/me</text>
+  <text x="308" y="446" text-anchor="middle" font-size="13" fill="#555">Cookie: campus.sid=k3Xq9... (sent by itself)</text>
+  <line x1="485" y1="466" x2="812" y2="466" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="650" y="456" text-anchor="middle" font-size="14" fill="#222">session k3Xq9... → userId → user</text>
+  <line x1="472" y1="506" x2="148" y2="506" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <text x="308" y="496" text-anchor="middle" font-size="14" fill="#222">200 { name: "Ava Martin", ... }</text>
+  <text x="308" y="526" text-anchor="middle" font-size="13" fill="#555">no cookie, or no session: 401</text>
+</svg>

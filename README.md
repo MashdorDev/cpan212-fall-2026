@@ -48,6 +48,7 @@ To try an API, open its `GET` routes in your browser and use `curl` for everythi
 | `week10-mongoose-queries/` | Pages, sorting and a date filter, indexes, RSVPs with `populate`, and a NoSQL injection demo |
 | `week10-mongoose-queries-codealong/` | The same project with the queries, indexes and RSVPs left as small numbered steps to type in class |
 | `week11-auth/` | Accounts: hashed passwords, sessions stored in MongoDB, protected routes and pages, organizer-only edits, a JWT example |
+| `week11-auth-codealong/` | The same project with the User model, sessions, register, login and the organizer checks left as small numbered steps to type in class |
 | `week12-security/` | Hardening: helmet and a CSP, rate limits, CORS allowlist, upload checks, a security checklist, local HTTPS notes |
 | `week13-deployment/` | Ready to deploy: health check, graceful shutdown, `render.yaml`, Vercel settings and step-by-step deploy notes |
 
