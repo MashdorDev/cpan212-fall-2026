@@ -1,0 +1,70 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 430" width="960" height="430" font-family="Segoe UI, Helvetica, Arial, sans-serif">
+  <defs>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#222"/></marker>
+    <g id="cookie">
+      <circle r="17" fill="#c98a3b" stroke="#7a4800" stroke-width="2"/>
+      <circle cx="-6" cy="-5" r="2.8" fill="#5a3300"/><circle cx="6" cy="2" r="2.8" fill="#5a3300"/><circle cx="-2" cy="7" r="2.2" fill="#5a3300"/>
+    </g>
+    <g id="block">
+      <circle r="18" fill="#ffffff" stroke="#b3261e" stroke-width="4"/>
+      <line x1="-12" y1="12" x2="12" y2="-12" stroke="#b3261e" stroke-width="4"/>
+    </g>
+  </defs>
+  <rect width="960" height="430" fill="#ffffff"/>
+  <text x="480" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#222">Three ways to steal a session cookie, and the setting that stops each one</text>
+
+  <!-- httpOnly -->
+  <rect x="20" y="70" width="290" height="340" rx="10" fill="#f7f7f7" stroke="#cccccc" stroke-width="2"/>
+  <text x="165" y="102" text-anchor="middle" font-size="19" font-weight="700" font-family="Consolas, monospace" fill="#1d4277">httpOnly: true</text>
+  <rect x="45" y="120" width="240" height="150" rx="6" fill="#ffffff" stroke="#999999" stroke-width="2"/>
+  <rect x="45" y="120" width="240" height="22" rx="6" fill="#e6e6e6"/>
+  <text x="60" y="136" font-size="12" fill="#555">localhost:3000/events</text>
+  <text x="60" y="172" font-size="13" font-family="Consolas, monospace" fill="#b3261e">&lt;script&gt; injected</text>
+  <text x="60" y="192" font-size="13" font-family="Consolas, monospace" fill="#b3261e">document.cookie</text>
+  <use href="#cookie" x="240" y="232"/>
+  <line x1="150" y1="205" x2="222" y2="226" stroke="#b3261e" stroke-width="2" stroke-dasharray="5 4" marker-end="url(#a)"/>
+  <use href="#block" x="190" y="218"/>
+  <text x="165" y="300" text-anchor="middle" font-size="14" fill="#333">A script slipped into the page</text>
+  <text x="165" y="320" text-anchor="middle" font-size="14" fill="#333">tries to read the cookie.</text>
+  <text x="165" y="352" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">The browser hides it from</text>
+  <text x="165" y="372" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">JavaScript. It only travels</text>
+  <text x="165" y="392" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">with requests.</text>
+
+  <!-- sameSite -->
+  <rect x="335" y="70" width="290" height="340" rx="10" fill="#f7f7f7" stroke="#cccccc" stroke-width="2"/>
+  <text x="480" y="102" text-anchor="middle" font-size="19" font-weight="700" font-family="Consolas, monospace" fill="#1d4277">sameSite: 'lax'</text>
+  <rect x="355" y="130" width="110" height="80" rx="6" fill="#fbe9e7" stroke="#b3261e" stroke-width="2"/>
+  <text x="410" y="160" text-anchor="middle" font-size="13" font-weight="700" fill="#8c1d18">evil.example</text>
+  <text x="410" y="180" text-anchor="middle" font-size="12" fill="#8c1d18">hidden form:</text>
+  <text x="410" y="196" text-anchor="middle" font-size="12" fill="#8c1d18">DELETE event</text>
+  <rect x="505" y="130" width="100" height="80" rx="6" fill="#e5f3e6" stroke="#2f7d32" stroke-width="2"/>
+  <text x="555" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#1f5c22">our API</text>
+  <text x="555" y="185" text-anchor="middle" font-size="12" fill="#1f5c22">sees no cookie</text>
+  <line x1="465" y1="170" x2="498" y2="170" stroke="#222" stroke-width="2" marker-end="url(#a)"/>
+  <use href="#cookie" x="410" y="245"/>
+  <use href="#block" x="440" y="245"/>
+  <text x="480" y="300" text-anchor="middle" font-size="14" fill="#333">Another site makes your browser</text>
+  <text x="480" y="320" text-anchor="middle" font-size="14" fill="#333">post to our API.</text>
+  <text x="480" y="352" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">The cookie stays behind, so</text>
+  <text x="480" y="372" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">the API answers 401. Clicking a</text>
+  <text x="480" y="392" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">normal link still sends it.</text>
+
+  <!-- secure -->
+  <rect x="650" y="70" width="290" height="340" rx="10" fill="#f7f7f7" stroke="#cccccc" stroke-width="2"/>
+  <text x="795" y="102" text-anchor="middle" font-size="19" font-weight="700" font-family="Consolas, monospace" fill="#1d4277">secure (deployed)</text>
+  <text x="680" y="150" font-size="14" font-weight="700" fill="#8c1d18">http://</text>
+  <line x1="740" y1="146" x2="905" y2="146" stroke="#999999" stroke-width="3"/>
+  <use href="#block" x="822" y="146"/>
+  <circle cx="822" cy="186" r="10" fill="#555"/>
+  <rect x="808" y="196" width="28" height="22" rx="4" fill="#555"/>
+  <text x="850" y="212" font-size="12" fill="#555">someone on the</text>
+  <text x="850" y="227" font-size="12" fill="#555">same Wi-Fi</text>
+  <text x="680" y="262" font-size="14" font-weight="700" fill="#1f5c22">https://</text>
+  <line x1="745" y1="258" x2="895" y2="258" stroke="#2f7d32" stroke-width="3" marker-end="url(#a)"/>
+  <use href="#cookie" x="815" y="258"/>
+  <text x="795" y="300" text-anchor="middle" font-size="14" fill="#333">On plain http, anyone on the</text>
+  <text x="795" y="320" text-anchor="middle" font-size="14" fill="#333">network can read the cookie.</text>
+  <text x="795" y="352" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">The browser only sends it</text>
+  <text x="795" y="372" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">over https. Off on localhost,</text>
+  <text x="795" y="392" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">which is plain http.</text>
+</svg>
