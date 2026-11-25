@@ -1,0 +1,24 @@
+<%- include('partials/header', { title }) %>
+
+<h1>Log in</h1>
+<p>Use the same account as the Campus Events web app.</p>
+
+<% if (error) { %>
+  <p class="error-summary" role="alert"><%= error %></p>
+<% } %>
+
+<form class="event-form" method="post" action="/admin/login">
+  <div class="field">
+    <label for="email">Email</label>
+    <input id="email" name="email" type="email" value="<%= email %>" autocomplete="email" required />
+  </div>
+
+  <div class="field">
+    <label for="password">Password</label>
+    <input id="password" name="password" type="password" autocomplete="current-password" required />
+  </div>
+
+  <button type="submit">Log in</button>
+</form>
+
+<%- include('partials/footer') %>

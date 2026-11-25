@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %> | Campus Events admin</title>
+    <link rel="stylesheet" href="/css/admin.css" />
+    <script src="/js/confirm-delete.js" defer></script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="/admin/events">Campus Events admin</a>
+      <nav>
+        <a href="/admin/events">Events</a>
+        <a href="/admin/events/new">New event</a>
+        <a href="/">Public page</a>
+      </nav>
+      <%# locals.user instead of user: a template throws a ReferenceError for a variable that was never passed in. %>
+      <% if (locals.user) { %>
+        <form class="logout" method="post" action="/admin/logout">
+          <span><%= locals.user.name %></span>
+          <button type="submit">Log out</button>
+        </form>
+      <% } %>
+    </header>
+    <main>

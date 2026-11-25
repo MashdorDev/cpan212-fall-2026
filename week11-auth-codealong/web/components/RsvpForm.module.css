@@ -1,0 +1,72 @@
+.rsvp {
+  max-width: 28rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.rsvp h2 {
+  margin-top: 0;
+}
+
+.form {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-weight: 600;
+}
+
+.field input {
+  width: 100%;
+  padding: 0.45rem;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font: inherit;
+}
+
+.error {
+  margin: 0.25rem 0 0;
+  font-size: 0.875rem;
+  color: var(--danger);
+}
+
+.success,
+.failure {
+  padding: 0.75rem;
+  border: 1px solid;
+  border-radius: 4px;
+}
+
+.success {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.failure {
+  border-color: var(--danger);
+  color: var(--danger);
+}
+
+.code {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.submit {
+  justify-self: start;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  background: var(--accent);
+  color: var(--accent-text);
+  cursor: pointer;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
