@@ -45,13 +45,21 @@ Run `npm run seed` again if your database still has last week's events. Events n
 
 Log in as Ava in one browser window and as Sam in a private window to see the 403 rules.
 
-## How a session works
+## Pictures
 
-![Logging in with a session](diagrams/session-login.svg)
+![Where the 7 steps go](diagrams/step-map.svg)
+
+![Saving a password with bcrypt](diagrams/password-hashing.svg)
+
+![The cookie settings](diagrams/cookie-settings.svg)
 
 The cookie holds a random id and nothing else. The session document in MongoDB holds `userId`. On every request, `requireAuth` finds the session from the cookie and loads the user.
 
-![401 vs 403](diagrams/401-vs-403.svg)
+![Logging in with a session](diagrams/session-login-animated.svg)
+
+![401 vs 403](diagrams/401-vs-403-animated.svg)
+
+`session-login.svg` and `401-vs-403.svg` are the same two diagrams without the animation, for printing.
 
 ## New and changed routes
 

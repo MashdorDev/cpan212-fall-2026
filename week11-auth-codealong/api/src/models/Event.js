@@ -48,7 +48,7 @@ const eventSchema = new mongoose.Schema(
       default: null,
       maxlength: [500, 'Image URL must be 500 characters or fewer'],
     },
-    // TODO STEP 1d: who organizes the event
+    // TODO STEP 1e: who organizes the event
     // The user's id, not a copy of the user: a reference, like the event in an RSVP.
     // Only the organizer will be allowed to change or delete the event (step 6). Type under this comment:
     //
@@ -58,8 +58,8 @@ const eventSchema = new mongoose.Schema(
     //     required: [true, 'Organizer is required'],
     //   },
     //
-    // Check: run npm run seed again. Every event in http://localhost:4000/api/events
-    // now has an "organizer" (a user's id). Ava organizes 4 events, Sam the other 4.
+    // Check: run npm run seed again. Every event in http://localhost:4000/api/events now has an
+    // "organizer" (a user's id). Ava organizes 4 events, Sam the other 4.
   },
   {
     // Mongoose fills in createdAt when the event is first saved.

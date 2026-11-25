@@ -24,7 +24,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(import.meta.dirname, '..', 'public')));
 app.use('/uploads', express.static(UPLOADS_DIR));
-// TODO STEP 2c: turn sessions on
+// TODO STEP 2d: turn sessions on
 // After the static files, so loading a CSS file or an image doesn't look up a session.
 // Before the routes, so they can read and write req.session. Type under this comment:
 //

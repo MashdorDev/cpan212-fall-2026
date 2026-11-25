@@ -1,6 +1,6 @@
 # Week 11 codealong: accounts, sessions and "is this yours?"
 
-Tonight the app gets accounts. People register and log in, the API remembers them with a session, and only an event's organizer can change it, delete it or see who is coming. Open this folder in class. Everything is built except 7 steps in the API, marked `TODO STEP` in the code.
+Tonight the app gets accounts. People register and log in, the API remembers them with a session, and only an event's organizer can change it, delete it or see who is coming. Open this folder in class. Everything is built except 7 steps in the API, cut into 30 small parts marked `TODO STEP` in the code.
 
 Each step is cut into small parts (1a, 1b, 1c...). Every part sits exactly where its lines go, shows the few lines to type, and says why. Most parts end with a **Check** you can try right away. Do them in order: in the Todo Tree panel they're listed STEP 1a, 1b, 1c... from top to bottom.
 
@@ -39,15 +39,35 @@ The admin pages (http://localhost:4000/admin/events) show an error until step 2.
 
 ## The steps
 
-- [ ] **Step 1**, `api/src/models/User.js` and `Event.js` (1a to 1d): the User model with a unique email and a password hash that never leaves the API, and an `organizer` on every event. `npm run seed` makes Ava and Sam.
-- [ ] **Step 2**, `api/src/session.js` and `app.js` (2a to 2c): sessions saved in MongoDB, and the cookie settings that keep the session id safe.
-- [ ] **Step 3**, `api/src/controllers/auth.controller.js` (3a to 3d): register. Password rules, `bcrypt.hash()`, 409 for an email that's taken, and a session at the end.
-- [ ] **Step 4**, `api/src/middleware/require-auth.js` and the same controller (4a, 4b): `requireAuth` reads the session. The header shows your name.
-- [ ] **Step 5**, the same controller (5a to 5d): log in with `bcrypt.compare()` and one message for every failure, then log out.
+- [ ] **Step 1**, `api/src/models/User.js` and `Event.js` (1a to 1e): the User model with a unique email and a password hash that never leaves the API, and an `organizer` on every event. `npm run seed` makes Ava and Sam.
+- [ ] **Step 2**, `api/src/session.js` and `app.js` (2a to 2d): sessions saved in MongoDB, and the cookie settings that keep the session id safe.
+- [ ] **Step 3**, `api/src/controllers/auth.controller.js` (3a to 3e): register. Password rules, `bcrypt.hash()`, 409 for an email that's taken, and a session at the end.
+- [ ] **Step 4**, `api/src/middleware/require-auth.js` and the same controller (4a to 4c): `requireAuth` reads the session. The header shows your name.
+- [ ] **Step 5**, the same controller (5a to 5e): log in with `bcrypt.compare()` and one message for every failure, then log out.
 - [ ] **Step 6**, `api/src/routes/events.routes.js`, `require-auth.js` and `events.controller.js` (6a to 6e): 401 when you aren't logged in, you become the organizer of what you create, and 403 when it isn't yours.
 - [ ] **Step 7**, the routes and `rsvps.controller.js` (7a to 7c): RSVP as yourself, and only the organizer sees the RSVP list.
 
-See [`../week11-auth/diagrams/session-login.svg`](../week11-auth/diagrams/session-login.svg) for what the cookie and the session are, and [`../week11-auth/diagrams/401-vs-403.svg`](../week11-auth/diagrams/401-vs-403.svg) for steps 6 and 7.
+## Pictures for each step
+
+Where every step goes in the app:
+
+![Where the 7 steps go](../week11-auth/diagrams/step-map.svg)
+
+Steps 1 and 3, what bcrypt does with a password (animated):
+
+![Saving a password with bcrypt](../week11-auth/diagrams/password-hashing.svg)
+
+Step 2, what each cookie setting stops:
+
+![The cookie settings](../week11-auth/diagrams/cookie-settings.svg)
+
+Steps 3 to 5, the session and its cookie (animated):
+
+![Logging in with a session](../week11-auth/diagrams/session-login-animated.svg)
+
+Steps 6 and 7, 401 and 403 (animated):
+
+![401 vs 403](../week11-auth/diagrams/401-vs-403-animated.svg)
 
 ## Demo accounts (after step 1)
 

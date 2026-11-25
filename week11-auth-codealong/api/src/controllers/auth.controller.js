@@ -44,16 +44,22 @@ export async function register(req, res) {
   // 53 more characters. Press Create account again: a different hash for the same password.
   // Then delete the console.log line.
 
-  // TODO STEP 3c: save the user, 409 when the email is taken
-  // save() checks the schema rules from step 1. A bad name or email goes to the error handler (400).
-  // The unique index refuses a second account with the same email: error code 11000.
-  // Type under this comment:
+  // TODO STEP 3c: build the user
+  // The hash goes in, never the password. Type under this comment:
   //
   //   const user = new User({
   //     name: req.body.name,
   //     email: req.body.email,
   //     passwordHash: passwordHash,
   //   });
+  //
+  // Check: nothing yet. Step 3d saves it.
+
+  // TODO STEP 3d: save it, 409 when the email is taken
+  // save() checks the schema rules from step 1. A bad name or email goes to the error handler (400).
+  // The unique index refuses a second account with the same email: error code 11000.
+  // Type under this comment:
+  //
   //   try {
   //     await user.save();
   //   } catch (error) {
@@ -66,7 +72,7 @@ export async function register(req, res) {
   // Check: register as yourself. The form still says "not built yet", but in Compass you are in users.
   // Press Create account again: "Already registered" under Email.
 
-  // TODO STEP 3d: log in and answer 201
+  // TODO STEP 3e: log in and answer 201
   // startUserSession() (in utils/session.js) makes a new session with your id in it, and saves it.
   // Replace the throw line below with:
   //
@@ -76,7 +82,7 @@ export async function register(req, res) {
   // Check: register with a new email. The page changes to the events list. In Compass, the sessions
   // collection has a document with your userId in it. The header still says "Log in": step 4 teaches
   // the API who you are.
-  throw new HttpError(501, 'Register is not built yet (TODO STEP 3d)');
+  throw new HttpError(501, 'Register is not built yet (TODO STEP 3e)');
 }
 
 export async function login(req, res) {
@@ -84,16 +90,22 @@ export async function login(req, res) {
     throw new HttpError(400, 'Validation failed', { body: 'Send a JSON object' });
   }
 
-  // TODO STEP 5a: find the user by email
-  // Emails are saved in lowercase, so look for the lowercase version.
-  // No user: the same message as a wrong password, so nobody can use this form to find out who
-  // has an account. Type under this comment:
+  // TODO STEP 5a: an email and a password, both text
+  // Someone could send {"email": {"$ne": null}} or nothing at all. Type under this comment:
   //
   //   const email = req.body.email;
   //   const password = req.body.password;
   //   if (typeof email !== 'string' || typeof password !== 'string') {
   //     throw new HttpError(401, 'Email or password is incorrect');
   //   }
+  //
+  // Check: nothing yet. Step 5b uses the email.
+
+  // TODO STEP 5b: find the user by email
+  // Emails are saved in lowercase, so look for the lowercase version.
+  // No user: the same message as a wrong password, so nobody can use this form to find out who
+  // has an account. Type under this comment:
+  //
   //   const user = await User.findOne({ email: email.toLowerCase() });
   //   if (!user) {
   //     throw new HttpError(401, 'Email or password is incorrect');
@@ -101,7 +113,7 @@ export async function login(req, res) {
   //
   // Check: on http://localhost:3000/login, log in as nobody@example.com: "Email or password is incorrect".
 
-  // TODO STEP 5b: check the password
+  // TODO STEP 5c: check the password
   // We can't turn the hash back into the password. compare() hashes what was typed, with the salt
   // stored in passwordHash, and compares the two hashes. Type under this comment:
   //
@@ -112,18 +124,18 @@ export async function login(req, res) {
   //
   // Check: log in as ava@example.com with the password "wrong": the same message as for nobody.
 
-  // TODO STEP 5c: log in
+  // TODO STEP 5d: log in
   // Replace the throw line below with:
   //
   //   await startUserSession(req, user);
   //   res.json({ data: user });
   //
   // Check: log in as ava@example.com with the password campus-demo-ava. The header says Ava Martin.
-  throw new HttpError(501, 'Login is not built yet (TODO STEP 5c)');
+  throw new HttpError(501, 'Login is not built yet (TODO STEP 5d)');
 }
 
 export async function logout(req, res) {
-  // TODO STEP 5d: log out
+  // TODO STEP 5e: log out
   // endUserSession() deletes the session from MongoDB. clearCookie() tells the browser to delete
   // the cookie too. Replace the throw line below with:
   //
@@ -133,17 +145,17 @@ export async function logout(req, res) {
   //
   // Check: press Log out in the header. It says Log in and Register again, and in Compass the
   // session is gone from the sessions collection.
-  throw new HttpError(501, 'Logout is not built yet (TODO STEP 5d)');
+  throw new HttpError(501, 'Logout is not built yet (TODO STEP 5e)');
 }
 
 // requireAuth already loaded the user into req.user.
 export function me(req, res) {
-  // TODO STEP 4b: send the logged-in user
+  // TODO STEP 4c: send the logged-in user
   // The web app's header asks this route who is logged in. Replace the throw line below with:
   //
   //   res.json({ data: req.user });
   //
   // Check: reload http://localhost:3000. The header shows your name and Log out.
-  // Open http://localhost:3000/api/auth/me: your name and email, and no passwordHash (step 1c).
-  throw new HttpError(501, 'Not built yet (TODO STEP 4b)');
+  // Open http://localhost:3000/api/auth/me: your name and email, and no passwordHash (step 1d).
+  throw new HttpError(501, 'Not built yet (TODO STEP 4c)');
 }

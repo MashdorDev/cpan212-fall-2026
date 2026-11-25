@@ -3,10 +3,8 @@ import mongoose from 'mongoose';
 // One account. The password itself is never saved, only a bcrypt hash of it.
 const userSchema = new mongoose.Schema(
   {
-    // TODO STEP 1a: name and email
-    // The same rules as the RSVP's name and email last week, plus one new one: unique.
-    // unique makes MongoDB refuse a second account with the same email (error code 11000).
-    // Type under this comment:
+    // TODO STEP 1a: the name
+    // The same rules as the RSVP's name last week. Type under this comment:
     //
     //   name: {
     //     type: String,
@@ -15,6 +13,11 @@ const userSchema = new mongoose.Schema(
     //     minlength: [2, 'Name must be 2 to 100 characters'],
     //     maxlength: [100, 'Name must be 2 to 100 characters'],
     //   },
+
+    // TODO STEP 1b: the email, one account each
+    // unique is new: MongoDB refuses a second account with the same email (error code 11000).
+    // lowercase saves Ava@Example.com as ava@example.com. Type under this comment:
+    //
     //   email: {
     //     type: String,
     //     required: [true, 'Email is required'],
@@ -25,7 +28,7 @@ const userSchema = new mongoose.Schema(
     //     match: [/^[^\s@]+@[^\s@]+\.[^\s@]+$/, 'Email must look like name@example.com'],
     //   },
 
-    // TODO STEP 1b: the password hash
+    // TODO STEP 1c: the password hash
     // Never the password itself. A hash looks like $2b$12$Q9..., and you can't turn it back into
     // the password. Step 3 makes it. Type under this comment:
     //
@@ -43,14 +46,14 @@ const userSchema = new mongoose.Schema(
         ret.id = ret._id.toString();
         delete ret._id;
         delete ret.__v;
-        // TODO STEP 1c: never send the hash
+        // TODO STEP 1d: never send the hash
         // Even a hash helps someone guessing passwords, so it never leaves the API.
         // Type under this comment:
         //
         //   delete ret.passwordHash;
         //
-        // Check: in a third terminal, cd api and run npm run seed. It prints "Inserted 2 users". In Compass, campus_events > users has Ava and Sam, and each
-        // passwordHash starts with $2b$12$.
+        // Check: in a third terminal, cd api and run npm run seed. It prints "Inserted 2 users".
+        // In Compass, campus_events > users has Ava and Sam, and each passwordHash starts with $2b$12$.
         return ret;
       },
     },
