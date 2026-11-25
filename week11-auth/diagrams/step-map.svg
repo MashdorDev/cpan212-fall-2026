@@ -37,7 +37,7 @@
   <rect x="370" y="250" width="380" height="160" rx="8" fill="#e5f3e6" stroke="#2f7d32" stroke-width="2"/>
   <text x="560" y="276" text-anchor="middle" font-size="14" font-weight="700" fill="#1f5c22">controllers</text>
   <text x="395" y="310" font-size="14" fill="#1f5c22">register: hash, save, start a session</text>
-  <text x="395" y="340" font-size="14" fill="#1f5c22">me, login, logout</text>
+  <text x="395" y="340" font-size="14" fill="#1f5c22">login, logout (and me, step 4c)</text>
   <text x="395" y="370" font-size="14" fill="#1f5c22">events: organizer, checkOrganizer (403)</text>
   <text x="395" y="400" font-size="14" fill="#1f5c22">RSVPs: name and email from req.user</text>
 

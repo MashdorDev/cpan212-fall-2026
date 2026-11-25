@@ -7,13 +7,13 @@
       .d1 { animation-name: d1; } .d2 { animation-name: d2; } .d3 { animation-name: d3; }
       @keyframes d1 {
         0% { opacity: 0; transform: translate(105px, 205px) } 2% { opacity: 1; transform: translate(105px, 205px) }
-        10% { opacity: 1; transform: translate(355px, 205px) } 18%, 30% { opacity: 1; transform: translate(355px, 306px) }
-        32%, 100% { opacity: 0; transform: translate(355px, 306px) }
+        10% { opacity: 1; transform: translate(355px, 205px) } 18%, 30% { opacity: 1; transform: translate(355px, 312px) }
+        32%, 100% { opacity: 0; transform: translate(355px, 312px) }
       }
       @keyframes d2 {
         0%, 32% { opacity: 0; transform: translate(105px, 205px) } 34% { opacity: 1; transform: translate(105px, 205px) }
         42% { opacity: 1; transform: translate(355px, 205px) } 50% { opacity: 1; transform: translate(645px, 205px) }
-        58%, 64% { opacity: 1; transform: translate(645px, 306px) } 66%, 100% { opacity: 0; transform: translate(645px, 306px) }
+        58%, 64% { opacity: 1; transform: translate(645px, 312px) } 66%, 100% { opacity: 0; transform: translate(645px, 312px) }
       }
       @keyframes d3 {
         0%, 66% { opacity: 0; transform: translate(105px, 205px) } 68% { opacity: 1; transform: translate(105px, 205px) }

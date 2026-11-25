@@ -11,7 +11,7 @@
     </g>
   </defs>
   <rect width="960" height="430" fill="#ffffff"/>
-  <text x="480" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#222">Three ways to steal a session cookie, and the setting that stops each one</text>
+  <text x="480" y="36" text-anchor="middle" font-size="24" font-weight="700" fill="#222">Three attacks on a session cookie, and the setting that stops each one</text>
 
   <!-- httpOnly -->
   <rect x="20" y="70" width="290" height="340" rx="10" fill="#f7f7f7" stroke="#cccccc" stroke-width="2"/>
@@ -36,7 +36,7 @@
   <rect x="355" y="130" width="110" height="80" rx="6" fill="#fbe9e7" stroke="#b3261e" stroke-width="2"/>
   <text x="410" y="160" text-anchor="middle" font-size="13" font-weight="700" fill="#8c1d18">evil.example</text>
   <text x="410" y="180" text-anchor="middle" font-size="12" fill="#8c1d18">hidden form:</text>
-  <text x="410" y="196" text-anchor="middle" font-size="12" fill="#8c1d18">DELETE event</text>
+  <text x="410" y="196" text-anchor="middle" font-size="12" fill="#8c1d18">create an event</text>
   <rect x="505" y="130" width="100" height="80" rx="6" fill="#e5f3e6" stroke="#2f7d32" stroke-width="2"/>
   <text x="555" y="165" text-anchor="middle" font-size="13" font-weight="700" fill="#1f5c22">our API</text>
   <text x="555" y="185" text-anchor="middle" font-size="12" fill="#1f5c22">sees no cookie</text>
