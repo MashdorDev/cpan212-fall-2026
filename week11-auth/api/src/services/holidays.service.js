@@ -1,6 +1,9 @@
 import { HttpError } from '../utils/http-error.js';
 
-const API_BASE_URL = process.env.HOLIDAY_API_BASE_URL ?? 'https://date.nager.at/api/v3';
+let API_BASE_URL = 'https://date.nager.at/api/v3';
+if (process.env.HOLIDAY_API_BASE_URL) {
+  API_BASE_URL = process.env.HOLIDAY_API_BASE_URL;
+}
 const TIMEOUT_MS = 5000;
 // Holiday dates for a year almost never change, so one call every 12 hours is plenty.
 const CACHE_TTL_MS = 12 * 60 * 60 * 1000;
@@ -32,13 +35,13 @@ export async function getCanadianHolidays(year) {
   try {
     holidays = await fetchCanadianHolidays(year);
   } catch (error) {
+    // A timeout shows up here as error.name 'TimeoutError', a network failure as 'TypeError'.
     console.error(`Holiday lookup for ${year} failed: ${error.name}: ${error.message}`);
-    // AbortSignal.timeout rejects with error.name 'TimeoutError': Nager.Date took longer than 5 seconds.
-    // That is 504 Gateway Timeout. Anything else (no connection, a non-OK status, a body that isn't JSON)
-    // means there was no usable answer at all: 502 Bad Gateway.
     if (error.name === 'TimeoutError') {
+      // 504: we did reach for the upstream service, it just took too long to answer.
       throw new HttpError(504, 'The holiday service took too long to answer, try again later');
     }
+    // 502: the upstream service failed (no connection, error status or unreadable answer).
     throw new HttpError(502, 'The holiday service is not responding, try again later');
   }
 

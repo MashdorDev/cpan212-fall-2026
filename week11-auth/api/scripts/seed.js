@@ -1,14 +1,14 @@
+import bcrypt from 'bcryptjs';
 import mongoose from 'mongoose';
 import { connectDb } from '../src/db.js';
 import { Event } from '../src/models/Event.js';
 import { Rsvp } from '../src/models/Rsvp.js';
 import { User } from '../src/models/User.js';
-import { hashPassword } from '../src/services/auth.service.js';
 
-// The same eight events the API has used since Week 2, minus the fixed ids: MongoDB gives every
-// document a new ObjectId, so the ids change each time you run this script.
+// The same eight events the API has used since Week 2. MongoDB gives each one a new _id,
+// so the ids change every time you run this script.
 // Times are stored in UTC. 21:00Z on Oct 2 is 5:00 PM in Toronto.
-const seedEvents = [
+const sampleEvents = [
   {
     title: 'Fall hackathon kickoff',
     description:
@@ -87,15 +87,15 @@ const seedEvents = [
   },
 ];
 
-// Two demo accounts for trying the app locally. The passwords are in the README on purpose:
-// they are fake, and this script is for your own database only. Never seed real accounts like this.
-const seedUsers = [
+// Two demo accounts for trying the app on your own computer. The passwords are fake and written
+// here on purpose. Never put real accounts or passwords in a script like this.
+const sampleUsers = [
   { name: 'Ava Martin', email: 'ava@example.com', password: 'campus-demo-ava' },
   { name: 'Sam Lee', email: 'sam@example.com', password: 'campus-demo-sam' },
 ];
 
-// Which demo user organizes each event, by title. Ava runs the academic and career events, Sam the rest.
-const organizerEmails = {
+// Who organizes each event, by title. Ava has the academic and career events, Sam the rest.
+const organizers = {
   'Fall hackathon kickoff': 'ava@example.com',
   'Career fair prep workshop': 'ava@example.com',
   'Resume review drop-in': 'ava@example.com',
@@ -106,45 +106,62 @@ const organizerEmails = {
   'Open mic night': 'sam@example.com',
 };
 
-// Made-up attendees (example.com addresses never receive mail). Each one is [event title, name, email].
-const seedRsvps = [
-  ['Fall hackathon kickoff', 'Sam Lee', 'sam@example.com'],
-  ['Fall hackathon kickoff', 'Priya Sharma', 'priya.sharma@example.com'],
-  ['Fall hackathon kickoff', 'Marcus Chen', 'marcus.chen@example.com'],
-  ['Resume review drop-in', 'Priya Sharma', 'priya.sharma@example.com'],
-  ['Open mic night', 'Ava Martin', 'ava@example.com'],
+// Made-up people (example.com addresses never get mail). Each RSVP names its event by title,
+// because the event ids only exist after the events are inserted.
+const sampleRsvps = [
+  { eventTitle: 'Fall hackathon kickoff', name: 'Sam Lee', email: 'sam@example.com' },
+  { eventTitle: 'Fall hackathon kickoff', name: 'Priya Sharma', email: 'priya.sharma@example.com' },
+  { eventTitle: 'Fall hackathon kickoff', name: 'Marcus Chen', email: 'marcus.chen@example.com' },
+  { eventTitle: 'Resume review drop-in', name: 'Priya Sharma', email: 'priya.sharma@example.com' },
+  { eventTitle: 'Open mic night', name: 'Ava Martin', email: 'ava@example.com' },
 ];
 
 await connectDb();
 
-// syncIndexes() makes the collections' indexes match the schemas, including the unique indexes on
-// user emails and RSVPs. The API also builds indexes when it starts, but the seed shouldn't depend on that.
-await Promise.all([User.syncIndexes(), Event.syncIndexes(), Rsvp.syncIndexes()]);
+// syncIndexes() makes the indexes in the database match the ones in the schemas.
+// That includes the unique index on user emails.
+await User.syncIndexes();
+await Event.syncIndexes();
+await Rsvp.syncIndexes();
 
-// Start from clean collections. Existing sessions are left alone, but they point at users that no longer
-// exist, so anyone logged in is treated as logged out.
-await Promise.all([Rsvp.deleteMany({}), Event.deleteMany({}), User.deleteMany({})]);
+// Start from empty collections, so running the script twice doesn't give you 16 events.
+// Anyone who was logged in is logged out, because their user no longer exists.
+await Rsvp.deleteMany({});
+await User.deleteMany({});
+const deleted = await Event.deleteMany({});
 
-const users = await User.insertMany(
-  await Promise.all(
-    seedUsers.map(async ({ name, email, password }) => ({ name, email, passwordHash: await hashPassword(password) })),
-  ),
-);
-const userIdsByEmail = new Map(users.map((user) => [user.email, user._id]));
-console.log(`Inserted ${users.length} users`);
+// Hash each password the same way the register route does.
+const users = [];
+for (const sample of sampleUsers) {
+  const passwordHash = await bcrypt.hash(sample.password, 12);
+  users.push({ name: sample.name, email: sample.email, passwordHash: passwordHash });
+}
+const insertedUsers = await User.insertMany(users);
+console.log('Inserted ' + insertedUsers.length + ' users');
 
-// insertMany() runs the schema validation too, so a typo in the data above fails loudly.
-const events = await Event.insertMany(
-  seedEvents.map((event) => ({ ...event, organizer: userIdsByEmail.get(organizerEmails[event.title]) })),
-);
-console.log(`Inserted ${events.length} events`);
+// Give each event the id of its organizer, found by email.
+for (const event of sampleEvents) {
+  for (const user of insertedUsers) {
+    if (user.email === organizers[event.title]) {
+      event.organizer = user._id;
+    }
+  }
+}
+// insertMany() checks the schema rules too, so a typo in the data above fails loudly.
+const inserted = await Event.insertMany(sampleEvents);
+console.log('Removed ' + deleted.deletedCount + ' events, inserted ' + inserted.length);
 
-// The RSVPs need the new ObjectIds, so look each event up by title.
-const idsByTitle = new Map(events.map((event) => [event.title, event._id]));
-const rsvps = await Rsvp.insertMany(
-  seedRsvps.map(([title, name, email]) => ({ event: idsByTitle.get(title), name, email })),
-);
-console.log(`Inserted ${rsvps.length} RSVPs`);
+// Give each RSVP the id of its event, found by title.
+const rsvps = [];
+for (const sample of sampleRsvps) {
+  for (const event of inserted) {
+    if (event.title === sample.eventTitle) {
+      rsvps.push({ event: event._id, name: sample.name, email: sample.email });
+    }
+  }
+}
+const insertedRsvps = await Rsvp.insertMany(rsvps);
+console.log('Inserted ' + insertedRsvps.length + ' RSVPs');
 
-// Without this the script never ends, because the open connection keeps Node running.
+// Close the connection, or the script never ends.
 await mongoose.disconnect();

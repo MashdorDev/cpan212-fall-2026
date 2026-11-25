@@ -35,7 +35,11 @@ const upload = multer({
 export function uploadImage(req, res, next) {
   upload.single('image')(req, res, (error) => {
     if (error instanceof multer.MulterError) {
-      req.uploadError = error.code === 'LIMIT_FILE_SIZE' ? 'Image must be 2 MB or smaller' : `Upload failed: ${error.message}`;
+      if (error.code === 'LIMIT_FILE_SIZE') {
+        req.uploadError = 'Image must be 2 MB or smaller';
+      } else {
+        req.uploadError = 'Upload failed: ' + error.message;
+      }
       return next();
     }
     next(error);
