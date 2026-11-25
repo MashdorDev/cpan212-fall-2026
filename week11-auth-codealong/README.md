@@ -8,7 +8,7 @@ Stuck on a part? Open the same file in [`../week11-auth`](../week11-auth). That'
 
 ## Start (two terminals)
 
-Use the same `MONGODB_URI` as last week. This week also needs a `SESSION_SECRET`.
+Use the same database as Week 9 (see [Reuse your database from Week 9](#reuse-your-database-from-week-9) below). This week also needs a `SESSION_SECRET`.
 
 Terminal 1, the API:
 
@@ -16,7 +16,7 @@ Terminal 1, the API:
 cd api
 npm install
 cp .env.example .env
-# edit .env: paste your connection string after MONGODB_URI=
+# edit .env: paste your MONGODB_URI line from Week 9 over the one there
 # and put a long random value after SESSION_SECRET= (this command makes one):
 node -e "console.log(crypto.randomBytes(32).toString('base64'))"
 npm run dev
@@ -36,6 +36,27 @@ npm run dev
 Open http://localhost:3000/events. The events from last week are there, and the header has **Log in** and **Register** links. The web app is finished. Tonight we only change the API, so those pages answer "not built yet" until we write each route.
 
 The admin pages (http://localhost:4000/admin/events) show an error until step 2.
+
+## Reuse your database from Week 9
+
+You don't need a new database. The one you made in Week 9 is still in Atlas, with last week's 8 events in it.
+
+1. Open `week09-mongodb-codealong/api/.env` (or the `.env` from wherever you did Week 9) and copy the whole `MONGODB_URI=...` line.
+2. Open `week11-auth-codealong/api/.env` and replace its `MONGODB_URI=` line with the one you copied.
+3. Run `npm run dev` in `api`. The terminal says `Connected to MongoDB, database "campus_events"`, and http://localhost:3000/events shows last week's events.
+
+The database name stays `campus_events`, so tonight's `users` and `sessions` collections appear next to `events`. After step 1, `npm run seed` empties and refills events, users and RSVPs.
+
+Your `.env` holds your database password. Don't show it on a shared screen and never commit it (it's already in `.gitignore`).
+
+If it doesn't connect:
+
+| What you see | What to do |
+|---|---|
+| `Could not connect to any servers` or a timeout | You're on a new network (campus Wi-Fi has a different IP). In Atlas, **Database & Network Access**, **IP Access List** tab, **Add IP Address**, and add your current IP. |
+| `bad auth : authentication failed` | The password in the string is wrong. In Atlas, **Database & Network Access**, **Database Users** tab, edit the user and set a new password, then paste it into `.env`. |
+| `querySrv ENOTFOUND` | The network blocks Atlas's DNS lookup. See the table in section 6 of [`../week09-mongodb/docs/atlas-setup.md`](../week09-mongodb/docs/atlas-setup.md). |
+| The cluster shows **Paused** in Atlas | Free clusters pause after 30 days with no connections. Press **Resume**. |
 
 ## The steps
 
