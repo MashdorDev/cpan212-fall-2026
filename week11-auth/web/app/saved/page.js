@@ -9,53 +9,46 @@ import styles from './page.module.css';
 // The saved ids only exist in this browser (localStorage), so this page is a Client Component
 // and loads the events from the browser, through the /api rewrite.
 export default function SavedPage() {
-  const { savedIds, loaded } = useSavedEvents();
+  const savedEvents = useSavedEvents();
+  // null means "still loading".
   const [events, setEvents] = useState(null);
   const [error, setError] = useState('');
 
+  // Load the saved events once localStorage has been read (savedEvents.loaded).
   useEffect(() => {
-    if (!loaded) {
+    if (!savedEvents.loaded) {
       return;
     }
-    // Set when savedIds changes before the requests below finish, so an old answer doesn't overwrite a newer one.
-    let ignore = false;
 
-    // GET /api/events only returns one page now, so a saved event could be on any page.
-    // Ask for each saved event by id instead, all at the same time.
+    // GET /api/events only sends one page now, so a saved event could be on any page.
+    // Ask for each saved event by its id instead, one after the other.
     async function loadEvents() {
       try {
-        const results = await Promise.all(
-          savedIds.map(async (id) => {
-            const res = await fetch(`/api/events/${encodeURIComponent(id)}`);
-            if (!res.ok) {
-              // Read the error body even though it isn't used. Chrome can keep an unread response open.
-              await res.text();
-              // 404: the event was deleted since it was saved, or the id is a UUID saved before Week 9.
-              if (res.status === 404) {
-                return null;
-              }
-              throw new Error(`The API answered ${res.status}`);
-            }
-            const body = await res.json();
-            return body.data;
-          }),
-        );
-        if (!ignore) {
-          setEvents(results.filter((event) => event !== null));
+        const loadedEvents = [];
+        for (const id of savedEvents.savedIds) {
+          const res = await fetch('/api/events/' + id);
+          // 404: the event was deleted after it was saved. Skip it.
+          if (res.status === 404) {
+            continue;
+          }
+          if (!res.ok) {
+            throw new Error('The API answered ' + res.status);
+          }
+          const body = await res.json();
+          loadedEvents.push(body.data);
         }
+        setEvents(loadedEvents);
       } catch (err) {
-        if (!ignore) {
-          setError(err.message);
-        }
+        setError(err.message);
       }
     }
     loadEvents();
+    // Only run again when loaded changes. Pressing Unsave on this page hides the card below
+    // without loading everything again.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [savedEvents.loaded]);
 
-    return () => {
-      ignore = true;
-    };
-  }, [savedIds, loaded]);
-
+  // 1. Something went wrong.
   if (error) {
     return (
       <>
@@ -65,6 +58,7 @@ export default function SavedPage() {
     );
   }
 
+  // 2. Still loading.
   if (events === null) {
     return (
       <>
@@ -74,22 +68,32 @@ export default function SavedPage() {
     );
   }
 
-  return (
-    <>
-      <h1>Saved events</h1>
-      {events.length === 0 ? (
+  // Keep only the events whose id is in the saved list.
+  const saved = events.filter((event) => savedEvents.isSaved(event.id));
+
+  // 3. Nothing saved yet.
+  if (saved.length === 0) {
+    return (
+      <>
+        <h1>Saved events</h1>
         <p>
           Nothing saved yet. Press Save on any event in the <Link href="/events">events list</Link>.
         </p>
-      ) : (
-        <ul className={styles.list}>
-          {events.map((event) => (
-            <li key={event.id}>
-              <EventCard event={event} />
-            </li>
-          ))}
-        </ul>
-      )}
+      </>
+    );
+  }
+
+  // 4. Show the saved events.
+  return (
+    <>
+      <h1>Saved events</h1>
+      <ul className={styles.list}>
+        {saved.map((event) => (
+          <li key={event.id}>
+            <EventCard event={event} />
+          </li>
+        ))}
+      </ul>
     </>
   );
 }

@@ -13,8 +13,8 @@ export const metadata = {
   description: 'What is happening on campus this term',
 };
 
-// The layout is a Server Component, and it can still render Client Components (the providers)
-// around the pages. Every page and component inside can then call useAuth() and useSavedEvents().
+// The root layout wraps every page. The two providers go around everything,
+// so every page and component inside can call useAuth() and useSavedEvents().
 export default function RootLayout({ children }) {
   return (
     <html lang="en">

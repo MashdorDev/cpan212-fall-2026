@@ -4,47 +4,36 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 const AuthContext = createContext(null);
 
-// Knows who is logged in, for any component that needs to show it (the header, the RSVP form).
-// The session cookie is httpOnly, so JavaScript can't read it. The only way to find out is to ask the API.
+// Knows who is logged in, for every component that needs it (the header, the RSVP form).
+// The session cookie is httpOnly, so JavaScript can't read it. The only way to know is to ask the API.
 export function AuthProvider({ children }) {
-  // undefined while GET /api/auth/me is on its way, null when nobody is logged in, or the user object.
+  // undefined while we are still asking, null when nobody is logged in, or the user { id, name, email }.
   const [user, setUser] = useState(undefined);
 
   useEffect(() => {
-    let ignore = false;
-
     async function loadUser() {
       try {
-        // The browser sends the session cookie with this request on its own: it is same-origin, through the rewrite.
-        // A 401 here only means "not logged in", so it shows in the Network tab on every page for a visitor.
+        // The browser sends the session cookie with this request by itself.
+        // For a visitor who isn't logged in the API answers 401. That is expected, not a bug.
         const res = await fetch('/api/auth/me');
-        // Read the body even for a 401. Chrome can leave an unread response open, which holds a connection
-        // for as long as the page is open (it shows as a request that never finishes in the Network tab).
         const body = await res.json();
-        if (!ignore) {
-          setUser(res.ok ? body.data : null);
-        }
-      } catch {
-        // The API is not reachable. Show the logged-out header rather than nothing.
-        if (!ignore) {
+        if (res.ok) {
+          setUser(body.data);
+        } else {
           setUser(null);
         }
+      } catch (err) {
+        // The API is not running. Show the logged-out header.
+        setUser(null);
       }
     }
     loadUser();
-
-    return () => {
-      ignore = true;
-    };
   }, []);
 
-  return <AuthContext value={{ user, setUser }}>{children}</AuthContext>;
+  return <AuthContext value={{ user: user, setUser: setUser }}>{children}</AuthContext>;
 }
 
+// Any component inside AuthProvider can call this: const { user } = useAuth();
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error('useAuth must be used inside <AuthProvider>');
-  }
-  return context;
+  return useContext(AuthContext);
 }

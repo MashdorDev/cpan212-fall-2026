@@ -1,19 +1,19 @@
-import AuthForm from '@/components/AuthForm';
+import LoginForm from '@/components/LoginForm';
 import { safeNextPath } from '@/lib/next-path';
 
 export const metadata = {
   title: 'Log in',
 };
 
-// A Server Component reads ?next= and hands it to the Client Component form. Reading it with
-// useSearchParams() in the form would also work, but then the page needs a Suspense boundary to build.
+// A Server Component reads ?next= from the URL and passes it to the form.
 export default async function LoginPage({ searchParams }) {
-  const { next } = await searchParams;
+  const query = await searchParams;
+  const next = safeNextPath(query.next);
 
   return (
     <>
       <h1>Log in</h1>
-      <AuthForm mode="login" next={safeNextPath(next)} />
+      <LoginForm next={next} />
     </>
   );
 }
