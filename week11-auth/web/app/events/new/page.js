@@ -18,6 +18,8 @@ export default function NewEventPage() {
   const [message, setMessage] = useState('');
   // true when the API says nobody is logged in.
   const [loggedOut, setLoggedOut] = useState(false);
+  // true while the request is on its way, so a double-click doesn't create the event twice.
+  const [sending, setSending] = useState(false);
 
   async function handleSubmit(event) {
     // Stop the browser from reloading the page. We send the data ourselves.
@@ -25,6 +27,7 @@ export default function NewEventPage() {
     setErrors({});
     setMessage('');
     setLoggedOut(false);
+    setSending(true);
 
     // Read every field of the form by its name="..." attribute.
     const form = new FormData(event.currentTarget);
@@ -61,6 +64,7 @@ export default function NewEventPage() {
         setUser(null);
         setLoggedOut(true);
         setMessage(body.error.message);
+        setSending(false);
         return;
       }
 
@@ -70,6 +74,7 @@ export default function NewEventPage() {
           setErrors(body.error.details);
         }
         setMessage(body.error.message);
+        setSending(false);
         return;
       }
 
@@ -78,6 +83,7 @@ export default function NewEventPage() {
     } catch (err) {
       // The API is not running, or it answered with something that is not JSON.
       setMessage('Could not reach the events API. Check that it is running.');
+      setSending(false);
     }
   }
 
@@ -144,7 +150,7 @@ export default function NewEventPage() {
           {errors.capacity && <p className={styles.error}>{errors.capacity}</p>}
         </div>
 
-        <button className={styles.submit} type="submit">
+        <button className={styles.submit} type="submit" disabled={sending}>
           Create event
         </button>
       </form>

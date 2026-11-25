@@ -5,8 +5,15 @@ export function safeNextPath(next) {
   if (typeof next !== 'string') {
     return '/events';
   }
-  if (!next.startsWith('/') || next.startsWith('//') || next.startsWith('/\\')) {
+  if (!next.startsWith('/') || next.startsWith('//')) {
     return '/events';
+  }
+  // Browsers drop tabs and line breaks from a URL and read \ as /, so "/<tab>/evil.example"
+  // and "/\evil.example" also turn into //evil.example. A real path never has them.
+  for (const character of next) {
+    if (character === '\\' || character < ' ') {
+      return '/events';
+    }
   }
   return next;
 }

@@ -140,7 +140,6 @@ export async function createEvent(req, res) {
     location: req.body.location,
     startsAt: req.body.startsAt,
     capacity: req.body.capacity,
-    imageUrl: req.body.imageUrl,
     // The organizer is whoever is logged in. A client can't create an event in someone else's name.
     organizer: req.user._id,
   });
@@ -156,7 +155,9 @@ export async function updateEvent(req, res) {
 
   // Copy only the fields that were sent.
   const changes = {};
-  const fields = ['title', 'description', 'category', 'location', 'startsAt', 'capacity', 'imageUrl'];
+  // No imageUrl: only the admin upload form sets it. Otherwise someone could point their event at
+  // another organizer's image, delete their own event, and delete that image with it.
+  const fields = ['title', 'description', 'category', 'location', 'startsAt', 'capacity'];
   for (const field of fields) {
     if (req.body[field] !== undefined) {
       changes[field] = req.body[field];
